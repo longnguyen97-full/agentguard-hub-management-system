@@ -5,9 +5,35 @@ build-backend = "hatchling.build"
 [project]
 name = "agent-management-system"
 version = "0.1.0"
-description = "Enterprise AI Agent Observability & Management System"
+description = "Enterprise AI Agent Control Plane & Observability System with Langfuse, Guardrails, and Human-in-the-Loop"
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.11"
+authors = [
+    { name = "Long Nguyen", email = "longnguyen97.full@gmail.com" }
+]
+keywords = [
+    "ai-agent",
+    "agentops",
+    "llm-observability",
+    "langfuse",
+    "guardrails",
+    "human-in-the-loop",
+    "kill-switch",
+    "fastapi"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: System :: Monitoring"
+]
 dependencies = [
     "fastapi>=0.115.0",
     "uvicorn[standard]>=0.30.0",
@@ -18,6 +44,11 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "jinja2>=3.1.4",
 ]
+
+[project.urls]
+Homepage = "https://github.com/longnguyen97-full/agent-management-system"
+Repository = "https://github.com/longnguyen97-full/agent-management-system"
+Issues = "https://github.com/longnguyen97-full/agent-management-system/issues"
 
 [project.scripts]
 agent-hub = "run:main"

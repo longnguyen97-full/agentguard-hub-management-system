@@ -1,32 +1,65 @@
-# Agent Observability & Management System (Hệ Thống Giám Sát Agent)
+<div align="center">
 
-Một hệ thống giám sát và quản trị AI Agent chuyên nghiệp theo mô hình **Hybrid**:
-- **Lõi Observability & Tracing chuyên sâu**: Tích hợp nền tảng mã nguồn mở **Langfuse** (chạy độc lập qua Docker Compose) để theo dõi cây thực thi (Trace Trees), đo lường token, tính toán chi phí USD tự động cho từng model, và đánh giá chất lượng (Evals).
-- **Lõi Nghiệp vụ & Điều khiển Tùy biến (Custom Control Layer)**: Xây dựng bằng **Python / FastAPI** cung cấp cơ chế **Emergency Kill Switch**, **Phát hiện vòng lặp vô tận (Loop Detector)**, **Giới hạn ngân sách (Budget Guardrail)**, và quy trình **Phê duyệt của con người (Human-in-the-Loop Approval)** trước khi Agent thực thi các tool nhạy cảm.
+# 🛡️ AI Agent Observability & Control Plane
+
+### *Enterprise Operational Guardrails, Real-Time Kill Switch, and Human-in-the-Loop Governance — Powered by Langfuse*
+
+[![CI Test Suite](https://github.com/longnguyen97-full/agent-management-system/actions/workflows/ci.yml/badge.svg)](https://github.com/longnguyen97-full/agent-management-system/actions)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Langfuse](https://img.shields.io/badge/Langfuse-v5_OTel-black.svg?logo=langfuse)](https://langfuse.com)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+<p align="center">
+  <a href="README.md">🇬🇧 English</a> •
+  <a href="README.vi.md">🇻🇳 Tiếng Việt</a>
+</p>
+
+</div>
 
 ---
 
-## 🏛️ Sơ đồ Kiến trúc Hệ thống
+## 💡 Why This Project?
+
+Traditional LLM Observability platforms (like Langfuse, Phoenix, and LangSmith) excel at **passive tracking** — showing you traces, token counts, and latency **after** an agent run has finished.
+
+However, in production enterprise environments, passive observation is not enough:
+- **What happens when an agent gets stuck in a hallucination loop?** It burns hundreds of dollars in API credits within minutes.
+- **What happens when an autonomous agent decides to execute a destructive SQL command?** Data is lost before anyone notices.
+- **How can human operators immediately pull the emergency brake on a rogue agent?**
+
+**Agent Management System** bridges this gap by acting as an **Active Control Plane & Safety Layer**:
+1. **Real-time Emergency Kill Switch**: Instantly terminates rogue agent threads from the UI or API.
+2. **Loop Detector Guardrail**: Intercepts consecutive identical tool calls to prevent infinite loops.
+3. **Hard Budget Guardrails**: Sets hard ceilings on token usage and estimated USD spend.
+4. **Human-in-the-Loop (HITL) Approval**: Pauses agent execution before calling sensitive tools (e.g. database mutations, payment triggers) until explicitly authorized by a human supervisor.
+5. **Billable vs Non-Billable Separation**: Accurately tracks LLM token costs separately from zero-cost local code tools and database queries.
+6. **Dual Currency Monitoring**: Real-time conversions between USD ($) and VND (₫).
+
+---
+
+## 🏛️ System Architecture
 
 ```
                                  ┌──────────────────────────────────────────────┐
-                                 │   Người Quản Trị / Operator Dashboard        │
-                                 │   http://localhost:8000/dashboard            │
+                                 │       Admin / Operator Dashboard Web UI      │
+                                 │         http://localhost:8000/dashboard      │
                                  └──────────────┬───────────────────────────────┘
                                                 │
                                     (SSE & REST API Call)
                                                 ▼
   ┌─────────────────────────────────────────────────────────────────────────────┐
-  │                 Custom Agent Management Service (FastAPI)                   │
+  │                 FastAPI Agent Management & Control Plane                    │
   │                                                                             │
   │  ┌───────────────────────┐   ┌──────────────────────┐   ┌─────────────────┐ │
   │  │ Loop Guardrail        │   │ Budget Guardrail     │   │ Human-in-the-   │ │
-  │  │ (Chặn lặp vô tận)     │   │ (Chặn vượt token/$)  │   │ Loop Approval   │ │
+  │  │ (Prevents Runaway)    │   │ (Caps Token & Cost)  │   │ Loop Approval   │ │
   │  └───────────────────────┘   └──────────────────────┘   └─────────────────┘ │
   │                                                                             │
   │  ┌───────────────────────┐   ┌──────────────────────┐   ┌─────────────────┐ │
   │  │ Emergency Kill Switch │   │ Agent Run Registry   │   │ OpenInference   │ │
-  │  │ (Dừng Agent khẩn cấp) │   │ (Quản lý tiến trình) │   │ Telemetry Span  │ │
+  │  │ (Instant Termination) │   │ (In-memory State)    │   │ Telemetry Span  │ │
   │  └───────────────────────┘   └──────────────────────┘   └────────┬────────┘ │
   └──────────────────────────────────────────────────────────────────┼──────────┘
                                                                      │
@@ -43,123 +76,166 @@ Một hệ thống giám sát và quản trị AI Agent chuyên nghiệp theo m�
 
 ---
 
-## 🚀 Hướng Dẫn Khởi Chạy Nhanh
+## ⚡ Quick Start
 
-### 1. Chuẩn bị môi trường
-- Python >= 3.10
+### 1. Requirements
+- Python >= 3.11
+- [uv](https://docs.astral.sh/uv/) (recommended for lightning-fast package management)
 - Docker & Docker Compose
 
-### 2. Khởi chạy Cụm Hạ Tầng Langfuse Observability
-Cụm Langfuse lưu trữ toàn bộ lịch sử trace, log token và chi phí. Trong thư mục gốc của dự án:
+### 2. Start Langfuse Observability Stack
+Launch the self-hosted Langfuse tracing cluster:
 ```bash
 docker compose up -d
 ```
-> Giao diện Langfuse Web sẽ khả dụng tại: **[http://localhost:3000](http://localhost:3000)**
-> *Tài khoản mặc định đã được cấu hình tự động:*
-> - **Email:** `admin@example.com`
-> - **Mật khẩu:** `AdminPassword123!`
+> The Langfuse Web UI will be available at: **[http://localhost:3000](http://localhost:3000)**  
+> *Default credentials:* `admin@example.com` / `AdminPassword123!`
 
----
-
-### 3. Khởi chạy Custom Agent Management Backend & Dashboard
-
-Dự án sử dụng trình quản lý gói siêu tốc **`uv`**. Khi dùng `uv run`, bạn **không bao giờ** bị lỗi `ModuleNotFoundError: No module named 'fastapi'` vì `uv` tự động đồng bộ môi trường và các thư viện cần thiết.
-
-1. Đồng bộ thư viện bằng `uv`:
+### 3. Start Control Plane Backend & Dashboard
 ```bash
-uv sync
-```
+# Sync all dependencies
+uv sync --all-groups
 
-2. Khởi chạy hệ thống:
-```bash
+# Launch the FastAPI Control Center
 uv run run.py
-# hoặc dùng lệnh tắt:
+# or using the CLI shortcut:
 uv run agent-hub
 ```
 
-> **Ghi chú về lỗi `ModuleNotFoundError: No module named 'fastapi'`:**
-> Lỗi này xuất hiện nếu bạn chạy `python run.py` hoặc `py run.py` bằng trình thông dịch Python mặc định của hệ điều hành mà quên kích hoạt virtual environment.
-> Với `uv`, bạn chỉ cần chạy **`uv run run.py`** — `uv` sẽ luôn chọn đúng môi trường và nạp đầy đủ FastAPI.
-
-Ứng dụng sẽ khởi động trên:
+Now open:
 - 📊 **Agent Control Dashboard:** [http://localhost:8000/dashboard](http://localhost:8000/dashboard)
-- 📖 **Swagger API Docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
+- 📖 **Interactive API Docs (Swagger):** [http://localhost:8000/docs](http://localhost:8000/docs)
 - 🔍 **Health Check:** [http://localhost:8000/health](http://localhost:8000/health)
 
 ---
 
-## 🧪 Các Kịch Bản Kiểm Thử Có Sẵn (Demo Scenarios)
+## 🧪 Interactive Demo Scenarios
 
-Truy cập Dashboard tại `http://localhost:8000/dashboard`, bạn có thể bấm thử ngay 3 kịch bản mẫu:
+Open the Web Dashboard at `http://localhost:8000/dashboard` to test preset scenarios:
 
-### Kịch bản 1: Luồng chuẩn (Standard 3-Step Agent)
-- Agent suy nghĩ (Reasoning) -> Gọi tool `search_knowledge_base` -> Gọi tool `calculate_metric` -> Trả về kết quả tổng hợp.
-- **Quan sát:** Token và ước tính chi phí USD được tính toán realtime theo từng bước và ghi nhận lên Langfuse.
-
-### Kịch bản 2: Tác vụ nhạy cảm (Human-in-the-Loop Approval)
-- Agent thực hiện truy vấn DB, sau đó cố gắng gọi lệnh `execute_database_update` (được gắn cờ bảo vệ `require_approval_tools`).
-- **Quan sát:**
-  - Agent tự động **tạm dừng (PAUSE)**, trạng thái chuyển sang `WAITING_APPROVAL`.
-  - Trên màn hình hiện yêu cầu phê duyệt kèm tham số truy vấn cụ thể.
-  - Người quản trị bấm **"Authorize & Continue"** để cho phép Agent chạy tiếp, hoặc **"Reject"** để hủy bỏ lệnh.
-
-### Kịch bản 3: Phát hiện vòng lặp vô tận (Loop Detector Guardrail)
-- Giả lập tình huống Agent gặp lỗi tư duy và liên tục gọi một tool với tham số giống hệt nhau.
-- **Quan sát:** Bộ lọc `LoopDetector` sẽ ngay lập tức ngắt tiến trình sau 2 lần lặp liên tiếp, ngăn chặn việc cạn kiệt tài khoản và spam API.
-
-### Kịch bản 4: Nút dừng khẩn cấp (Emergency Kill Switch)
-- Bất kỳ lúc nào Agent đang chạy, bạn có thể bấm nút **"Kill Switch"** màu đỏ trên Dashboard hoặc gọi `POST /api/agents/runs/{run_id}/kill` để hủy bỏ tiến trình ngay tức khắc.
+| Scenario | Action | Outcome Observed |
+| :--- | :--- | :--- |
+| **1. Standard 3-Step Agent** | Multi-step reasoning + tool execution. | Real-time token count, USD/VND cost breakdown, step timeline. |
+| **2. Human-in-the-Loop** | Agent attempts sensitive tool `execute_database_update`. | Agent automatically pauses in `WAITING_APPROVAL`. Operator clicks **Authorize** or **Reject** in real time. |
+| **3. Loop Detector** | Agent makes repeated calls with identical arguments. | Guardrail triggers on 2nd repeat; run is safely aborted before wasting tokens. |
+| **4. Kill Switch** | Operator triggers red Emergency Stop button. | Run status changes immediately to `KILLED` and execution thread terminates. |
 
 ---
 
-## 🧪 Chạy Kiểm Thử Tự Động (Automated Test Suite)
+## 🔌 Integrating Any External Agent (Lightweight SDK)
 
-Dự án đi kèm bộ test toàn diện kiểm tra tất cả các cơ chế bảo vệ (chạy trực tiếp bằng `uv`):
+You can connect **any existing agent** (written in LangChain, CrewAI, AutoGen, or vanilla Python) into this Control Hub using `agent_sdk.py`:
+
+```python
+from agent_sdk import AgentTracker
+
+# 1. Initialize tracker pointing to your hub
+tracker = AgentTracker(endpoint="http://localhost:8000")
+
+# 2. Register new run session
+session = tracker.start_run(
+    agent_name="OrderSupportAgent",
+    prompt="Check status for order #DH-9921 and issue discount coupon",
+    budget_usd=0.25
+)
+
+# 3. Log billable LLM thought / action
+session.log_step(
+    thought="Analyzing customer request and querying order database.",
+    tool_name="order_database_query",
+    tool_input={"order_id": "DH-9921"},
+    tool_output={"status": "DELIVERED"},
+    tokens_used=240,
+    cost_usd=0.00008,
+    is_billable=True
+)
+
+# 4. Log non-billable local computation (0 VND / $0.00)
+session.log_step(
+    thought="Generating promotional coupon code locally.",
+    tool_name="generate_promo_coupon",
+    tool_input={"discount_percent": 10},
+    tool_output={"code": "SAVE10"},
+    tokens_used=0,
+    cost_usd=0.0,
+    is_billable=False
+)
+
+# 5. Conclude session
+session.finish(final_output="Order delivered! Coupon SAVE10 generated.")
+```
+
+> Try running the included external agent demo:
+> ```bash
+> uv run python examples/external_agent_demo.py
+> ```
+
+---
+
+## 🧪 Automated Test Suite
+
+Run the full end-to-end and guardrail test suite:
+
 ```bash
 uv run pytest -v
 ```
 
-Kết quả:
 ```text
-tests/test_agent_system.py::test_standard_agent_execution PASSED         [ 20%]
-tests/test_agent_system.py::test_loop_detector_guardrail PASSED          [ 40%]
-tests/test_agent_system.py::test_budget_limit_guardrail PASSED           [ 60%]
-tests/test_agent_system.py::test_human_in_the_loop_approval PASSED       [ 80%]
-tests/test_agent_system.py::test_emergency_kill_switch PASSED            [100%]
-============================== 5 passed in 18s ===============================
+tests/test_agent_system.py::test_standard_agent_execution PASSED         [ 16%]
+tests/test_agent_system.py::test_loop_detector_guardrail PASSED          [ 33%]
+tests/test_agent_system.py::test_budget_limit_guardrail PASSED           [ 50%]
+tests/test_agent_system.py::test_human_in_the_loop_approval PASSED       [ 66%]
+tests/test_agent_system.py::test_emergency_kill_switch PASSED            [ 83%]
+tests/test_external_api.py::test_external_agent_ingestion_lifecycle PASSED [100%]
+============================== 6 passed in 19s ===============================
 ```
 
 ---
 
-## 📂 Cấu Trúc Thư Mục Dự Án
+## 📂 Repository Structure
 
-```
+```text
 agent-management-system/
-├── docker-compose.yml       # Cụm hạ tầng Langfuse (Web, Worker, Postgres, Redis, ClickHouse, MinIO)
-├── .env                     # Biến môi trường hệ thống
-├── .env.example             # Mẫu cấu hình
-├── requirements.txt         # Danh sách thư viện Python
-├── run.py                   # Script khởi chạy nhanh backend
-├── Dockerfile               # Dockerfile đóng gói backend
+├── docker-compose.yml       # Full Langfuse tracing stack (Web, Worker, ClickHouse, Postgres, Redis, MinIO)
+├── .env.example             # Safe environment configuration template
+├── pyproject.toml           # Package configuration & dependencies
+├── run.py                   # Fast application launcher
+├── Dockerfile               # Container packaging for control backend
+├── agent_sdk.py             # Portable zero-dependency client SDK
 ├── backend/
 │   └── app/
-│       ├── main.py          # Khởi tạo FastAPI & mount router
-│       ├── config.py        # Quản lý cấu hình Pydantic Settings
+│       ├── main.py          # FastAPI application entrypoint
+│       ├── config.py        # Pydantic Settings configuration
 │       ├── core/
-│       │   ├── tracer.py    # Wrapper tích hợp Langfuse v5 (OpenInference / OTel)
-│       │   ├── guardrails.py# Bộ quy tắc: Loop detection, Budget limits, Approval check
-│       │   └── registry.py  # Quản lý trạng thái Agent, Kill Switch & SSE broadcasting
+│       │   ├── tracer.py    # Langfuse v5 SDK wrapper (OpenInference / OTel)
+│       │   ├── guardrails.py# Guardrails: Loop detection, Budget limits, Approval checks
+│       │   └── registry.py  # Agent lifecycle state registry & SSE streaming
 │       ├── agents/
-│       │   ├── base.py      # Abstract BaseAgent định nghĩa vòng đời quan sát
-│       │   └── sample_agent.py # Agent mẫu thông minh hỗ trợ các kịch bản ReAct
+│       │   ├── base.py      # Abstract BaseAgent lifecycle definition
+│       │   └── sample_agent.py # ReAct agent implementation
 │       ├── api/
-│       │   └── routes.py    # REST API endpoints & Server-Sent Events (SSE)
+│       │   └── routes.py    # REST API endpoints & SSE broadcast
 │       ├── schemas/
-│       │   └── agent.py     # Pydantic data schemas
+│       │   └── agent.py     # Pydantic domain schemas
 │       └── templates/
-│           └── dashboard.html # Giao diện giám sát & điều khiển thời gian thực
+│           └── dashboard.html # Real-time dark-themed monitoring & control UI
+├── examples/
+│   └── external_agent_demo.py # Complete example of an external agent using SDK
+├── docs/
+│   └── CLIENT_INTEGRATION_GUIDE.md # SDK & API integration guide
 └── tests/
-    └── test_agent_system.py # Bộ unit & integration tests
+    ├── test_agent_system.py  # Core guardrail and agent flow tests
+    └── test_external_api.py  # External ingestion lifecycle tests
 ```
 
-# agent-management-system
+---
+
+## 🤝 Contributing
+
+Contributions are very welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for local development instructions and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community guidelines.
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE) — free for personal, educational, and commercial use.
