@@ -1,8 +1,8 @@
 <div align="center">
 
-# 🛡️ AI Agent Observability & Control Plane
+<img src="assets/logo.svg" alt="AgentGuard Logo" width="280" />
 
-### *Enterprise Operational Guardrails, Real-Time Kill Switch, and Human-in-the-Loop Governance — Powered by Langfuse*
+### *AI Agent Control Plane, Operational Guardrails & Tracing Hub*
 
 [![CI Test Suite](https://github.com/longnguyen97-full/agent-management-system/actions/workflows/ci.yml/badge.svg)](https://github.com/longnguyen97-full/agent-management-system/actions)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
@@ -23,8 +23,8 @@
 ## 📸 Preview & Screenshots
 
 <div align="center">
-  <img src="assets/dashboard-overview.png" alt="Agent Management Dashboard Overview" width="95%" />
-  <p><em>Real-Time Agent Monitoring & Control Hub (English UI with USD Currency)</em></p>
+  <img src="assets/dashboard-overview.png" alt="AgentGuard Dashboard Overview" width="95%" />
+  <p><em>AgentGuard Control Hub (English UI with USD Currency & Simulation Mode Switcher)</em></p>
 </div>
 
 <br/>
@@ -63,14 +63,16 @@
 
 ## 💡 Overview & Core Capabilities
 
-**Agent Management System** is an open-source **Control Plane and Operational Safety Layer** designed for running Autonomous AI Agents safely in production environments:
+**AgentGuard** is an open-source **Control Plane and Operational Safety Layer** designed for running Autonomous AI Agents safely in production environments:
 
 - **🚨 Emergency Kill Switch**: Instantly terminates any running agent process directly from the Web Dashboard or REST API.
 - **🔄 Infinite Loop Guardrail**: Automatically monitors tool call signatures and aborts rogue agents when repetitive behavior is detected.
 - **💰 Hard Budget Guardrail**: Enforces strict ceilings on total token consumption and estimated spend per session.
 - **👤 Human-in-the-Loop (HITL) Approval**: Automatically pauses execution when an agent attempts sensitive actions (e.g. database updates, financial transactions, external communications) and awaits human approval.
+- **🧪 Simulation Mode Toggle**: 1-click switch between **Simulation Sandbox** (mock execution for instant zero-cost guardrail testing) and **Live Production Mode**.
 - **⚡ Billable vs. Non-Billable Separation**: Accurately isolates LLM inference costs from free local operations (deterministic python code, database queries, cached tools).
 - **🌐 Dual-Language UI & Automatic Currency Sync**: Built-in support for English (default, with USD `$`) and Vietnamese (with VND `₫`).
+- **📖 Interactive User Guide (`/guide`)**: Dedicated, comprehensive documentation accessible directly from the top menu.
 - **🔍 Deep Tracing Stack**: Pre-configured, self-hosted Langfuse cluster (Web UI, ClickHouse, PostgreSQL, Redis, MinIO) via Docker Compose.
 - **🔌 Zero-Friction Client SDK (`agent_sdk.py`)**: Seamlessly connects external agents (LangChain, CrewAI, AutoGen, or vanilla scripts) into the central monitoring hub.
 
@@ -80,14 +82,14 @@
 
 ```
                                  ┌──────────────────────────────────────────────┐
-                                 │       Admin / Operator Dashboard Web UI      │
+                                 │     AgentGuard Operator Dashboard Web UI     │
                                  │         http://localhost:8000/dashboard      │
                                  └──────────────┬───────────────────────────────┘
                                                 │
                                     (SSE & REST API Call)
                                                 ▼
   ┌─────────────────────────────────────────────────────────────────────────────┐
-  │                 FastAPI Agent Management & Control Plane                    │
+  │                 AgentGuard FastAPI Service (Control Plane)                  │
   │                                                                             │
   │  ┌───────────────────────┐   ┌──────────────────────┐   ┌─────────────────┐ │
   │  │ Loop Guardrail        │   │ Budget Guardrail     │   │ Human-in-the-   │ │
@@ -133,15 +135,16 @@ docker compose up -d
 # Sync dependencies
 uv sync --all-groups
 
-# Launch the FastAPI Control Center
+# Launch AgentGuard
 uv run run.py
 # or using the CLI shortcut:
 uv run agent-hub
 ```
 
 Now open:
-- 📊 **Agent Control Dashboard:** [http://localhost:8000/dashboard](http://localhost:8000/dashboard)
-- 📖 **Interactive API Docs (Swagger):** [http://localhost:8000/docs](http://localhost:8000/docs)
+- 📊 **AgentGuard Dashboard:** [http://localhost:8000/dashboard](http://localhost:8000/dashboard)
+- 📖 **Interactive User Guide:** [http://localhost:8000/guide](http://localhost:8000/guide)
+- 📖 **API Docs (Swagger):** [http://localhost:8000/docs](http://localhost:8000/docs)
 - 🔍 **Health Check:** [http://localhost:8000/health](http://localhost:8000/health)
 
 ---
@@ -233,7 +236,7 @@ tests/test_external_api.py::test_external_agent_ingestion_lifecycle PASSED [100%
 
 ```text
 agent-management-system/
-├── assets/                  # UI screenshots & preview images
+├── assets/                  # Site logos (SVG, PNG) & UI screenshots
 ├── docker-compose.yml       # Full Langfuse tracing stack (Web, Worker, ClickHouse, Postgres, Redis, MinIO)
 ├── .env.example             # Safe environment configuration template
 ├── pyproject.toml           # Package configuration & dependencies
@@ -242,7 +245,7 @@ agent-management-system/
 ├── agent_sdk.py             # Portable zero-dependency client SDK
 ├── backend/
 │   └── app/
-│       ├── main.py          # FastAPI application entrypoint
+│       ├── main.py          # FastAPI application entrypoint & static mounting
 │       ├── config.py        # Pydantic Settings configuration
 │       ├── core/
 │       │   ├── tracer.py    # Langfuse v5 SDK wrapper (OpenInference / OTel)
@@ -256,7 +259,8 @@ agent-management-system/
 │       ├── schemas/
 │       │   └── agent.py     # Pydantic domain schemas
 │       └── templates/
-│           └── dashboard.html # Real-time dark-themed monitoring & control UI
+│           ├── dashboard.html # Real-time dark-themed monitoring & control UI
+│           └── guide.html     # Interactive User Guide & Manual
 ├── examples/
 │   └── external_agent_demo.py # Complete example of an external agent using SDK
 ├── docs/

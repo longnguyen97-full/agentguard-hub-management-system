@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     DEFAULT_TOKEN_LIMIT: int = 10000
     DEFAULT_BUDGET_USD: float = 0.50
     USD_TO_VND_RATE: float = 25400.0  # Tỷ giá quy đổi USD -> VND
+    SIMULATION_MODE: bool = True  # Chế độ mô phỏng / Mock sandbox vs Live Mode
     
     ALERT_WEBHOOK_URL: Optional[str] = None
     

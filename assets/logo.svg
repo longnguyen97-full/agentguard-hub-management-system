@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 64" width="280" height="64" fill="none">
+  <defs>
+    <linearGradient id="shieldGrad" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="50%" stop-color="#4F46E5"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="140" y1="20" x2="220" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#818CF8"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+    <linearGradient id="glowGrad" x1="18" y1="16" x2="46" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#818CF8" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#10B981" stop-opacity="0.8"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="2" width="64" height="64" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#4F46E5" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Left Icon Emblem -->
+  <g transform="translate(4, 2)">
+    <!-- Outer Shield -->
+    <path d="M30 4L10 14V30C10 44.5 18.5 55.5 30 59.5C41.5 55.5 50 44.5 50 30V14L30 4Z" 
+          fill="#0F172A" stroke="url(#shieldGrad)" stroke-width="2.5" stroke-linejoin="round" filter="url(#shadow)"/>
+    <!-- Inner Circuit -->
+    <path d="M30 12L17 19.5V30.5C17 40.5 22.5 48.5 30 51.5C37.5 48.5 43 40.5 43 30.5V19.5L30 12Z" 
+          stroke="url(#glowGrad)" stroke-width="1.2" stroke-dasharray="3 2" fill="none" opacity="0.6"/>
+    <!-- Core AI Node -->
+    <circle cx="30" cy="27" r="4.5" fill="#6366F1"/>
+    <circle cx="30" cy="27" r="1.8" fill="#FFFFFF"/>
+    <!-- Paths -->
+    <path d="M30 31.5V41M25 37L30 41L35 37M22 25L17 23M38 25L43 23" 
+          stroke="#38BDF8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Guard Lock -->
+    <circle cx="30" cy="41" r="2.2" fill="#10B981"/>
+  </g>
+
+  <!-- Brand Typography -->
+  <g transform="translate(72, 38)">
+    <text font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="26" font-weight="800" fill="#F8FAFC" letter-spacing="-0.5">
+      Agent<tspan fill="url(#textGrad)">Guard</tspan>
+    </text>
+  </g>
+  <g transform="translate(73, 52)">
+    <text font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="9" font-weight="700" fill="#94A3B8" letter-spacing="2">
+      CONTROL PLANE &amp; OPS
+    </text>
+  </g>
+</svg>

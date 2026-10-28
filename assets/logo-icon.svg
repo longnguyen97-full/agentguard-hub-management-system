@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <defs>
+    <linearGradient id="shieldGrad" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="50%" stop-color="#4F46E5"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <linearGradient id="glowGrad" x1="18" y1="16" x2="46" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#818CF8" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#10B981" stop-opacity="0.8"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="2" width="64" height="64" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#4F46E5" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Outer Protective Shield -->
+  <path d="M32 4L10 14V30C10 44.5 19.5 55.8 32 60C44.5 55.8 54 44.5 54 30V14L32 4Z" 
+        fill="#0F172A" stroke="url(#shieldGrad)" stroke-width="3" stroke-linejoin="round" filter="url(#shadow)"/>
+
+  <!-- Inner Cyber Guard Circuit -->
+  <path d="M32 12L17 19.5V30.5C17 40.8 23.5 49 32 52.2C40.5 49 47 40.8 47 30.5V19.5L32 12Z" 
+        stroke="url(#glowGrad)" stroke-width="1.5" stroke-dasharray="3 2" fill="none" opacity="0.6"/>
+
+  <!-- Central Core / AI Guard Node -->
+  <circle cx="32" cy="27" r="5" fill="#6366F1"/>
+  <circle cx="32" cy="27" r="2" fill="#FFFFFF"/>
+
+  <!-- Neural Connection Pathways -->
+  <path d="M32 32V42M26 38L32 42L38 38M23 25L17 23M41 25L47 23" 
+        stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Safety Lock Node -->
+  <circle cx="32" cy="42" r="2.5" fill="#10B981"/>
+</svg>

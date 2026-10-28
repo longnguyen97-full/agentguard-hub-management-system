@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgentGuard - User Guide & Integration Manual</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/logo-icon.svg">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <img src="/assets/logo-icon.svg" alt="AgentGuard Logo" class="w-8 h-8"/>
+        <div>
+          <span class="text-lg font-bold text-white tracking-tight">Agent<span class="text-indigo-400">Guard</span></span>
+          <span class="text-xs px-2 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 font-mono ml-2">DOCS</span>
+        </div>
+      </div>
+      
+      <div class="flex items-center space-x-3">
+        <!-- Language Switcher -->
+        <div class="flex items-center bg-slate-800 p-0.5 rounded-lg border border-slate-700 text-xs">
+          <button id="guide-lang-en" onclick="setGuideLang('en')" class="px-2.5 py-1 font-semibold rounded-md transition bg-indigo-600 text-white">🇬🇧 EN</button>
+          <button id="guide-lang-vi" onclick="setGuideLang('vi')" class="px-2.5 py-1 font-semibold rounded-md transition text-slate-400 hover:text-slate-200">🇻🇳 VI</button>
+        </div>
+
+        <a href="/dashboard" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition shadow-sm shadow-indigo-600/30">
+          <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+          <span id="txt-back-dashboard">Dashboard</span>
+        </a>
+        <a href="/docs" target="_blank" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition">
+          <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+          <span>Swagger API</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Documentation Content -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 space-y-12">
+
+    <!-- Hero / Title -->
+    <div class="border-b border-slate-800 pb-8 space-y-3">
+      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium">
+        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+        <span id="hero-badge">Official User Guide & Developer Manual</span>
+      </div>
+      <h1 id="hero-title" class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        AgentGuard Control Plane Documentation
+      </h1>
+      <p id="hero-subtitle" class="text-base text-slate-400 max-w-3xl leading-relaxed">
+        Comprehensive guide to configuring, operating, and integrating your AI agents with real-time operational safety guardrails, emergency controls, and deep tracing telemetry.
+      </p>
+    </div>
+
+    <!-- Section 1: Overview & Guardrails -->
+    <section class="space-y-6">
+      <h2 id="sec1-title" class="text-xl font-bold text-white flex items-center space-x-2">
+        <i data-lucide="shield" class="w-5 h-5 text-indigo-400"></i>
+        <span>1. Operational Safety Guardrails</span>
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Card 1: Kill Switch -->
+        <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+          <div class="flex items-center space-x-2 text-rose-400 font-semibold text-sm">
+            <i data-lucide="octagon-alert" class="w-4 h-4"></i>
+            <span id="c1-title">Emergency Kill Switch</span>
+          </div>
+          <p id="c1-desc" class="text-xs text-slate-300 leading-relaxed">
+            Immediately aborts active background execution threads when an agent behaves unexpectedly. Can be triggered via the red button on the Dashboard or calling <code class="text-indigo-300 bg-slate-950 px-1 py-0.5 rounded">POST /api/agents/runs/{id}/kill</code>.
+          </p>
+        </div>
+
+        <!-- Card 2: Loop Detector -->
+        <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+          <div class="flex items-center space-x-2 text-amber-400 font-semibold text-sm">
+            <i data-lucide="repeat" class="w-4 h-4"></i>
+            <span id="c2-title">Infinite Loop Guardrail</span>
+          </div>
+          <p id="c2-desc" class="text-xs text-slate-300 leading-relaxed">
+            Continuously hashes and checks tool call signatures. If an agent repeats identical tool calls with the same arguments consecutively, execution is halted to prevent token burn.
+          </p>
+        </div>
+
+        <!-- Card 3: Human in the loop -->
+        <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+          <div class="flex items-center space-x-2 text-blue-400 font-semibold text-sm">
+            <i data-lucide="user-check" class="w-4 h-4"></i>
+            <span id="c3-title">Human-in-the-Loop (HITL)</span>
+          </div>
+          <p id="c3-desc" class="text-xs text-slate-300 leading-relaxed">
+            Sensitive actions (database mutations, transactions, emails) trigger an automatic pause in state <code class="text-amber-300 bg-slate-950 px-1 py-0.5 rounded">WAITING_APPROVAL</code> until approved via the UI or API.
+          </p>
+        </div>
+
+        <!-- Card 4: Budget Limits -->
+        <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
+          <div class="flex items-center space-x-2 text-emerald-400 font-semibold text-sm">
+            <i data-lucide="dollar-sign" class="w-4 h-4"></i>
+            <span id="c4-title">Hard Budget Guardrail</span>
+          </div>
+          <p id="c4-desc" class="text-xs text-slate-300 leading-relaxed">
+            Enforces strict step limits, token thresholds, and financial limits in both USD and VND to keep AI deployment costs predictable and bounded.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Integration via SDK -->
+    <section class="space-y-6">
+      <h2 id="sec2-title" class="text-xl font-bold text-white flex items-center space-x-2">
+        <i data-lucide="terminal" class="w-5 h-5 text-indigo-400"></i>
+        <span>2. Client SDK Quick Integration (3 Steps)</span>
+      </h2>
+
+      <p id="sec2-desc" class="text-xs text-slate-300">
+        Copy <code class="text-indigo-300 bg-slate-900 px-1 py-0.5 rounded">agent_sdk.py</code> into your project and stream steps into AgentGuard in real time:
+      </p>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 overflow-x-auto">
+        <pre class="font-mono text-xs text-indigo-200"><code>from agent_sdk import AgentTracker
+
+# 1. Initialize tracker pointing to AgentGuard Hub
+tracker = AgentTracker(endpoint="http://localhost:8000")
+
+# 2. Register run session
+session = tracker.start_run(
+    agent_name="ProductionAgent",
+    prompt="Query customer invoice #4088 and process refund",
+    budget_usd=0.20
+)
+
+# 3. Log billable LLM thought & tool call
+session.log_step(
+    thought="Querying database for order details.",
+    tool_name="query_invoice",
+    tool_input={"invoice_id": 4088},
+    tool_output={"amount": 45.0, "status": "paid"},
+    tokens_used=180,
+    cost_usd=0.00005,
+    is_billable=True
+)
+
+# 4. Finish session
+session.finish(final_output="Invoice processed successfully!")</code></pre>
+      </div>
+    </section>
+
+    <!-- Section 3: REST API Quick Reference -->
+    <section class="space-y-6">
+      <h2 id="sec3-title" class="text-xl font-bold text-white flex items-center space-x-2">
+        <i data-lucide="server" class="w-5 h-5 text-indigo-400"></i>
+        <span>3. REST API Quick Reference</span>
+      </h2>
+
+      <div class="overflow-x-auto border border-slate-800 rounded-xl">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-900 text-slate-400 border-b border-slate-800">
+            <tr>
+              <th class="p-3 font-semibold">Method</th>
+              <th class="p-3 font-semibold">Endpoint</th>
+              <th class="p-3 font-semibold">Description</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800 text-slate-300 font-mono">
+            <tr>
+              <td class="p-3 text-emerald-400 font-bold">POST</td>
+              <td class="p-3">/api/agents/run</td>
+              <td class="p-3 font-sans text-slate-400">Launch standard or preset agent run</td>
+            </tr>
+            <tr>
+              <td class="p-3 text-blue-400 font-bold">GET</td>
+              <td class="p-3">/api/agents/runs</td>
+              <td class="p-3 font-sans text-slate-400">List all runs and current metrics</td>
+            </tr>
+            <tr>
+              <td class="p-3 text-rose-400 font-bold">POST</td>
+              <td class="p-3">/api/agents/runs/{id}/kill</td>
+              <td class="p-3 font-sans text-slate-400">Emergency kill switch trigger</td>
+            </tr>
+            <tr>
+              <td class="p-3 text-amber-400 font-bold">POST</td>
+              <td class="p-3">/api/agents/runs/{id}/approve</td>
+              <td class="p-3 font-sans text-slate-400">Resolve pending human-in-the-loop approval</td>
+            </tr>
+            <tr>
+              <td class="p-3 text-purple-400 font-bold">GET</td>
+              <td class="p-3">/api/agents/stream</td>
+              <td class="p-3 font-sans text-slate-400">Server-Sent Events (SSE) realtime broadcast</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+    AgentGuard - Open-Source AI Agent Control Plane & Tracing Hub • MIT License
+  </footer>
+
+  <script>
+    const GUIDE_I18N = {
+      en: {
+        back: "Dashboard",
+        badge: "Official User Guide & Developer Manual",
+        title: "AgentGuard Control Plane Documentation",
+        subtitle: "Comprehensive guide to configuring, operating, and integrating your AI agents with real-time operational safety guardrails, emergency controls, and deep tracing telemetry.",
+        sec1: "1. Operational Safety Guardrails",
+        c1Title: "Emergency Kill Switch",
+        c1Desc: "Immediately aborts active background execution threads when an agent behaves unexpectedly. Can be triggered via the red button on the Dashboard or calling POST /api/agents/runs/{id}/kill.",
+        c2Title: "Infinite Loop Guardrail",
+        c2Desc: "Continuously hashes and checks tool call signatures. If an agent repeats identical tool calls with the same arguments consecutively, execution is halted to prevent token burn.",
+        c3Title: "Human-in-the-Loop (HITL)",
+        c3Desc: "Sensitive actions (database mutations, transactions, emails) trigger an automatic pause in state WAITING_APPROVAL until approved via the UI or API.",
+        c4Title: "Hard Budget Guardrail",
+        c4Desc: "Enforces strict step limits, token thresholds, and financial limits in both USD and VND to keep AI deployment costs predictable and bounded.",
+        sec2: "2. Client SDK Quick Integration (3 Steps)",
+        sec2Desc: "Copy agent_sdk.py into your project and stream steps into AgentGuard in real time:",
+        sec3: "3. REST API Quick Reference"
+      },
+      vi: {
+        back: "Bảng Điều Khiển",
+        badge: "Tài Liệu Hướng Dẫn Sử Dụng & Tích Hợp Chính Thức",
+        title: "Tài Liệu Hướng Dẫn Sử Dụng AgentGuard",
+        subtitle: "Cẩm nang toàn diện về cấu hình, vận hành và tích hợp AI Agent với các chốt chặn an toàn thời gian thực, cơ chế ngắt khẩn cấp và hệ thống tracing chuyên sâu.",
+        sec1: "1. Các Chốt Chặn An Toàn Vận Hành",
+        c1Title: "Nút Dừng Khẩn Cấp (Kill Switch)",
+        c1Desc: "Hủy bỏ ngay lập tức tiến trình chạy ngầm khi Agent có hành vi bất thường. Có thể bấm trực tiếp từ Dashboard hoặc gọi API POST /api/agents/runs/{id}/kill.",
+        c2Title: "Chốt Chặn Vòng Lặp Vô Tận",
+        c2Desc: "Liên tục phân tích chữ ký và tham số của các lần gọi công cụ. Nếu Agent lặp lại tool cùng tham số liên tiếp, tiến trình sẽ tự động ngắt để bảo vệ ngân sách.",
+        c3Title: "Phê Duyệt Của Con Người (HITL)",
+        c3Desc: "Các tác vụ nhạy cảm (cập nhật DB, thanh toán, gửi email) sẽ tự động tạm dừng ở trạng thái CHỜ PHÊ DUYỆT cho đến khi có xác nhận từ người giám sát.",
+        c4Title: "Giới Hạn Ngân Sách Tự Động",
+        c4Desc: "Áp dụng trần cứng về số bước suy luận, lượng token và chi phí bằng cả USD lẫn VND, đảm bảo ngân sách luôn nằm trong tầm kiểm soát.",
+        sec2: "2. Tích Hợp Bằng Client SDK (3 Bước Đơn Giản)",
+        sec2Desc: "Chỉ cần copy file agent_sdk.py vào dự án Agent của bạn và gửi dữ liệu về AgentGuard theo thời gian thực:",
+        sec3: "3. Tra Cứu Nhanh Các Điểm Cuối REST API"
+      }
+    };
+
+    let guideLang = localStorage.getItem('agent_hub_lang') || 'en';
+
+    function setGuideLang(lang) {
+      guideLang = lang;
+      localStorage.setItem('agent_hub_lang', lang);
+      applyGuideTranslations();
+    }
+
+    function applyGuideTranslations() {
+      const data = GUIDE_I18N[guideLang] || GUIDE_I18N['en'];
+      document.getElementById('txt-back-dashboard').innerText = data.back;
+      document.getElementById('hero-badge').innerText = data.badge;
+      document.getElementById('hero-title').innerText = data.title;
+      document.getElementById('hero-subtitle').innerText = data.subtitle;
+
+      document.getElementById('sec1-title').querySelector('span').innerText = data.sec1;
+      document.getElementById('c1-title').innerText = data.c1Title;
+      document.getElementById('c1-desc').innerText = data.c1Desc;
+      document.getElementById('c2-title').innerText = data.c2Title;
+      document.getElementById('c2-desc').innerText = data.c2Desc;
+      document.getElementById('c3-title').innerText = data.c3Title;
+      document.getElementById('c3-desc').innerText = data.c3Desc;
+      document.getElementById('c4-title').innerText = data.c4Title;
+      document.getElementById('c4-desc').innerText = data.c4Desc;
+
+      document.getElementById('sec2-title').querySelector('span').innerText = data.sec2;
+      document.getElementById('sec2-desc').innerText = data.sec2Desc;
+      document.getElementById('sec3-title').querySelector('span').innerText = data.sec3;
+
+      const btnEn = document.getElementById('guide-lang-en');
+      const btnVi = document.getElementById('guide-lang-vi');
+      if (guideLang === 'en') {
+        btnEn.className = "px-2.5 py-1 font-semibold rounded-md transition bg-indigo-600 text-white";
+        btnVi.className = "px-2.5 py-1 font-semibold rounded-md transition text-slate-400 hover:text-slate-200";
+      } else {
+        btnVi.className = "px-2.5 py-1 font-semibold rounded-md transition bg-indigo-600 text-white";
+        btnEn.className = "px-2.5 py-1 font-semibold rounded-md transition text-slate-400 hover:text-slate-200";
+      }
+    }
+
+    applyGuideTranslations();
+    lucide.createIcons();
+  </script>
+</body>
+</html>

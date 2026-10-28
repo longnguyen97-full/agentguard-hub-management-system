@@ -1,21 +1,30 @@
-# Hệ Thống Giám Sát & Quản Trị AI Agent (AI Agent Observability & Control Plane)
+<div align="center">
+
+<img src="assets/logo.svg" alt="AgentGuard Logo" width="280" />
+
+### *Trung Tâm Điều Khiển, Chốt Chặn An Toàn & Quản Trị AI Agent*
+
+[![CI Test Suite](https://github.com/longnguyen97-full/agent-management-system/actions/workflows/ci.yml/badge.svg)](https://github.com/longnguyen97-full/agent-management-system/actions)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Langfuse](https://img.shields.io/badge/Langfuse-v5_OTel-black.svg?logo=langfuse)](https://langfuse.com)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <p align="center">
   <a href="README.md">🇬🇧 English</a> •
   <a href="README.vi.md">🇻🇳 Tiếng Việt</a>
 </p>
 
-Một hệ sinh thái mã nguồn mở toàn diện phục vụ **Giám sát (Observability)** và **Điều khiển An toàn Vận hành (Control Plane & Guardrails)** cho các AI Agent tự hành:
-- **Lõi Giám sát & Tracing chuyên sâu**: Tích hợp hạ tầng mã nguồn mở **Langfuse** (triển khai độc lập qua Docker Compose) để lưu trữ cây thực thi (Trace Trees), đo lường token, tính toán chi phí tự động theo model và đánh giá chất lượng (Evals).
-- **Lõi Nghiệp vụ & Điều khiển Chủ động (Active Control Layer)**: Xây dựng bằng **Python / FastAPI** cung cấp cơ chế **Emergency Kill Switch**, **Phát hiện vòng lặp vô tận (Loop Detector)**, **Giới hạn ngân sách (Budget Guardrail)**, và quy trình **Phê duyệt của con người (Human-in-the-Loop Approval)** trước khi Agent thực thi các tool nhạy cảm.
+</div>
 
 ---
 
 ## 📸 Giao Diện & Hình Ảnh Minh Họa
 
 <div align="center">
-  <img src="assets/dashboard-overview.png" alt="Tổng quan Dashboard Giám Sát Agent" width="95%" />
-  <p><em>Giao diện Trung tâm Giám sát & Điều khiển Thời gian thực (Tiếng Anh mặc định kèm USD $)</em></p>
+  <img src="assets/dashboard-overview.png" alt="Tổng quan AgentGuard Dashboard" width="95%" />
+  <p><em>Trung tâm Giám sát & Điều khiển Thời gian thực AgentGuard (Tiếng Anh mặc định kèm USD $ và Nút Bật/Tắt Mô Phỏng)</em></p>
 </div>
 
 <br/>
@@ -54,17 +63,23 @@ Một hệ sinh thái mã nguồn mở toàn diện phục vụ **Giám sát (Ob
 
 ## 🌟 Các Tính Năng & Năng Lực Cốt Lõi
 
+**AgentGuard** là một nền tảng mã nguồn mở toàn diện phục vụ **Giám sát (Observability)** và **Điều khiển An toàn Vận hành (Control Plane & Guardrails)** cho các AI Agent tự hành:
+
 1. **Điều Khiển Can Thiệp Thời Gian Thực (Active Control)**:
    - **Emergency Kill Switch**: Nút dừng khẩn cấp màu đỏ trên Dashboard hoặc API `POST /kill` giúp hủy tiến trình của Agent ngay tức thì.
    - **Loop Detector Guardrail**: Tự động nhận diện chữ ký tool call bị lặp lại và ngắt tiến trình trước khi Agent gây lãng phí tài khoản API.
    - **Budget Limiter**: Thiết lập trần cứng về số bước (steps), số lượng token và chi phí USD/VND cho mỗi phiên chạy.
-2. **Quy Trình Phê Duyệt Của Con Người (Human-in-the-Loop)**:
+2. **Nút Bật / Tắt Chế Độ Mô Phỏng (Simulation Mode Toggle)**:
+   - Cho phép 1-click chuyển đổi linh hoạt giữa chế độ **Mô phỏng Sandbox** (chạy test thử nghiệm nhanh các chốt chặn mà không tốn phí API LLM thật) và **Chế độ Thực tế (Live Production Mode)**.
+3. **Quy Trình Phê Duyệt Của Con Người (Human-in-the-Loop)**:
    - Tự động chuyển trạng thái sang `WAITING_APPROVAL` khi Agent cố tình gọi các công cụ nhạy cảm (như cập nhật cơ sở dữ liệu, gửi email, giao dịch tiền). Người giám sát có toàn quyền kiểm tra tham số và bấm **Authorize** hoặc **Reject**.
-3. **Phân Định Chi Phí Chi Tiết (Billable vs Non-Billable)**:
+4. **Phân Định Chi Phí Chi Tiết (Billable vs Non-Billable)**:
    - Tách bạch rõ ràng giữa các bước suy luận LLM tốn phí token và các bước xử lý code tất định nội bộ (miễn phí 0đ / 0₫).
-4. **Hỗ Trợ Song Ngữ & Song Tệ (USD & VND)**:
+5. **Hỗ Trợ Song Ngữ & Song Tệ (USD & VND)**:
    - Giao diện có nút chuyển đổi tức thì giữa Tiếng Anh (USD) và Tiếng Việt (VND), tự động cập nhật toàn bộ bảng điều khiển và nhãn hiển thị.
-5. **Client SDK Siêu Nhẹ (`agent_sdk.py`)**:
+6. **Trang Hướng Dẫn Sử Dụng Trực Quan (`/guide`)**:
+   - Tích hợp sẵn tài liệu hướng dẫn sử dụng và cẩm nang tích hợp trực tiếp trên thanh menu đầu trang.
+7. **Client SDK Siêu Nhẹ (`agent_sdk.py`)**:
    - Tích hợp bất kỳ Agent nào (dù viết bằng LangChain, CrewAI, AutoGen hay Python script thuần) vào trung tâm giám sát chỉ với vài dòng code.
 
 ---
@@ -73,14 +88,14 @@ Một hệ sinh thái mã nguồn mở toàn diện phục vụ **Giám sát (Ob
 
 ```
                                  ┌──────────────────────────────────────────────┐
-                                 │   Người Quản Trị / Operator Dashboard        │
-                                 │   http://localhost:8000/dashboard            │
+                                 │     AgentGuard Operator Dashboard Web UI     │
+                                 │         http://localhost:8000/dashboard      │
                                  └──────────────┬───────────────────────────────┘
                                                 │
                                     (SSE & REST API Call)
                                                 ▼
   ┌─────────────────────────────────────────────────────────────────────────────┐
-  │                 Custom Agent Management Service (FastAPI)                   │
+  │                 AgentGuard FastAPI Service (Control Plane)                  │
   │                                                                             │
   │  ┌───────────────────────┐   ┌──────────────────────┐   ┌─────────────────┐ │
   │  │ Loop Guardrail        │   │ Budget Guardrail     │   │ Human-in-the-   │ │
@@ -106,7 +121,7 @@ Một hệ sinh thái mã nguồn mở toàn diện phục vụ **Giám sát (Ob
 
 ---
 
-## 🚀 Hướng Dẫn Khởi Chạy Nhanh
+## ⚡ Hướng Dẫn Khởi Chạy Nhanh
 
 ### 1. Chuẩn bị môi trường
 - Python >= 3.11
@@ -126,14 +141,15 @@ docker compose up -d
 # Cài đặt và đồng bộ thư viện
 uv sync --all-groups
 
-# Khởi chạy hệ thống
+# Khởi chạy hệ thống AgentGuard
 uv run run.py
 # hoặc dùng lệnh rút gọn:
 uv run agent-hub
 ```
 
 Ứng dụng sẽ hoạt động trên:
-- 📊 **Agent Control Dashboard:** [http://localhost:8000/dashboard](http://localhost:8000/dashboard)
+- 📊 **AgentGuard Dashboard:** [http://localhost:8000/dashboard](http://localhost:8000/dashboard)
+- 📖 **Tài Liệu Hướng Dẫn:** [http://localhost:8000/guide](http://localhost:8000/guide)
 - 📖 **Swagger API Docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
 - 🔍 **Health Check:** [http://localhost:8000/health](http://localhost:8000/health)
 
@@ -226,7 +242,7 @@ tests/test_external_api.py::test_external_agent_ingestion_lifecycle PASSED [100%
 
 ```text
 agent-management-system/
-├── assets/                  # Ảnh chụp màn hình & minh họa Dashboard
+├── assets/                  # Site logo (SVG, PNG) & ảnh chụp màn hình UI
 ├── docker-compose.yml       # Cụm hạ tầng Langfuse (Web, Worker, Postgres, Redis, ClickHouse, MinIO)
 ├── .env.example             # Mẫu biến môi trường an toàn
 ├── pyproject.toml           # Cấu hình dự án và dependencies
@@ -235,7 +251,7 @@ agent-management-system/
 ├── agent_sdk.py             # Client SDK siêu nhẹ để nhúng vào Agent bên ngoài
 ├── backend/
 │   └── app/
-│       ├── main.py          # Khởi tạo FastAPI & mount router
+│       ├── main.py          # Khởi tạo FastAPI & mount router & static assets
 │       ├── config.py        # Quản lý cấu hình Pydantic Settings
 │       ├── core/
 │       │   ├── tracer.py    # Wrapper tích hợp Langfuse v5 (OpenInference / OTel)
@@ -249,7 +265,8 @@ agent-management-system/
 │       ├── schemas/
 │       │   └── agent.py     # Pydantic data schemas
 │       └── templates/
-│           └── dashboard.html # Giao diện giám sát & điều khiển thời gian thực (Đa ngôn ngữ & Song tệ)
+│           ├── dashboard.html # Giao diện giám sát & điều khiển thời gian thực (Đa ngôn ngữ & Song tệ)
+│           └── guide.html     # Trang tài liệu hướng dẫn sử dụng & cẩm nang tích hợp
 ├── examples/
 │   └── external_agent_demo.py # Script demo tích hợp client SDK
 ├── docs/

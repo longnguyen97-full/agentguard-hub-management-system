@@ -1,7 +1,7 @@
 import asyncio
 import json
 import uuid
-from typing import List
+from typing import List, Dict, Any
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 
@@ -19,6 +19,24 @@ from app.core.tracer import tracer
 from app.agents.sample_agent import SampleMonitoredAgent
 
 router = APIRouter(prefix="/api/agents", tags=["Agents"])
+
+
+@router.get("/simulation")
+async def get_simulation_mode():
+    """Returns current simulation mode status."""
+    return {"simulation_mode": settings.SIMULATION_MODE}
+
+
+@router.post("/simulation")
+async def set_simulation_mode(payload: Dict[str, Any]):
+    """Toggles simulation mode on or off."""
+    enabled = bool(payload.get("enabled", True))
+    settings.SIMULATION_MODE = enabled
+    registry.broadcast_event({
+        "type": "simulation_mode_changed",
+        "simulation_mode": settings.SIMULATION_MODE
+    })
+    return {"status": "ok", "simulation_mode": settings.SIMULATION_MODE}
 
 
 @router.post("/run", response_model=AgentRunState)
@@ -163,4 +181,3 @@ async def event_stream():
             "X-Accel-Buffering": "no",
         }
     )
-

@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agent Observability & Control Center</title>
+  <title>AgentGuard - AI Agent Control Plane & Guardrails</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/logo-icon.svg">
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
@@ -23,20 +24,33 @@
   <!-- Navigation Bar -->
   <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand & Unified Name -->
       <div class="flex items-center space-x-3">
-        <div class="p-2 bg-indigo-600 rounded-lg shadow-md shadow-indigo-600/30">
-          <i data-lucide="shield-alert" class="w-5 h-5 text-white"></i>
-        </div>
-        <div>
-          <h1 id="nav-app-title" class="text-lg font-bold text-white tracking-tight">Agent Monitoring & Control Hub</h1>
-          <p id="nav-app-subtitle" class="text-xs text-slate-400">Operational Guardrails, Tracing & Human-in-the-Loop Governance</p>
-        </div>
+        <a href="/dashboard" class="flex items-center space-x-3">
+          <img src="/assets/logo-icon.svg" alt="AgentGuard Logo" class="w-8 h-8"/>
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="text-lg font-extrabold text-white tracking-tight">Agent<span class="text-indigo-400">Guard</span></span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 font-mono font-semibold">HUB</span>
+            </div>
+            <p id="nav-app-subtitle" class="text-xs text-slate-400">AI Agent Control Plane, Safety Guardrails &amp; Tracing</p>
+          </div>
+        </a>
       </div>
       
-      <div class="flex items-center space-x-3">
+      <!-- Actions Bar -->
+      <div class="flex items-center space-x-2.5">
+        
+        <!-- Simulation Mode Toggle Button -->
+        <button id="sim-mode-btn" onclick="toggleSimulationMode()" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition shadow-sm" title="Toggle between Simulation Sandbox and Live Mode">
+          <span id="sim-mode-dot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span id="sim-mode-text">Simulation: ON</span>
+        </button>
+
         <!-- Language Switcher -->
         <div class="flex items-center bg-slate-800 p-0.5 rounded-lg border border-slate-700">
-          <button id="lang-btn-en" onclick="setLanguage('en')" class="px-2.5 py-1 text-xs font-semibold rounded-md transition bg-indigo-600 text-white flex items-center space-x-1">
+          <button id="lang-btn-en" onclick="setLanguage('en')" class="px-2.5 py-1 text-xs font-semibold rounded-md transition bg-indigo-600 text-white flex items-center space-x-1 shadow-sm">
             <span>🇬🇧 English ($)</span>
           </button>
           <button id="lang-btn-vi" onclick="setLanguage('vi')" class="px-2.5 py-1 text-xs font-semibold rounded-md transition text-slate-400 hover:text-slate-200 flex items-center space-x-1">
@@ -44,13 +58,22 @@
           </button>
         </div>
 
-        <a href="http://localhost:3000" target="_blank" class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition">
+        <!-- User Guide Button -->
+        <a href="/guide" target="_blank" class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 transition" title="User Guide & Integration Manual">
+          <i data-lucide="book" class="w-3.5 h-3.5"></i>
+          <span id="nav-guide-link">User Guide</span>
+        </a>
+
+        <!-- Swagger API Docs -->
+        <a href="/docs" target="_blank" class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition">
+          <i data-lucide="code" class="w-3.5 h-3.5"></i>
+          <span id="nav-swagger-link">Swagger API</span>
+        </a>
+
+        <!-- Langfuse Tracing UI -->
+        <a href="http://localhost:3000" target="_blank" class="hidden md:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition">
           <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
           <span id="nav-langfuse-link">Langfuse (:3000)</span>
-        </a>
-        <a href="/docs" target="_blank" class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition">
-          <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
-          <span id="nav-swagger-link">Swagger (:8000)</span>
         </a>
       </div>
     </div>
@@ -209,10 +232,12 @@
   <script>
     const I18N = {
       en: {
-        appTitle: "Agent Monitoring & Control Hub",
-        appSubtitle: "Operational Guardrails, Tracing & Human-in-the-Loop Governance",
+        appSubtitle: "AI Agent Control Plane, Safety Guardrails & Tracing",
+        guideLink: "User Guide",
         langfuseLink: "Langfuse (:3000)",
-        swaggerLink: "Swagger (:8000)",
+        swaggerLink: "Swagger API",
+        simOn: "Simulation: ON",
+        simOff: "Live Mode: ON",
         totalRuns: "Total Agent Runs",
         waitingApproval: "Waiting Human Approval",
         totalTokens: "Total Tokens Tracked",
@@ -255,10 +280,12 @@
         statusFailed: "FAILED"
       },
       vi: {
-        appTitle: "Hệ Thống Giám Sát & Quản Trị Agent",
-        appSubtitle: "Chốt chặn An toàn Vận hành, Tracing & Phê duyệt Con người",
+        appSubtitle: "Trung tâm Điều khiển, Chốt chặn An toàn & Quản trị AI Agent",
+        guideLink: "Hướng Dẫn Sử Dụng",
         langfuseLink: "Langfuse UI (:3000)",
-        swaggerLink: "Tài liệu API (:8000)",
+        swaggerLink: "Tài liệu API",
+        simOn: "Mô phỏng: BẬT",
+        simOff: "Chế độ thực tế: BẬT",
         totalRuns: "Tổng Số Phiên Chạy",
         waitingApproval: "Đang Chờ Phê Duyệt",
         totalTokens: "Tổng Token Ghi Nhận",
@@ -304,12 +331,18 @@
 
     let currentLang = localStorage.getItem('agent_hub_lang') || 'en';
     let currencyMode = currentLang === 'vi' ? 'VND' : 'USD';
+    let simulationMode = true;
     let activeRunId = null;
     let allRuns = {};
     const USD_TO_VND_RATE = 25400;
 
     function t(key) {
       return (I18N[currentLang] && I18N[currentLang][key]) || (I18N['en'][key]) || key;
+    }
+
+    function setElText(id, text) {
+      const el = document.getElementById(id);
+      if (el) el.innerText = text;
     }
 
     function setLanguage(lang) {
@@ -321,6 +354,7 @@
 
       updateLanguageButtons();
       applyStaticTranslations();
+      updateSimulationButton();
       updateGlobalStats();
       renderRunsList();
       if (activeRunId && allRuns[activeRunId]) {
@@ -340,14 +374,52 @@
       }
     }
 
-    function setElText(id, text) {
-      const el = document.getElementById(id);
-      if (el) el.innerText = text;
+    async function loadSimulationStatus() {
+      try {
+        const res = await fetch('/api/agents/simulation');
+        if (res.ok) {
+          const data = await res.json();
+          simulationMode = data.simulation_mode;
+          updateSimulationButton();
+        }
+      } catch (e) {
+        console.warn('Could not fetch simulation status', e);
+      }
+    }
+
+    async function toggleSimulationMode() {
+      simulationMode = !simulationMode;
+      try {
+        await fetch('/api/agents/simulation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ enabled: simulationMode })
+        });
+      } catch (e) {
+        console.error('Error toggling simulation mode', e);
+      }
+      updateSimulationButton();
+    }
+
+    function updateSimulationButton() {
+      const btn = document.getElementById('sim-mode-btn');
+      const dot = document.getElementById('sim-mode-dot');
+      const text = document.getElementById('sim-mode-text');
+      
+      if (simulationMode) {
+        btn.className = "flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition shadow-sm";
+        dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
+        text.innerText = t('simOn');
+      } else {
+        btn.className = "flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition shadow-sm";
+        dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+        text.innerText = t('simOff');
+      }
     }
 
     function applyStaticTranslations() {
-      setElText('nav-app-title', t('appTitle'));
       setElText('nav-app-subtitle', t('appSubtitle'));
+      setElText('nav-guide-link', t('guideLink'));
       setElText('nav-langfuse-link', t('langfuseLink'));
       setElText('nav-swagger-link', t('swaggerLink'));
 
@@ -433,6 +505,12 @@
 
     async function handleEvent(event) {
       if (event.type === 'connected') return;
+
+      if (event.type === 'simulation_mode_changed') {
+        simulationMode = event.simulation_mode;
+        updateSimulationButton();
+        return;
+      }
 
       if (event.type === 'run_registered') {
         allRuns[event.run.run_id] = event.run;
@@ -814,6 +892,7 @@
     // Initialize Language & State on load
     updateLanguageButtons();
     applyStaticTranslations();
+    loadSimulationStatus();
     loadRuns();
     initSSE();
   </script>
