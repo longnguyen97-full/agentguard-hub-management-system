@@ -48,12 +48,19 @@
       </td>
     </tr>
     <tr>
-      <td colspan="2" align="center">
-        <img src="assets/vietnamese-mode.png" alt="Vietnamese Mode & VND Currency" width="95%" />
+      <td width="50%" align="center">
+        <img src="assets/live-langfuse-mode.png" alt="Live Mode with Real Langfuse Telemetry" />
+        <br/>
+        <strong>⚡ Live Mode & Langfuse ClickHouse Telemetry</strong>
+        <br/>
+        <em>Real production traces, span counts, and token analytics synced live from ClickHouse.</em>
+      </td>
+      <td width="50%" align="center">
+        <img src="assets/vietnamese-mode.png" alt="Vietnamese Mode & VND Currency" />
         <br/>
         <strong>🌐 Dual Language & Currency Switcher</strong>
         <br/>
-        <em>One-click toggle between English ($ USD) and Vietnamese (₫ VND) with real-time exchange rates.</em>
+        <em>One-click toggle between English ($ USD) and Vietnamese (₫ VND) with live exchange rates.</em>
       </td>
     </tr>
   </table>

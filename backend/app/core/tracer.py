@@ -1,5 +1,6 @@
 import logging
-from typing import Any, Dict, Optional
+import httpx
+from typing import Any, Dict, List, Optional
 from langfuse import Langfuse
 from app.config import settings
 
@@ -156,6 +157,84 @@ class AgentTracer:
             except Exception:
                 pass
         return f"{settings.LANGFUSE_HOST.rstrip('/')}/trace/{run_id}"
+
+    def get_langfuse_telemetry(self) -> Dict[str, Any]:
+        """Queries live telemetry stats from Langfuse Health and ClickHouse analytics."""
+        connected = False
+        version = "offline"
+        try:
+            with httpx.Client(timeout=1.5) as http:
+                h_res = http.get(f"{settings.LANGFUSE_HOST}/api/public/health")
+                if h_res.status_code == 200:
+                    connected = True
+                    version = h_res.json().get("version", "v4")
+        except Exception:
+            connected = False
+
+        telemetry = {
+            "connected": connected,
+            "version": version,
+            "host": settings.LANGFUSE_HOST,
+            "total_traces": 0,
+            "total_spans": 0,
+            "total_tokens": 0,
+            "total_cost_usd": 0.0,
+            "total_cost_vnd": 0,
+            "latest_traces": []
+        }
+
+        if connected:
+            # Query ClickHouse for real aggregated telemetry
+            try:
+                with httpx.Client(timeout=2.0) as http:
+                    ch_query = (
+                        "SELECT count(DISTINCT trace_id) AS total_traces, "
+                        "count() AS total_spans, "
+                        "sum(arraySum(mapValues(usage_details))) AS total_tokens, "
+                        "sum(calculated_total_cost) AS total_cost "
+                        "FROM default.events_core FORMAT JSON"
+                    )
+                    res = http.get("http://127.0.0.1:8123/?query=" + ch_query, auth=("clickhouse", "clickhouse"))
+                    if res.status_code == 200:
+                        data = res.json().get("data", [{}])[0]
+                        tokens = int(data.get("total_tokens", 0) or 0)
+                        cost = float(data.get("total_cost", 0.0) or 0.0)
+                        if cost == 0.0 and tokens > 0:
+                            # Standard mini model pricing $0.30 per 1M tokens
+                            cost = round(tokens / 1000.0 * 0.0003, 6)
+
+                        telemetry["total_traces"] = int(data.get("total_traces", 0) or 0)
+                        telemetry["total_spans"] = int(data.get("total_spans", 0) or 0)
+                        telemetry["total_tokens"] = tokens
+                        telemetry["total_cost_usd"] = cost
+                        telemetry["total_cost_vnd"] = int(round(cost * settings.USD_TO_VND_RATE))
+
+                    # Query latest traces for Live Mode feed
+                    latest_query = (
+                        "SELECT trace_id, name, min(start_time) AS start_time, "
+                        "sum(arraySum(mapValues(usage_details))) AS tokens, count() AS spans "
+                        "FROM default.events_core "
+                        "GROUP BY trace_id, name "
+                        "ORDER BY start_time DESC LIMIT 10 FORMAT JSON"
+                    )
+                    l_res = http.get("http://127.0.0.1:8123/?query=" + latest_query, auth=("clickhouse", "clickhouse"))
+                    if l_res.status_code == 200:
+                        raw_traces = l_res.json().get("data", [])
+                        telemetry["latest_traces"] = [
+                            {
+                                "trace_id": t["trace_id"],
+                                "name": t["name"],
+                                "start_time": t["start_time"],
+                                "tokens": int(t.get("tokens", 0) or 0),
+                                "spans": int(t.get("spans", 0) or 0),
+                                "trace_url": f"{settings.LANGFUSE_HOST}/project/agent-monitor/traces/{t['trace_id']}"
+                            }
+                            for t in raw_traces
+                        ]
+            except Exception as e:
+                logger.debug(f"ClickHouse query error: {e}")
+
+        return telemetry
 
 
 tracer = AgentTracer()

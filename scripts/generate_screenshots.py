@@ -19,18 +19,18 @@ def seed_runs():
     # 1. Standard run
     r1 = client.post("/api/agents/run", json={"prompt": "Search knowledge base and calculate system latency metrics"})
     print("  -> Started standard run:", r1.json()["run_id"])
-    time.sleep(3.5)  # Wait for it to complete 3 steps
+    time.sleep(3.5)
 
     # 2. Infinite Loop run
     r2 = client.post("/api/agents/run", json={"prompt": "Simulate infinite loop by calling check_health repetitively"})
     print("  -> Started loop run:", r2.json()["run_id"])
-    time.sleep(3.5)  # Wait for guardrail to catch loop
+    time.sleep(3.5)
 
-    # 3. Human in the loop run (leave it waiting approval)
+    # 3. Human in the loop run
     r3 = client.post("/api/agents/run", json={"prompt": "Update user quota in production database with sensitive record"})
     approval_run_id = r3.json()["run_id"]
     print("  -> Started approval run:", approval_run_id)
-    time.sleep(2.5)  # Wait for it to pause at WAITING_APPROVAL
+    time.sleep(2.5)
 
     return {
         "standard": r1.json()["run_id"],
@@ -78,6 +78,12 @@ def capture_all():
         page.evaluate("setLanguage('vi')")
         time.sleep(1.0)
         page.screenshot(path=str(ASSETS_DIR / "vietnamese-mode.png"))
+
+        # 5. Capture Live Mode (toggle simulation OFF to show real Langfuse telemetry metrics)
+        print("  -> Capturing assets/live-langfuse-mode.png...")
+        page.evaluate("toggleSimulationMode()")
+        time.sleep(1.5)
+        page.screenshot(path=str(ASSETS_DIR / "live-langfuse-mode.png"))
 
         browser.close()
     

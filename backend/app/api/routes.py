@@ -39,10 +39,17 @@ async def set_simulation_mode(payload: Dict[str, Any]):
     return {"status": "ok", "simulation_mode": settings.SIMULATION_MODE}
 
 
+@router.get("/telemetry/langfuse")
+async def get_langfuse_telemetry():
+    """Returns real-time telemetry aggregated directly from Langfuse Core & ClickHouse."""
+    return tracer.get_langfuse_telemetry()
+
+
 @router.post("/run", response_model=AgentRunState)
 async def start_agent_run(request: AgentRunRequest):
-    """Initiates an asynchronous agent task run with observability."""
+    """Initiates an agent task run with observability."""
     run_id = f"run_{uuid.uuid4().hex[:10]}"
+    request.is_simulation = settings.SIMULATION_MODE
     agent = SampleMonitoredAgent(request=request, run_id=run_id)
 
     # Launch agent loop as background task
@@ -97,6 +104,7 @@ async def external_agent_start(request: AgentRunRequest):
         prompt=request.prompt,
         status=AgentRunStatus.RUNNING,
         max_steps=request.max_steps,
+        is_simulation=False,  # External agent run is a real production run
         langfuse_trace_id=run_id,
         langfuse_trace_url=tracer.get_trace_url(run_id)
     )

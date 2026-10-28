@@ -34,6 +34,7 @@ class BaseAgent(abc.ABC):
             prompt=request.prompt,
             status=AgentRunStatus.RUNNING,
             max_steps=request.max_steps,
+            is_simulation=request.is_simulation,
             langfuse_trace_id=run_id,
             langfuse_trace_url=tracer.get_trace_url(run_id)
         )

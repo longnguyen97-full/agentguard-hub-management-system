@@ -59,6 +59,7 @@ class AgentRunRequest(BaseModel):
         default_factory=lambda: ["execute_database_update", "delete_resource", "send_external_email"]
     )
     user_id: Optional[str] = "user_demo"
+    is_simulation: bool = True
 
 
 class AgentRunState(BaseModel):
@@ -71,6 +72,7 @@ class AgentRunState(BaseModel):
     total_tokens: int = 0
     total_cost_usd: float = 0.0
     total_cost_vnd: float = 0.0
+    is_simulation: bool = True
     pending_approval: Optional[ToolApprovalRequest] = None
     steps: List[AgentStepLog] = Field(default_factory=list)
     final_output: Optional[str] = None
