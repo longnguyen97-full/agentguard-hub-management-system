@@ -80,3 +80,14 @@ async def test_emergency_kill_switch():
     assert agent.state.status == AgentRunStatus.KILLED
     assert "operator kill switch" in agent.state.error_message
 
+
+
+def test_safety_benchmark_suite():
+    from evals.run_benchmark import run_benchmark
+    summary = run_benchmark()
+    assert summary['total_scenarios'] == 25
+    assert summary['accuracy_pct'] == 100.0
+    assert summary['false_positive_rate_pct'] == 0.0
+    assert summary['guardrails']['loop_detector']['recall_pct'] == 100.0
+    assert summary['guardrails']['hitl_approval']['recall_pct'] == 100.0
+    assert summary['guardrails']['budget_enforcement']['recall_pct'] == 100.0
