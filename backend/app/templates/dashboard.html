@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Observability & Control Center</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .animate-pulse-slow {
+      animation: pulse-slow 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+
+  <!-- Navigation Bar -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="p-2 bg-indigo-600 rounded-lg shadow-md shadow-indigo-600/30">
+          <i data-lucide="shield-alert" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-white tracking-tight">Agent Monitoring & Control Hub</h1>
+          <p class="text-xs text-slate-400">Hybrid Observability with Langfuse Tracing & Custom Guardrails</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center space-x-3">
+        <a href="http://localhost:3000" target="_blank" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition">
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          <span>Open Langfuse UI (:3000)</span>
+        </a>
+        <a href="/docs" target="_blank" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition">
+          <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+          <span>Swagger API (:8000)</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-6">
+
+    <!-- Metrics Header Overview -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm">
+        <div>
+          <p class="text-xs font-medium text-slate-400">Total Agent Runs</p>
+          <h3 id="stat-total-runs" class="text-2xl font-bold text-white mt-1">0</h3>
+        </div>
+        <div class="p-2.5 bg-blue-500/10 text-blue-400 rounded-lg">
+          <i data-lucide="activity" class="w-5 h-5"></i>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm">
+        <div>
+          <p class="text-xs font-medium text-slate-400">Waiting Human Approval</p>
+          <h3 id="stat-pending-approvals" class="text-2xl font-bold text-amber-400 mt-1">0</h3>
+        </div>
+        <div class="p-2.5 bg-amber-500/10 text-amber-400 rounded-lg">
+          <i data-lucide="user-check" class="w-5 h-5"></i>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm">
+        <div>
+          <p class="text-xs font-medium text-slate-400">Total Tokens Tracked</p>
+          <h3 id="stat-total-tokens" class="text-2xl font-bold text-white mt-1">0</h3>
+        </div>
+        <div class="p-2.5 bg-purple-500/10 text-purple-400 rounded-lg">
+          <i data-lucide="cpu" class="w-5 h-5"></i>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm">
+        <div>
+          <div class="flex items-center space-x-2">
+            <p class="text-xs font-medium text-slate-400">Estimated Cost</p>
+            <button onclick="toggleCurrency()" id="currency-toggle-btn" class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition">
+              USD ⇄ VND
+            </button>
+          </div>
+          <h3 id="stat-total-cost" class="text-2xl font-bold text-emerald-400 mt-1">$0.0000</h3>
+          <p id="stat-total-cost-sub" class="text-[11px] text-slate-400 font-mono mt-0.5">~ 0 ₫ (Rate: 25,400)</p>
+        </div>
+        <div class="p-2.5 bg-emerald-500/10 text-emerald-400 rounded-lg">
+          <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Run Launcher Bar -->
+    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 shadow-sm space-y-4">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <h2 class="text-sm font-semibold text-slate-200 flex items-center space-x-2">
+          <i data-lucide="play" class="w-4 h-4 text-indigo-400"></i>
+          <span>Launch & Test Agent Execution</span>
+        </h2>
+        <span class="text-xs text-slate-400">Pick a preset test case to trigger guardrails or enter custom prompt</span>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3">
+        <input 
+          id="prompt-input" 
+          type="text" 
+          placeholder="E.g., Analyze dataset and generate quarterly report..."
+          value="Search knowledge base and calculate system latency metrics"
+          class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+        />
+        <button 
+          onclick="launchRun()"
+          class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-2 rounded-lg text-sm transition shadow-sm shadow-indigo-600/30 flex items-center justify-center space-x-2">
+          <i data-lucide="play" class="w-4 h-4"></i>
+          <span>Run Custom</span>
+        </button>
+      </div>
+
+      <div class="flex items-center flex-wrap gap-2 pt-1 border-t border-slate-800/80">
+        <span class="text-xs text-slate-400 mr-2">Quick Scenarios:</span>
+        <button 
+          onclick="launchPreset('Search knowledge base and calculate metrics')"
+          class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-md border border-slate-700 transition flex items-center space-x-1.5">
+          <i data-lucide="check" class="w-3 h-3 text-emerald-400"></i>
+          <span>Normal 3-Step Task</span>
+        </button>
+        <button 
+          onclick="launchPreset('Update user quota in production database with sensitive record')"
+          class="text-xs bg-amber-950/40 hover:bg-amber-900/60 text-amber-300 border border-amber-800/60 px-3 py-1.5 rounded-md transition flex items-center space-x-1.5">
+          <i data-lucide="alert-triangle" class="w-3 h-3 text-amber-400"></i>
+          <span>Sensitive Action (Human-in-the-Loop Approval)</span>
+        </button>
+        <button 
+          onclick="launchPreset('Simulate infinite loop by calling check_health repetitively')"
+          class="text-xs bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 px-3 py-1.5 rounded-md transition flex items-center space-x-1.5">
+          <i data-lucide="repeat" class="w-3 h-3 text-rose-400"></i>
+          <span>Infinite Loop (Loop Guardrail Trigger)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main 2-Column Split: Runs List & Live Trajectory Inspector -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- Left Column: Runs List -->
+      <div class="lg:col-span-5 space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-semibold text-slate-300 flex items-center space-x-2">
+            <i data-lucide="list" class="w-4 h-4 text-indigo-400"></i>
+            <span>Agent Sessions</span>
+          </h2>
+          <span id="live-indicator" class="flex items-center space-x-1.5 text-xs text-emerald-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Live Stream</span>
+          </span>
+        </div>
+
+        <div id="runs-container" class="space-y-3 max-h-[640px] overflow-y-auto pr-1">
+          <!-- Dynamic Run Cards go here -->
+          <div class="p-8 text-center text-slate-500 text-sm border border-dashed border-slate-800 rounded-xl">
+            No agent sessions yet. Click one of the test scenarios above!
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Trajectory & Step Inspector -->
+      <div class="lg:col-span-7 bg-slate-900/70 border border-slate-800 rounded-xl p-5 flex flex-col min-h-[500px]">
+        <div id="inspector-header" class="border-b border-slate-800 pb-4 flex items-center justify-between flex-wrap gap-3">
+          <div>
+            <h3 id="inspector-title" class="font-bold text-slate-200 text-base">Select a session to inspect</h3>
+            <p id="inspector-subtitle" class="text-xs text-slate-400">View real-time reasoning thoughts, tool calls, and trace trees</p>
+          </div>
+          <div id="inspector-actions" class="flex items-center space-x-2 hidden">
+            <!-- Dynamic kill/langfuse actions -->
+          </div>
+        </div>
+
+        <!-- Trajectory Steps Container -->
+        <div id="inspector-steps" class="flex-1 py-4 space-y-4 overflow-y-auto max-h-[550px]">
+          <div class="h-full flex flex-col items-center justify-center text-center text-slate-500 p-8 space-y-2">
+            <i data-lucide="git-branch" class="w-10 h-10 text-slate-700"></i>
+            <p class="text-sm">Click any agent run on the left to inspect its trajectory steps and controls.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    let activeRunId = null;
+    let allRuns = {};
+    let currencyMode = 'USD'; // 'USD' or 'VND'
+    const USD_TO_VND_RATE = 25400;
+
+    function toggleCurrency() {
+      currencyMode = currencyMode === 'USD' ? 'VND' : 'USD';
+      updateGlobalStats();
+      renderRunsList();
+    }
+
+    function formatCost(costUsd) {
+      if (!costUsd) costUsd = 0;
+      if (currencyMode === 'VND') {
+        const vnd = Math.round(costUsd * USD_TO_VND_RATE);
+        return `${vnd.toLocaleString('vi-VN')} ₫`;
+      }
+      return `$${costUsd.toFixed(4)}`;
+    }
+
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Fetch initial list
+    async function loadRuns() {
+      try {
+        const res = await fetch('/api/agents/runs');
+        const runs = await res.json();
+        runs.forEach(r => allRuns[r.run_id] = r);
+        renderRunsList();
+        updateGlobalStats();
+        if (runs.length > 0 && !activeRunId) {
+          selectRun(runs[0].run_id);
+        }
+      } catch (err) {
+        console.error('Failed to load runs:', err);
+      }
+    }
+
+    // Connect to SSE stream
+    function initSSE() {
+      const evtSource = new EventSource('/api/agents/stream');
+      
+      evtSource.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          handleEvent(data);
+        } catch (e) {
+          console.error('SSE JSON error', e);
+        }
+      };
+
+      evtSource.onerror = (err) => {
+        console.warn('SSE reconnecting...', err);
+      };
+    }
+
+    async function handleEvent(event) {
+      if (event.type === 'connected') return;
+
+      if (event.type === 'run_registered') {
+        allRuns[event.run.run_id] = event.run;
+        if (!activeRunId) selectRun(event.run.run_id);
+      } else if (event.type === 'step_completed') {
+        const run = allRuns[event.run_id];
+        if (run) {
+          run.steps.push(event.step);
+          run.total_tokens = event.total_tokens;
+          run.total_cost_usd = event.total_cost;
+        }
+      } else if (event.type === 'status_changed') {
+        const run = allRuns[event.run_id];
+        if (run) {
+          run.status = event.status;
+          if (event.error) run.error_message = event.error;
+        }
+      } else if (event.type === 'approval_resolved') {
+        const run = allRuns[event.run_id];
+        if (run && run.pending_approval) {
+          run.pending_approval.status = event.approved ? 'APPROVED' : 'REJECTED';
+        }
+      } else if (event.type === 'run_killed') {
+        const run = allRuns[event.run_id];
+        if (run) run.status = 'KILLED';
+      } else if (event.type === 'run_finished') {
+        const run = allRuns[event.run_id];
+        if (run) {
+          run.status = event.status;
+          run.error_message = event.error;
+          run.final_output = event.final_output;
+        }
+      }
+
+      // Re-fetch fresh state for safety
+      if (event.run_id) {
+        try {
+          const res = await fetch(`/api/agents/runs/${event.run_id}`);
+          if (res.ok) {
+            allRuns[event.run_id] = await res.json();
+          }
+        } catch (e) {}
+      }
+
+      renderRunsList();
+      updateGlobalStats();
+      if (activeRunId && allRuns[activeRunId]) {
+        renderInspector(allRuns[activeRunId]);
+      }
+    }
+
+    function renderRunsList() {
+      const container = document.getElementById('runs-container');
+      const runs = Object.values(allRuns).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+      if (runs.length === 0) {
+        container.innerHTML = `<div class="p-8 text-center text-slate-500 text-sm border border-dashed border-slate-800 rounded-xl">No agent sessions yet. Click one of the test scenarios above!</div>`;
+        return;
+      }
+
+      container.innerHTML = runs.map(run => {
+        const isSelected = run.run_id === activeRunId;
+        const statusBadge = getStatusBadge(run.status);
+        const hasApproval = run.status === 'WAITING_APPROVAL';
+
+        return `
+          <div onclick="selectRun('${run.run_id}')" class="p-4 rounded-xl border cursor-pointer transition ${
+            isSelected ? 'bg-slate-900 border-indigo-500 shadow-lg shadow-indigo-500/10' : 'bg-slate-900/50 border-slate-800 hover:border-slate-700'
+          }">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-mono text-slate-400 font-medium">${run.run_id}</span>
+              ${statusBadge}
+            </div>
+            
+            <p class="text-sm font-semibold text-slate-200 line-clamp-1 mb-2">${escapeHtml(run.prompt)}</p>
+
+            <div class="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-800/80">
+              <span class="flex items-center space-x-1">
+                <i data-lucide="layers" class="w-3 h-3 text-slate-500"></i>
+                <span>Step ${run.current_step}/${run.max_steps}</span>
+              </span>
+              <span class="flex items-center space-x-1">
+                <i data-lucide="cpu" class="w-3 h-3 text-slate-500"></i>
+                <span>${run.total_tokens} tokens</span>
+              </span>
+              <span class="text-emerald-400 font-mono font-medium">${formatCost(run.total_cost_usd)}</span>
+            </div>
+
+            ${hasApproval ? `
+              <div class="mt-3 p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-between">
+                <span class="text-xs text-amber-300 font-medium flex items-center space-x-1.5">
+                  <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-amber-400"></i>
+                  <span>Requires Approval</span>
+                </span>
+                <div class="flex items-center space-x-1.5">
+                  <button onclick="event.stopPropagation(); decideApproval('${run.run_id}', true)" class="px-2.5 py-1 text-xs bg-emerald-600 hover:bg-emerald-500 text-white rounded font-medium transition">
+                    Approve
+                  </button>
+                  <button onclick="event.stopPropagation(); decideApproval('${run.run_id}', false)" class="px-2.5 py-1 text-xs bg-rose-600 hover:bg-rose-500 text-white rounded font-medium transition">
+                    Reject
+                  </button>
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function selectRun(runId) {
+      activeRunId = runId;
+      renderRunsList();
+      if (allRuns[runId]) {
+        renderInspector(allRuns[runId]);
+      }
+    }
+
+    function renderInspector(run) {
+      const headerTitle = document.getElementById('inspector-title');
+      const headerSubtitle = document.getElementById('inspector-subtitle');
+      const headerActions = document.getElementById('inspector-actions');
+      const stepsContainer = document.getElementById('inspector-steps');
+
+      headerTitle.innerHTML = `<span class="font-mono text-indigo-400">${run.run_id}</span> - ${escapeHtml(run.agent_name)}`;
+      headerSubtitle.innerText = `Prompt: "${run.prompt}"`;
+      headerActions.classList.remove('hidden');
+
+      const isRunning = run.status === 'RUNNING' || run.status === 'WAITING_APPROVAL';
+
+      headerActions.innerHTML = `
+        ${run.langfuse_trace_url ? `
+          <a href="${run.langfuse_trace_url}" target="_blank" class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 rounded-lg flex items-center space-x-1 transition">
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+            <span>Langfuse Trace</span>
+          </a>
+        ` : ''}
+        ${isRunning ? `
+          <button onclick="killRun('${run.run_id}')" class="px-3 py-1.5 text-xs bg-rose-600/90 hover:bg-rose-500 text-white font-medium rounded-lg flex items-center space-x-1 transition shadow-sm shadow-rose-600/30">
+            <i data-lucide="octagon-alert" class="w-3.5 h-3.5"></i>
+            <span>Kill Switch</span>
+          </button>
+        ` : ''}
+      `;
+
+      if (run.steps.length === 0 && isRunning) {
+        stepsContainer.innerHTML = `
+          <div class="p-8 text-center text-slate-400 space-y-3">
+            <div class="inline-block p-3 bg-indigo-500/10 rounded-full text-indigo-400 animate-pulse">
+              <i data-lucide="loader" class="w-6 h-6 animate-spin"></i>
+            </div>
+            <p class="text-sm font-medium">Agent is thinking and planning step 1...</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      let html = run.steps.map(step => {
+        const stepCostDisplay = formatCost(step.cost_usd || 0);
+        return `
+          <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+            <div class="flex items-center justify-between text-xs text-slate-400">
+              <span class="font-semibold text-indigo-400 flex items-center space-x-1.5">
+                <i data-lucide="corner-down-right" class="w-3.5 h-3.5"></i>
+                <span>Step ${step.step_number}</span>
+              </span>
+              <div class="flex items-center space-x-3 text-slate-400 font-mono">
+                <span>${step.latency_ms}ms</span>
+                <span>${step.tokens_used} tokens</span>
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                  ${stepCostDisplay}
+                </span>
+              </div>
+            </div>
+
+            ${step.thought ? `
+              <div class="p-3 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-semibold text-slate-400">🧠 LLM Reasoning (Suy luận - Có tính phí API):</span>
+                  <span class="text-[10px] text-amber-400 font-mono font-bold">${stepCostDisplay}</span>
+                </div>
+                <p class="text-slate-300">${escapeHtml(step.thought)}</p>
+              </div>
+            ` : ''}
+
+            ${step.tool_name ? `
+              <div class="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80 space-y-2 text-xs">
+                <div class="flex items-center justify-between">
+                  <span class="font-mono font-medium text-emerald-400 flex items-center space-x-1">
+                    <i data-lucide="wrench" class="w-3 h-3"></i>
+                    <span>Tool Call: ${step.tool_name}</span>
+                  </span>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center space-x-1">
+                    <i data-lucide="zap" class="w-3 h-3"></i>
+                    <span>Tất định (Free / $0.00)</span>
+                  </span>
+                </div>
+                <div>
+                  <span class="text-slate-400 font-semibold block mb-0.5">Parameters:</span>
+                  <pre class="bg-slate-950 p-2 rounded text-slate-300 overflow-x-auto font-mono text-[11px]">${JSON.stringify(step.tool_input, null, 2)}</pre>
+                </div>
+                <div>
+                  <span class="text-slate-400 font-semibold block mb-0.5">Result:</span>
+                  <pre class="bg-slate-950 p-2 rounded text-slate-300 overflow-x-auto font-mono text-[11px]">${typeof step.tool_output === 'object' ? JSON.stringify(step.tool_output, null, 2) : escapeHtml(String(step.tool_output))}</pre>
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+
+      // If waiting for approval, show banner
+      if (run.status === 'WAITING_APPROVAL' && run.pending_approval) {
+        html += `
+          <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/40 space-y-3">
+            <div class="flex items-center space-x-2 text-amber-400 text-sm font-bold">
+              <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+              <span>Human-in-the-Loop Approval Required</span>
+            </div>
+            <p class="text-xs text-slate-300">${escapeHtml(run.pending_approval.reason)}</p>
+            <div class="bg-slate-950 p-2 rounded text-xs font-mono text-amber-200">
+              Tool: <strong>${run.pending_approval.tool_name}</strong>
+              <pre class="mt-1 text-[11px] text-slate-300">${JSON.stringify(run.pending_approval.tool_input, null, 2)}</pre>
+            </div>
+            <div class="flex items-center space-x-2 pt-1">
+              <button onclick="decideApproval('${run.run_id}', true)" class="px-4 py-1.5 text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-lg transition shadow-sm shadow-emerald-600/30">
+                Authorize & Continue
+              </button>
+              <button onclick="decideApproval('${run.run_id}', false)" class="px-4 py-1.5 text-xs bg-rose-600 hover:bg-rose-500 text-white font-medium rounded-lg transition shadow-sm shadow-rose-600/30">
+                Reject Action
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      // If finished or failed
+      if (run.status === 'COMPLETED') {
+        html += `
+          <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/40 text-xs text-emerald-300 space-y-1">
+            <div class="flex items-center space-x-1.5 font-bold text-sm">
+              <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+              <span>Execution Completed Successfully</span>
+            </div>
+            <p class="text-slate-300 mt-1">${escapeHtml(run.final_output || '')}</p>
+          </div>
+        `;
+      } else if (run.status === 'KILLED') {
+        html += `
+          <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/40 text-xs text-rose-300 space-y-1">
+            <div class="flex items-center space-x-1.5 font-bold text-sm">
+              <i data-lucide="octagon-alert" class="w-4 h-4 text-rose-400"></i>
+              <span>Execution Terminated (Kill Switch Activated)</span>
+            </div>
+            <p class="text-slate-300 mt-1">${escapeHtml(run.error_message || '')}</p>
+          </div>
+        `;
+      } else if (run.status === 'FAILED') {
+        html += `
+          <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/40 text-xs text-rose-300 space-y-1">
+            <div class="flex items-center space-x-1.5 font-bold text-sm">
+              <i data-lucide="alert-circle" class="w-4 h-4 text-rose-400"></i>
+              <span>Execution Stopped by Guardrail</span>
+            </div>
+            <p class="text-slate-300 mt-1">${escapeHtml(run.error_message || '')}</p>
+          </div>
+        `;
+      }
+
+      stepsContainer.innerHTML = html;
+      lucide.createIcons();
+    }
+
+    function getStatusBadge(status) {
+      if (status === 'RUNNING') {
+        return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/30 flex items-center space-x-1"><span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span><span>RUNNING</span></span>`;
+      } else if (status === 'WAITING_APPROVAL') {
+        return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center space-x-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span><span>WAITING APPROVAL</span></span>`;
+      } else if (status === 'COMPLETED') {
+        return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">COMPLETED</span>`;
+      } else if (status === 'KILLED') {
+        return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/30">KILLED</span>`;
+      } else {
+        return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/30">FAILED</span>`;
+      }
+    }
+
+    function updateGlobalStats() {
+      const runs = Object.values(allRuns);
+      document.getElementById('stat-total-runs').innerText = runs.length;
+      
+      const pendingCount = runs.filter(r => r.status === 'WAITING_APPROVAL').length;
+      document.getElementById('stat-pending-approvals').innerText = pendingCount;
+
+      const totalTokens = runs.reduce((acc, r) => acc + (r.total_tokens || 0), 0);
+      document.getElementById('stat-total-tokens').innerText = totalTokens.toLocaleString();
+
+      const totalCostUsd = runs.reduce((acc, r) => acc + (r.total_cost_usd || 0), 0);
+      const totalCostVnd = Math.round(totalCostUsd * USD_TO_VND_RATE);
+      
+      const costEl = document.getElementById('stat-total-cost');
+      const costSubEl = document.getElementById('stat-total-cost-sub');
+      const toggleBtn = document.getElementById('currency-toggle-btn');
+
+      if (currencyMode === 'USD') {
+        costEl.innerText = `$${totalCostUsd.toFixed(4)}`;
+        costSubEl.innerText = `~ ${totalCostVnd.toLocaleString('vi-VN')} ₫ (1$ = 25,400₫)`;
+        toggleBtn.innerText = 'Switch to VND (₫)';
+      } else {
+        costEl.innerText = `${totalCostVnd.toLocaleString('vi-VN')} ₫`;
+        costSubEl.innerText = `~ $${totalCostUsd.toFixed(4)} USD`;
+        toggleBtn.innerText = 'Switch to USD ($)';
+      }
+    }
+
+    async function launchRun() {
+      const input = document.getElementById('prompt-input');
+      const prompt = input.value.trim();
+      if (!prompt) return;
+      await executeLaunch(prompt);
+    }
+
+    async function launchPreset(prompt) {
+      document.getElementById('prompt-input').value = prompt;
+      await executeLaunch(prompt);
+    }
+
+    async function executeLaunch(prompt) {
+      try {
+        const res = await fetch('/api/agents/run', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: prompt, agent_name: "OpsAnalystAgent" })
+        });
+        const run = await res.json();
+        allRuns[run.run_id] = run;
+        selectRun(run.run_id);
+      } catch (err) {
+        alert('Failed to launch run: ' + err.message);
+      }
+    }
+
+    async function killRun(runId) {
+      if (!confirm('Activate Kill Switch immediately for session ' + runId + '?')) return;
+      try {
+        await fetch(`/api/agents/runs/${runId}/kill`, { method: 'POST' });
+      } catch (err) {
+        alert('Kill error: ' + err.message);
+      }
+    }
+
+    async function decideApproval(runId, approved) {
+      try {
+        await fetch(`/api/agents/runs/${runId}/approve`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ approved: approved, user: 'admin_dashboard', comment: approved ? 'Approved via UI' : 'Rejected by user' })
+        });
+      } catch (err) {
+        alert('Approval error: ' + err.message);
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Start everything
+    loadRuns();
+    initSSE();
+  </script>
+</body>
+</html>
+
