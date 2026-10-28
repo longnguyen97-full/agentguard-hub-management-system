@@ -28,19 +28,29 @@
           <i data-lucide="shield-alert" class="w-5 h-5 text-white"></i>
         </div>
         <div>
-          <h1 class="text-lg font-bold text-white tracking-tight">Agent Monitoring & Control Hub</h1>
-          <p class="text-xs text-slate-400">Hybrid Observability with Langfuse Tracing & Custom Guardrails</p>
+          <h1 id="nav-app-title" class="text-lg font-bold text-white tracking-tight">Agent Monitoring & Control Hub</h1>
+          <p id="nav-app-subtitle" class="text-xs text-slate-400">Operational Guardrails, Tracing & Human-in-the-Loop Governance</p>
         </div>
       </div>
       
       <div class="flex items-center space-x-3">
-        <a href="http://localhost:3000" target="_blank" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition">
+        <!-- Language Switcher -->
+        <div class="flex items-center bg-slate-800 p-0.5 rounded-lg border border-slate-700">
+          <button id="lang-btn-en" onclick="setLanguage('en')" class="px-2.5 py-1 text-xs font-semibold rounded-md transition bg-indigo-600 text-white flex items-center space-x-1">
+            <span>🇬🇧 English ($)</span>
+          </button>
+          <button id="lang-btn-vi" onclick="setLanguage('vi')" class="px-2.5 py-1 text-xs font-semibold rounded-md transition text-slate-400 hover:text-slate-200 flex items-center space-x-1">
+            <span>🇻🇳 Tiếng Việt (₫)</span>
+          </button>
+        </div>
+
+        <a href="http://localhost:3000" target="_blank" class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition">
           <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-          <span>Open Langfuse UI (:3000)</span>
+          <span id="nav-langfuse-link">Langfuse (:3000)</span>
         </a>
-        <a href="/docs" target="_blank" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition">
+        <a href="/docs" target="_blank" class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition">
           <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
-          <span>Swagger API (:8000)</span>
+          <span id="nav-swagger-link">Swagger (:8000)</span>
         </a>
       </div>
     </div>
@@ -53,7 +63,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm">
         <div>
-          <p class="text-xs font-medium text-slate-400">Total Agent Runs</p>
+          <p id="lbl-total-runs" class="text-xs font-medium text-slate-400">Total Agent Runs</p>
           <h3 id="stat-total-runs" class="text-2xl font-bold text-white mt-1">0</h3>
         </div>
         <div class="p-2.5 bg-blue-500/10 text-blue-400 rounded-lg">
@@ -63,7 +73,7 @@
 
       <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm">
         <div>
-          <p class="text-xs font-medium text-slate-400">Waiting Human Approval</p>
+          <p id="lbl-waiting-approval" class="text-xs font-medium text-slate-400">Waiting Human Approval</p>
           <h3 id="stat-pending-approvals" class="text-2xl font-bold text-amber-400 mt-1">0</h3>
         </div>
         <div class="p-2.5 bg-amber-500/10 text-amber-400 rounded-lg">
@@ -73,7 +83,7 @@
 
       <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm">
         <div>
-          <p class="text-xs font-medium text-slate-400">Total Tokens Tracked</p>
+          <p id="lbl-total-tokens" class="text-xs font-medium text-slate-400">Total Tokens Tracked</p>
           <h3 id="stat-total-tokens" class="text-2xl font-bold text-white mt-1">0</h3>
         </div>
         <div class="p-2.5 bg-purple-500/10 text-purple-400 rounded-lg">
@@ -84,7 +94,7 @@
       <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm">
         <div>
           <div class="flex items-center space-x-2">
-            <p class="text-xs font-medium text-slate-400">Estimated Cost</p>
+            <p id="lbl-estimated-cost" class="text-xs font-medium text-slate-400">Estimated Cost</p>
             <button onclick="toggleCurrency()" id="currency-toggle-btn" class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition">
               USD ⇄ VND
             </button>
@@ -103,9 +113,9 @@
       <div class="flex items-center justify-between flex-wrap gap-2">
         <h2 class="text-sm font-semibold text-slate-200 flex items-center space-x-2">
           <i data-lucide="play" class="w-4 h-4 text-indigo-400"></i>
-          <span>Launch & Test Agent Execution</span>
+          <span id="lbl-launcher-title">Launch & Test Agent Execution</span>
         </h2>
-        <span class="text-xs text-slate-400">Pick a preset test case to trigger guardrails or enter custom prompt</span>
+        <span id="lbl-launcher-subtitle" class="text-xs text-slate-400">Pick a preset test case to trigger guardrails or enter custom prompt</span>
       </div>
 
       <div class="flex flex-col sm:flex-row gap-3">
@@ -120,29 +130,29 @@
           onclick="launchRun()"
           class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-2 rounded-lg text-sm transition shadow-sm shadow-indigo-600/30 flex items-center justify-center space-x-2">
           <i data-lucide="play" class="w-4 h-4"></i>
-          <span>Run Custom</span>
+          <span id="btn-run-custom">Run Custom</span>
         </button>
       </div>
 
       <div class="flex items-center flex-wrap gap-2 pt-1 border-t border-slate-800/80">
-        <span class="text-xs text-slate-400 mr-2">Quick Scenarios:</span>
+        <span id="lbl-quick-scenarios" class="text-xs text-slate-400 mr-2">Quick Scenarios:</span>
         <button 
           onclick="launchPreset('Search knowledge base and calculate metrics')"
           class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-md border border-slate-700 transition flex items-center space-x-1.5">
           <i data-lucide="check" class="w-3 h-3 text-emerald-400"></i>
-          <span>Normal 3-Step Task</span>
+          <span id="btn-scenario-standard">Normal 3-Step Task</span>
         </button>
         <button 
           onclick="launchPreset('Update user quota in production database with sensitive record')"
           class="text-xs bg-amber-950/40 hover:bg-amber-900/60 text-amber-300 border border-amber-800/60 px-3 py-1.5 rounded-md transition flex items-center space-x-1.5">
           <i data-lucide="alert-triangle" class="w-3 h-3 text-amber-400"></i>
-          <span>Sensitive Action (Human-in-the-Loop Approval)</span>
+          <span id="btn-scenario-approval">Sensitive Action (Human-in-the-Loop Approval)</span>
         </button>
         <button 
           onclick="launchPreset('Simulate infinite loop by calling check_health repetitively')"
           class="text-xs bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 px-3 py-1.5 rounded-md transition flex items-center space-x-1.5">
           <i data-lucide="repeat" class="w-3 h-3 text-rose-400"></i>
-          <span>Infinite Loop (Loop Guardrail Trigger)</span>
+          <span id="btn-scenario-loop">Infinite Loop (Loop Guardrail Trigger)</span>
         </button>
       </div>
     </div>
@@ -155,11 +165,11 @@
         <div class="flex items-center justify-between">
           <h2 class="text-sm font-semibold text-slate-300 flex items-center space-x-2">
             <i data-lucide="list" class="w-4 h-4 text-indigo-400"></i>
-            <span>Agent Sessions</span>
+            <span id="lbl-agent-sessions">Agent Sessions</span>
           </h2>
           <span id="live-indicator" class="flex items-center space-x-1.5 text-xs text-emerald-400">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>Live Stream</span>
+            <span id="lbl-live-stream">Live Stream</span>
           </span>
         </div>
 
@@ -187,7 +197,7 @@
         <div id="inspector-steps" class="flex-1 py-4 space-y-4 overflow-y-auto max-h-[550px]">
           <div class="h-full flex flex-col items-center justify-center text-center text-slate-500 p-8 space-y-2">
             <i data-lucide="git-branch" class="w-10 h-10 text-slate-700"></i>
-            <p class="text-sm">Click any agent run on the left to inspect its trajectory steps and controls.</p>
+            <p id="lbl-empty-trajectory" class="text-sm">Click any agent run on the left to inspect its trajectory steps and controls.</p>
           </div>
         </div>
       </div>
@@ -197,15 +207,182 @@
   </main>
 
   <script>
+    const I18N = {
+      en: {
+        appTitle: "Agent Monitoring & Control Hub",
+        appSubtitle: "Operational Guardrails, Tracing & Human-in-the-Loop Governance",
+        langfuseLink: "Langfuse (:3000)",
+        swaggerLink: "Swagger (:8000)",
+        totalRuns: "Total Agent Runs",
+        waitingApproval: "Waiting Human Approval",
+        totalTokens: "Total Tokens Tracked",
+        estimatedCost: "Estimated Cost",
+        launcherTitle: "Launch & Test Agent Execution",
+        launcherSubtitle: "Pick a preset test case to trigger guardrails or enter custom prompt",
+        customPlaceholder: "E.g., Analyze dataset and generate quarterly report...",
+        runCustom: "Run Custom",
+        quickScenarios: "Quick Scenarios:",
+        scenarioStandard: "Normal 3-Step Task",
+        scenarioApproval: "Sensitive Action (Human-in-the-Loop Approval)",
+        scenarioLoop: "Infinite Loop (Loop Guardrail Trigger)",
+        agentSessions: "Agent Sessions",
+        liveStream: "Live Stream",
+        noSessions: "No agent sessions yet. Click one of the test scenarios above!",
+        selectSessionTitle: "Select a session to inspect",
+        selectSessionSubtitle: "View real-time reasoning thoughts, tool calls, and trace trees",
+        emptyTrajectory: "Click any agent run on the left to inspect its trajectory steps and controls.",
+        agentThinking: "Agent is thinking and planning step 1...",
+        stepLabel: "Step",
+        reasoningTitle: "🧠 LLM Reasoning (Billable API Tokens):",
+        toolCallTitle: "Tool Call:",
+        deterministicBadge: "Deterministic (Free / $0.00)",
+        parametersLabel: "Parameters:",
+        resultLabel: "Result:",
+        approvalRequiredTitle: "Human-in-the-Loop Approval Required",
+        authorizeBtn: "Authorize & Continue",
+        rejectBtn: "Reject Action",
+        completedSuccess: "Execution Completed Successfully",
+        terminatedKill: "Execution Terminated (Kill Switch Activated)",
+        stoppedGuardrail: "Execution Stopped by Guardrail",
+        killSwitchBtn: "Kill Switch",
+        requiresApprovalBanner: "Requires Approval",
+        approveBtnShort: "Approve",
+        rejectBtnShort: "Reject",
+        statusRunning: "RUNNING",
+        statusWaiting: "WAITING APPROVAL",
+        statusCompleted: "COMPLETED",
+        statusKilled: "KILLED",
+        statusFailed: "FAILED"
+      },
+      vi: {
+        appTitle: "Hệ Thống Giám Sát & Quản Trị Agent",
+        appSubtitle: "Chốt chặn An toàn Vận hành, Tracing & Phê duyệt Con người",
+        langfuseLink: "Langfuse UI (:3000)",
+        swaggerLink: "Tài liệu API (:8000)",
+        totalRuns: "Tổng Số Phiên Chạy",
+        waitingApproval: "Đang Chờ Phê Duyệt",
+        totalTokens: "Tổng Token Ghi Nhận",
+        estimatedCost: "Ước Tính Chi Phí",
+        launcherTitle: "Khởi Chạy & Kiểm Thử Agent",
+        launcherSubtitle: "Chọn kịch bản mẫu để kích hoạt chốt chặn an toàn hoặc nhập lệnh tùy ý",
+        customPlaceholder: "Ví dụ: Tra cứu dữ liệu khách hàng và tạo báo cáo...",
+        runCustom: "Chạy Lệnh",
+        quickScenarios: "Kịch Bản Mẫu:",
+        scenarioStandard: "Luồng Chuẩn 3 Bước",
+        scenarioApproval: "Tác Vụ Nhạy Cảm (Chờ Người Duyệt)",
+        scenarioLoop: "Vòng Lặp Vô Tận (Chặn Loop)",
+        agentSessions: "Danh Sách Phiên Chạy",
+        liveStream: "Trực Tiếp (Live)",
+        noSessions: "Chưa có phiên chạy nào. Hãy bấm chọn một trong các kịch bản mẫu phía trên!",
+        selectSessionTitle: "Chọn một phiên để theo dõi chi tiết",
+        selectSessionSubtitle: "Xem quá trình suy luận, gọi tool và cây tracing thời gian thực",
+        emptyTrajectory: "Bấm chọn phiên chạy bên trái để kiểm tra chi tiết các bước và bảng điều khiển.",
+        agentThinking: "Agent đang suy luận và lập kế hoạch bước 1...",
+        stepLabel: "Bước",
+        reasoningTitle: "🧠 Suy Luận LLM (Có tính phí Token API):",
+        toolCallTitle: "Gọi Công Cụ:",
+        deterministicBadge: "Tất định (Miễn phí 0₫)",
+        parametersLabel: "Tham số đầu vào:",
+        resultLabel: "Kết quả trả về:",
+        approvalRequiredTitle: "Yêu Cầu Phê Duyệt Của Con Người (Human-in-the-Loop)",
+        authorizeBtn: "Phê Duyệt & Tiếp Tục",
+        rejectBtn: "Từ Chối Lệnh",
+        completedSuccess: "Tác Vụ Đã Hoàn Thành Xuất Sắc",
+        terminatedKill: "Tiến Trình Đã Bị Hủy (Nút Dừng Khẩn Cấp)",
+        stoppedGuardrail: "Tiến Trình Bị Ngắt Bởi Chốt Chặn An Toàn",
+        killSwitchBtn: "Dừng Khẩn Cấp",
+        requiresApprovalBanner: "Cần Phê Duyệt",
+        approveBtnShort: "Duyệt",
+        rejectBtnShort: "Từ chối",
+        statusRunning: "ĐANG CHẠY",
+        statusWaiting: "CHỜ PHÊ DUYỆT",
+        statusCompleted: "HOÀN TẤT",
+        statusKilled: "ĐÃ HỦY",
+        statusFailed: "THẤT BẠI"
+      }
+    };
+
+    let currentLang = localStorage.getItem('agent_hub_lang') || 'en';
+    let currencyMode = currentLang === 'vi' ? 'VND' : 'USD';
     let activeRunId = null;
     let allRuns = {};
-    let currencyMode = 'USD'; // 'USD' or 'VND'
     const USD_TO_VND_RATE = 25400;
+
+    function t(key) {
+      return (I18N[currentLang] && I18N[currentLang][key]) || (I18N['en'][key]) || key;
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('agent_hub_lang', lang);
+      
+      // Auto-switch currency according to selected language
+      currencyMode = (lang === 'vi') ? 'VND' : 'USD';
+
+      updateLanguageButtons();
+      applyStaticTranslations();
+      updateGlobalStats();
+      renderRunsList();
+      if (activeRunId && allRuns[activeRunId]) {
+        renderInspector(allRuns[activeRunId]);
+      }
+    }
+
+    function updateLanguageButtons() {
+      const btnEn = document.getElementById('lang-btn-en');
+      const btnVi = document.getElementById('lang-btn-vi');
+      if (currentLang === 'en') {
+        btnEn.className = "px-2.5 py-1 text-xs font-semibold rounded-md transition bg-indigo-600 text-white flex items-center space-x-1 shadow-sm";
+        btnVi.className = "px-2.5 py-1 text-xs font-semibold rounded-md transition text-slate-400 hover:text-slate-200 flex items-center space-x-1";
+      } else {
+        btnVi.className = "px-2.5 py-1 text-xs font-semibold rounded-md transition bg-indigo-600 text-white flex items-center space-x-1 shadow-sm";
+        btnEn.className = "px-2.5 py-1 text-xs font-semibold rounded-md transition text-slate-400 hover:text-slate-200 flex items-center space-x-1";
+      }
+    }
+
+    function setElText(id, text) {
+      const el = document.getElementById(id);
+      if (el) el.innerText = text;
+    }
+
+    function applyStaticTranslations() {
+      setElText('nav-app-title', t('appTitle'));
+      setElText('nav-app-subtitle', t('appSubtitle'));
+      setElText('nav-langfuse-link', t('langfuseLink'));
+      setElText('nav-swagger-link', t('swaggerLink'));
+
+      setElText('lbl-total-runs', t('totalRuns'));
+      setElText('lbl-waiting-approval', t('waitingApproval'));
+      setElText('lbl-total-tokens', t('totalTokens'));
+      setElText('lbl-estimated-cost', t('estimatedCost'));
+
+      setElText('lbl-launcher-title', t('launcherTitle'));
+      setElText('lbl-launcher-subtitle', t('launcherSubtitle'));
+      const promptInput = document.getElementById('prompt-input');
+      if (promptInput) promptInput.placeholder = t('customPlaceholder');
+      setElText('btn-run-custom', t('runCustom'));
+      setElText('lbl-quick-scenarios', t('quickScenarios'));
+      setElText('btn-scenario-standard', t('scenarioStandard'));
+      setElText('btn-scenario-approval', t('scenarioApproval'));
+      setElText('btn-scenario-loop', t('scenarioLoop'));
+
+      setElText('lbl-agent-sessions', t('agentSessions'));
+      setElText('lbl-live-stream', t('liveStream'));
+      setElText('lbl-empty-trajectory', t('emptyTrajectory'));
+
+      if (!activeRunId) {
+        setElText('inspector-title', t('selectSessionTitle'));
+        setElText('inspector-subtitle', t('selectSessionSubtitle'));
+      }
+    }
 
     function toggleCurrency() {
       currencyMode = currencyMode === 'USD' ? 'VND' : 'USD';
       updateGlobalStats();
       renderRunsList();
+      if (activeRunId && allRuns[activeRunId]) {
+        renderInspector(allRuns[activeRunId]);
+      }
     }
 
     function formatCost(costUsd) {
@@ -312,7 +489,7 @@
       const runs = Object.values(allRuns).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
       if (runs.length === 0) {
-        container.innerHTML = `<div class="p-8 text-center text-slate-500 text-sm border border-dashed border-slate-800 rounded-xl">No agent sessions yet. Click one of the test scenarios above!</div>`;
+        container.innerHTML = `<div class="p-8 text-center text-slate-500 text-sm border border-dashed border-slate-800 rounded-xl">${t('noSessions')}</div>`;
         return;
       }
 
@@ -335,7 +512,7 @@
             <div class="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-800/80">
               <span class="flex items-center space-x-1">
                 <i data-lucide="layers" class="w-3 h-3 text-slate-500"></i>
-                <span>Step ${run.current_step}/${run.max_steps}</span>
+                <span>${t('stepLabel')} ${run.current_step}/${run.max_steps}</span>
               </span>
               <span class="flex items-center space-x-1">
                 <i data-lucide="cpu" class="w-3 h-3 text-slate-500"></i>
@@ -348,14 +525,14 @@
               <div class="mt-3 p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-between">
                 <span class="text-xs text-amber-300 font-medium flex items-center space-x-1.5">
                   <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-amber-400"></i>
-                  <span>Requires Approval</span>
+                  <span>${t('requiresApprovalBanner')}</span>
                 </span>
                 <div class="flex items-center space-x-1.5">
-                  <button onclick="event.stopPropagation(); decideApproval('${run.run_id}', true)" class="px-2.5 py-1 text-xs bg-emerald-600 hover:bg-emerald-500 text-white rounded font-medium transition">
-                    Approve
+                  <button onclick="event.stopPropagation(); decideApproval('${run.run_id}', true)" class="px-2.5 py-1 text-xs bg-emerald-600 hover:bg-emerald-500 text-white rounded font-medium transition shadow-sm">
+                    ${t('approveBtnShort')}
                   </button>
-                  <button onclick="event.stopPropagation(); decideApproval('${run.run_id}', false)" class="px-2.5 py-1 text-xs bg-rose-600 hover:bg-rose-500 text-white rounded font-medium transition">
-                    Reject
+                  <button onclick="event.stopPropagation(); decideApproval('${run.run_id}', false)" class="px-2.5 py-1 text-xs bg-rose-600 hover:bg-rose-500 text-white rounded font-medium transition shadow-sm">
+                    ${t('rejectBtnShort')}
                   </button>
                 </div>
               </div>
@@ -397,7 +574,7 @@
         ${isRunning ? `
           <button onclick="killRun('${run.run_id}')" class="px-3 py-1.5 text-xs bg-rose-600/90 hover:bg-rose-500 text-white font-medium rounded-lg flex items-center space-x-1 transition shadow-sm shadow-rose-600/30">
             <i data-lucide="octagon-alert" class="w-3.5 h-3.5"></i>
-            <span>Kill Switch</span>
+            <span>${t('killSwitchBtn')}</span>
           </button>
         ` : ''}
       `;
@@ -408,7 +585,7 @@
             <div class="inline-block p-3 bg-indigo-500/10 rounded-full text-indigo-400 animate-pulse">
               <i data-lucide="loader" class="w-6 h-6 animate-spin"></i>
             </div>
-            <p class="text-sm font-medium">Agent is thinking and planning step 1...</p>
+            <p class="text-sm font-medium">${t('agentThinking')}</p>
           </div>
         `;
         lucide.createIcons();
@@ -422,7 +599,7 @@
             <div class="flex items-center justify-between text-xs text-slate-400">
               <span class="font-semibold text-indigo-400 flex items-center space-x-1.5">
                 <i data-lucide="corner-down-right" class="w-3.5 h-3.5"></i>
-                <span>Step ${step.step_number}</span>
+                <span>${t('stepLabel')} ${step.step_number}</span>
               </span>
               <div class="flex items-center space-x-3 text-slate-400 font-mono">
                 <span>${step.latency_ms}ms</span>
@@ -436,7 +613,7 @@
             ${step.thought ? `
               <div class="p-3 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 space-y-1">
                 <div class="flex items-center justify-between">
-                  <span class="font-semibold text-slate-400">🧠 LLM Reasoning (Suy luận - Có tính phí API):</span>
+                  <span class="font-semibold text-slate-400">${t('reasoningTitle')}</span>
                   <span class="text-[10px] text-amber-400 font-mono font-bold">${stepCostDisplay}</span>
                 </div>
                 <p class="text-slate-300">${escapeHtml(step.thought)}</p>
@@ -448,19 +625,19 @@
                 <div class="flex items-center justify-between">
                   <span class="font-mono font-medium text-emerald-400 flex items-center space-x-1">
                     <i data-lucide="wrench" class="w-3 h-3"></i>
-                    <span>Tool Call: ${step.tool_name}</span>
+                    <span>${t('toolCallTitle')} ${step.tool_name}</span>
                   </span>
                   <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center space-x-1">
                     <i data-lucide="zap" class="w-3 h-3"></i>
-                    <span>Tất định (Free / $0.00)</span>
+                    <span>${t('deterministicBadge')}</span>
                   </span>
                 </div>
                 <div>
-                  <span class="text-slate-400 font-semibold block mb-0.5">Parameters:</span>
+                  <span class="text-slate-400 font-semibold block mb-0.5">${t('parametersLabel')}</span>
                   <pre class="bg-slate-950 p-2 rounded text-slate-300 overflow-x-auto font-mono text-[11px]">${JSON.stringify(step.tool_input, null, 2)}</pre>
                 </div>
                 <div>
-                  <span class="text-slate-400 font-semibold block mb-0.5">Result:</span>
+                  <span class="text-slate-400 font-semibold block mb-0.5">${t('resultLabel')}</span>
                   <pre class="bg-slate-950 p-2 rounded text-slate-300 overflow-x-auto font-mono text-[11px]">${typeof step.tool_output === 'object' ? JSON.stringify(step.tool_output, null, 2) : escapeHtml(String(step.tool_output))}</pre>
                 </div>
               </div>
@@ -475,19 +652,19 @@
           <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/40 space-y-3">
             <div class="flex items-center space-x-2 text-amber-400 text-sm font-bold">
               <i data-lucide="alert-triangle" class="w-5 h-5"></i>
-              <span>Human-in-the-Loop Approval Required</span>
+              <span>${t('approvalRequiredTitle')}</span>
             </div>
             <p class="text-xs text-slate-300">${escapeHtml(run.pending_approval.reason)}</p>
-            <div class="bg-slate-950 p-2 rounded text-xs font-mono text-amber-200">
-              Tool: <strong>${run.pending_approval.tool_name}</strong>
-              <pre class="mt-1 text-[11px] text-slate-300">${JSON.stringify(run.pending_approval.tool_input, null, 2)}</pre>
+            <div class="bg-slate-950 p-2.5 rounded text-xs font-mono text-amber-200 space-y-1">
+              <div>Tool: <strong>${run.pending_approval.tool_name}</strong></div>
+              <pre class="mt-1 text-[11px] text-slate-300 overflow-x-auto">${JSON.stringify(run.pending_approval.tool_input, null, 2)}</pre>
             </div>
             <div class="flex items-center space-x-2 pt-1">
               <button onclick="decideApproval('${run.run_id}', true)" class="px-4 py-1.5 text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-lg transition shadow-sm shadow-emerald-600/30">
-                Authorize & Continue
+                ${t('authorizeBtn')}
               </button>
               <button onclick="decideApproval('${run.run_id}', false)" class="px-4 py-1.5 text-xs bg-rose-600 hover:bg-rose-500 text-white font-medium rounded-lg transition shadow-sm shadow-rose-600/30">
-                Reject Action
+                ${t('rejectBtn')}
               </button>
             </div>
           </div>
@@ -500,7 +677,7 @@
           <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/40 text-xs text-emerald-300 space-y-1">
             <div class="flex items-center space-x-1.5 font-bold text-sm">
               <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
-              <span>Execution Completed Successfully</span>
+              <span>${t('completedSuccess')}</span>
             </div>
             <p class="text-slate-300 mt-1">${escapeHtml(run.final_output || '')}</p>
           </div>
@@ -510,7 +687,7 @@
           <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/40 text-xs text-rose-300 space-y-1">
             <div class="flex items-center space-x-1.5 font-bold text-sm">
               <i data-lucide="octagon-alert" class="w-4 h-4 text-rose-400"></i>
-              <span>Execution Terminated (Kill Switch Activated)</span>
+              <span>${t('terminatedKill')}</span>
             </div>
             <p class="text-slate-300 mt-1">${escapeHtml(run.error_message || '')}</p>
           </div>
@@ -520,7 +697,7 @@
           <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/40 text-xs text-rose-300 space-y-1">
             <div class="flex items-center space-x-1.5 font-bold text-sm">
               <i data-lucide="alert-circle" class="w-4 h-4 text-rose-400"></i>
-              <span>Execution Stopped by Guardrail</span>
+              <span>${t('stoppedGuardrail')}</span>
             </div>
             <p class="text-slate-300 mt-1">${escapeHtml(run.error_message || '')}</p>
           </div>
@@ -533,15 +710,15 @@
 
     function getStatusBadge(status) {
       if (status === 'RUNNING') {
-        return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/30 flex items-center space-x-1"><span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span><span>RUNNING</span></span>`;
+        return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/30 flex items-center space-x-1"><span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span><span>${t('statusRunning')}</span></span>`;
       } else if (status === 'WAITING_APPROVAL') {
-        return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center space-x-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span><span>WAITING APPROVAL</span></span>`;
+        return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center space-x-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span><span>${t('statusWaiting')}</span></span>`;
       } else if (status === 'COMPLETED') {
-        return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">COMPLETED</span>`;
+        return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">${t('statusCompleted')}</span>`;
       } else if (status === 'KILLED') {
-        return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/30">KILLED</span>`;
+        return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/30">${t('statusKilled')}</span>`;
       } else {
-        return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/30">FAILED</span>`;
+        return `<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/30">${t('statusFailed')}</span>`;
       }
     }
 
@@ -565,11 +742,11 @@
       if (currencyMode === 'USD') {
         costEl.innerText = `$${totalCostUsd.toFixed(4)}`;
         costSubEl.innerText = `~ ${totalCostVnd.toLocaleString('vi-VN')} ₫ (1$ = 25,400₫)`;
-        toggleBtn.innerText = 'Switch to VND (₫)';
+        toggleBtn.innerText = 'USD ⇄ VND';
       } else {
         costEl.innerText = `${totalCostVnd.toLocaleString('vi-VN')} ₫`;
         costSubEl.innerText = `~ $${totalCostUsd.toFixed(4)} USD`;
-        toggleBtn.innerText = 'Switch to USD ($)';
+        toggleBtn.innerText = 'VND ⇄ USD';
       }
     }
 
@@ -601,7 +778,10 @@
     }
 
     async function killRun(runId) {
-      if (!confirm('Activate Kill Switch immediately for session ' + runId + '?')) return;
+      const confirmMsg = currentLang === 'vi' 
+        ? `Kích hoạt nút dừng khẩn cấp cho phiên ${runId}?` 
+        : `Activate Emergency Kill Switch immediately for session ${runId}?`;
+      if (!confirm(confirmMsg)) return;
       try {
         await fetch(`/api/agents/runs/${runId}/kill`, { method: 'POST' });
       } catch (err) {
@@ -631,10 +811,11 @@
         .replace(/'/g, '&#039;');
     }
 
-    // Start everything
+    // Initialize Language & State on load
+    updateLanguageButtons();
+    applyStaticTranslations();
     loadRuns();
     initSSE();
   </script>
 </body>
 </html>
-

@@ -20,22 +20,59 @@
 
 ---
 
-## 💡 Why This Project?
+## 📸 Preview & Screenshots
 
-Traditional LLM Observability platforms (like Langfuse, Phoenix, and LangSmith) excel at **passive tracking** — showing you traces, token counts, and latency **after** an agent run has finished.
+<div align="center">
+  <img src="assets/dashboard-overview.png" alt="Agent Management Dashboard Overview" width="95%" />
+  <p><em>Real-Time Agent Monitoring & Control Hub (English UI with USD Currency)</em></p>
+</div>
 
-However, in production enterprise environments, passive observation is not enough:
-- **What happens when an agent gets stuck in a hallucination loop?** It burns hundreds of dollars in API credits within minutes.
-- **What happens when an autonomous agent decides to execute a destructive SQL command?** Data is lost before anyone notices.
-- **How can human operators immediately pull the emergency brake on a rogue agent?**
+<br/>
 
-**Agent Management System** bridges this gap by acting as an **Active Control Plane & Safety Layer**:
-1. **Real-time Emergency Kill Switch**: Instantly terminates rogue agent threads from the UI or API.
-2. **Loop Detector Guardrail**: Intercepts consecutive identical tool calls to prevent infinite loops.
-3. **Hard Budget Guardrails**: Sets hard ceilings on token usage and estimated USD spend.
-4. **Human-in-the-Loop (HITL) Approval**: Pauses agent execution before calling sensitive tools (e.g. database mutations, payment triggers) until explicitly authorized by a human supervisor.
-5. **Billable vs Non-Billable Separation**: Accurately tracks LLM token costs separately from zero-cost local code tools and database queries.
-6. **Dual Currency Monitoring**: Real-time conversions between USD ($) and VND (₫).
+<div align="center">
+  <table width="100%">
+    <tr>
+      <td width="50%" align="center">
+        <img src="assets/human-in-the-loop.png" alt="Human-in-the-Loop Approval Modal" />
+        <br/>
+        <strong>🛡️ Human-in-the-Loop Authorization</strong>
+        <br/>
+        <em>Pauses agent before executing sensitive database updates until authorized.</em>
+      </td>
+      <td width="50%" align="center">
+        <img src="assets/loop-guardrail.png" alt="Loop Detector Guardrail Trigger" />
+        <br/>
+        <strong>🛑 Infinite Loop Guardrail</strong>
+        <br/>
+        <em>Catches repetitive reasoning/tool calls and aborts before wasting API tokens.</em>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <img src="assets/vietnamese-mode.png" alt="Vietnamese Mode & VND Currency" width="95%" />
+        <br/>
+        <strong>🌐 Dual Language & Currency Switcher</strong>
+        <br/>
+        <em>One-click toggle between English ($ USD) and Vietnamese (₫ VND) with real-time exchange rates.</em>
+      </td>
+    </tr>
+  </table>
+</div>
+
+---
+
+## 💡 Overview & Core Capabilities
+
+**Agent Management System** is an open-source **Control Plane and Operational Safety Layer** designed for running Autonomous AI Agents safely in production environments:
+
+- **🚨 Emergency Kill Switch**: Instantly terminates any running agent process directly from the Web Dashboard or REST API.
+- **🔄 Infinite Loop Guardrail**: Automatically monitors tool call signatures and aborts rogue agents when repetitive behavior is detected.
+- **💰 Hard Budget Guardrail**: Enforces strict ceilings on total token consumption and estimated spend per session.
+- **👤 Human-in-the-Loop (HITL) Approval**: Automatically pauses execution when an agent attempts sensitive actions (e.g. database updates, financial transactions, external communications) and awaits human approval.
+- **⚡ Billable vs. Non-Billable Separation**: Accurately isolates LLM inference costs from free local operations (deterministic python code, database queries, cached tools).
+- **🌐 Dual-Language UI & Automatic Currency Sync**: Built-in support for English (default, with USD `$`) and Vietnamese (with VND `₫`).
+- **🔍 Deep Tracing Stack**: Pre-configured, self-hosted Langfuse cluster (Web UI, ClickHouse, PostgreSQL, Redis, MinIO) via Docker Compose.
+- **🔌 Zero-Friction Client SDK (`agent_sdk.py`)**: Seamlessly connects external agents (LangChain, CrewAI, AutoGen, or vanilla scripts) into the central monitoring hub.
 
 ---
 
@@ -80,11 +117,11 @@ However, in production enterprise environments, passive observation is not enoug
 
 ### 1. Requirements
 - Python >= 3.11
-- [uv](https://docs.astral.sh/uv/) (recommended for lightning-fast package management)
+- [uv](https://docs.astral.sh/uv/) (recommended for fast package management)
 - Docker & Docker Compose
 
 ### 2. Start Langfuse Observability Stack
-Launch the self-hosted Langfuse tracing cluster:
+Launch the self-hosted tracing cluster:
 ```bash
 docker compose up -d
 ```
@@ -93,7 +130,7 @@ docker compose up -d
 
 ### 3. Start Control Plane Backend & Dashboard
 ```bash
-# Sync all dependencies
+# Sync dependencies
 uv sync --all-groups
 
 # Launch the FastAPI Control Center
@@ -111,11 +148,11 @@ Now open:
 
 ## 🧪 Interactive Demo Scenarios
 
-Open the Web Dashboard at `http://localhost:8000/dashboard` to test preset scenarios:
+Open the Web Dashboard at `http://localhost:8000/dashboard` to test preset scenarios with 1 click:
 
 | Scenario | Action | Outcome Observed |
 | :--- | :--- | :--- |
-| **1. Standard 3-Step Agent** | Multi-step reasoning + tool execution. | Real-time token count, USD/VND cost breakdown, step timeline. |
+| **1. Standard 3-Step Task** | Multi-step reasoning + tool execution. | Real-time token count, USD/VND cost breakdown, step timeline. |
 | **2. Human-in-the-Loop** | Agent attempts sensitive tool `execute_database_update`. | Agent automatically pauses in `WAITING_APPROVAL`. Operator clicks **Authorize** or **Reject** in real time. |
 | **3. Loop Detector** | Agent makes repeated calls with identical arguments. | Guardrail triggers on 2nd repeat; run is safely aborted before wasting tokens. |
 | **4. Kill Switch** | Operator triggers red Emergency Stop button. | Run status changes immediately to `KILLED` and execution thread terminates. |
@@ -196,10 +233,11 @@ tests/test_external_api.py::test_external_agent_ingestion_lifecycle PASSED [100%
 
 ```text
 agent-management-system/
+├── assets/                  # UI screenshots & preview images
 ├── docker-compose.yml       # Full Langfuse tracing stack (Web, Worker, ClickHouse, Postgres, Redis, MinIO)
 ├── .env.example             # Safe environment configuration template
 ├── pyproject.toml           # Package configuration & dependencies
-├── run.py                   # Fast application launcher
+├── run.py                   # Fast application launcher (UTF-8 safe)
 ├── Dockerfile               # Container packaging for control backend
 ├── agent_sdk.py             # Portable zero-dependency client SDK
 ├── backend/
