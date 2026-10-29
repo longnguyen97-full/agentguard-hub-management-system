@@ -14,7 +14,7 @@ AgentGuard kết hợp 2 tầng giám sát độc lập nhưng bổ trợ lẫn 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                       ỨNG DỤNG BÊN NGOÀI (EXTERNAL CLIENT)                  │
-│       (Ví dụ: Hệ thống sửa kịch bản ToiDaiDot, Customer Care Agent, ...)    │
+│       (Ví dụ: Hệ thống sửa kịch bản Content Moderator, Customer Care Agent, ...)    │
 └──────────────────────┬───────────────────────────────┬──────────────────────┘
                        │ (1) Telemetry / Traces        │ (2) Live Session Ingestion
                        │ (OpenInference / OTel)        │ (Vòng đời & Điều khiển)
@@ -145,7 +145,7 @@ export async function POST(req: Request) {
 
   // 1. Khởi tạo phiên chạy trên AgentGuard Live Sessions
   const session = await startAgentRun({
-    agent_name: 'ToiDaiDot_Safe_Rewriter',
+    agent_name: 'External_Content_Moderator',
     prompt: `[${platform}] ${text.slice(0, 100)}`,
     budget_usd: 0.20,
     max_steps: 3,
@@ -313,10 +313,10 @@ Gửi thông tin bước suy luận hoặc gọi tool. Dữ liệu này sẽ đ�
 
 1. Mở trình duyệt tại: **`http://localhost:8000/dashboard`**.
 2. **Gạt công tắc chế độ**:
-   - Gạt sang **Live Mode** để theo dõi các Agent thực tế từ bên ngoài (như ToiDaiDot).
+   - Gạt sang **Live Mode** để theo dõi các Agent thực tế từ bên ngoài (như Content Reviewer, Sales Bot).
    - Gạt sang **Simulation Mode** nếu muốn bấm thử các kịch bản mẫu (Kill Switch, Human Approval, Loop Trap).
 3. **Quan sát Live Sessions**:
-   - Khi có request từ ToiDaiDot hoặc external SDK, phiên chạy sẽ lập tức xuất hiện trong cột **Agent Sessions**.
+   - Khi có request từ Agent bên ngoài gửi qua SDK, phiên chạy sẽ lập tức xuất hiện trong cột **Agent Sessions**.
    - Bấm vào phiên chạy để xem chi tiết Timeline từng bước, tỷ lệ tốn phí (USD/VND) và link xem Trace chuyên sâu trên Langfuse (:3000).
 
 ---
