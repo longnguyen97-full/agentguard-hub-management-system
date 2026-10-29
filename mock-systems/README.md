@@ -63,3 +63,4 @@ curl -X POST http://localhost:8020/api/transfer \
 curl -X POST http://localhost:8030/api/crawl/loop
 ```
 > 👉 *Lập tức AgentGuard Hub sẽ kích hoạt chốt chặn vòng lặp và ngắt tác vụ.*
+

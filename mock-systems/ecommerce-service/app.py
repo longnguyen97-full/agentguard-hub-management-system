@@ -115,3 +115,4 @@ def handle_customer_chat(req: ChatRequest):
 if __name__ == "__main__":
     print("🚀 Khởi chạy Hệ Thống 1 (E-Commerce Customer Service) trên cổng 8010...")
     uvicorn.run(app, host="0.0.0.0", port=8010, log_level="info")
+
