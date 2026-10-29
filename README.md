@@ -390,7 +390,7 @@ agent-management-system/
 ## 💬 Community & Feedback
 
 We welcome your feedback, questions, and ideas:
-- **⭐ Star on GitHub**: If you like AgentGuard, please consider giving it a star on [GitHub](https://github.com/longnguyen97-full/agent-management-system/) to help others discover it!
+- **Star on GitHub**: If you like AgentGuard, please consider giving it a star on [GitHub](https://github.com/longnguyen97-full/agent-management-system/) to help others discover it!
 - **GitHub Discussions / Issues**: Report bugs or propose new guardrails via [GitHub Issues](https://github.com/longnguyen97-full/agent-management-system/issues).
 
 ---

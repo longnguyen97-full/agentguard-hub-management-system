@@ -508,28 +508,71 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
     <section id="community" class="space-y-4">
       <h2 id="sec4-title" class="text-xl font-bold text-white flex items-center space-x-2">
         <i data-lucide="heart" class="w-5 h-5 text-pink-400"></i>
-        <span>5. Community, Feedback &amp; Sponsorship</span>
+        <span>4. Community, Feedback &amp; Sponsorship</span>
       </h2>
       <p id="sec4-desc" class="text-sm text-slate-400 leading-relaxed">
         Join our community, provide feedback, get support from AI agents, or sponsor the project:
       </p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Star on GitHub Card -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
-          <div class="flex items-center space-x-2.5 text-amber-400">
-            <i data-lucide="star" class="w-5 h-5 fill-amber-400"></i>
-            <h3 class="font-bold text-white text-sm" id="c-star-title">Star on GitHub</h3>
+        <!-- Star on GitHub & Feedback Card -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="flex items-center space-x-2.5 text-amber-400">
+              <i data-lucide="star" class="w-5 h-5 fill-amber-400"></i>
+              <h3 class="font-bold text-white text-sm" id="c-star-title">Star on GitHub</h3>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed" id="c-star-desc">
+              If you find AgentGuard useful for monitoring and securing AI agents, please give our repository a Star on GitHub! Your support helps the open-source project grow and reach more developers.
+            </p>
+            <div class="space-y-1.5 pt-3 border-t border-slate-800">
+              <div class="flex items-center space-x-2 text-indigo-400 text-xs font-semibold">
+                <i data-lucide="messages-square" class="w-4 h-4"></i>
+                <span id="c-feedback-title">Feedback &amp; Bug Reports</span>
+              </div>
+              <p class="text-[11px] text-slate-400 leading-relaxed" id="c-feedback-desc">
+                Have an idea for a new guardrail or found a bug? Join discussions or submit an issue to collaborate with the team.
+              </p>
+            </div>
           </div>
-          <p class="text-xs text-slate-400 leading-relaxed" id="c-star-desc">
-            If you find AgentGuard useful for monitoring and securing AI agents, please give our repository a Star on
-            GitHub! Your support helps the open-source project grow.
-          </p>
-          <a href="https://github.com/longnguyen97-full/agent-management-system/" target="_blank"
-            class="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition">
-            <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
-            <span id="btn-star-text">⭐ Star on GitHub</span>
-          </a>
+          <div class="flex flex-wrap gap-2 pt-2">
+            <a href="https://github.com/longnguyen97-full/agent-management-system/" target="_blank"
+              class="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition">
+              <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+              <span id="btn-star-text">Star on GitHub</span>
+            </a>
+            <a href="https://github.com/longnguyen97-full/agent-management-system/issues" target="_blank"
+              class="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 transition">
+              <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+              <span id="btn-issue-text">GitHub Issues</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Support & Donate Card -->
+        <div class="bg-gradient-to-b from-slate-900 to-pink-950/20 border border-pink-500/20 rounded-xl p-5 space-y-4 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="flex items-center space-x-2.5 text-pink-400">
+              <i data-lucide="heart" class="w-5 h-5 fill-pink-500 text-pink-400"></i>
+              <h3 class="font-bold text-white text-sm" id="c-donate-title">Support &amp; Donate</h3>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed" id="c-donate-desc">
+              If you find AgentGuard useful and want to support ongoing open-source AI safety development, consider buying the author a coffee! ☕
+            </p>
+            <div class="flex flex-col items-center justify-center p-3 bg-slate-950/60 rounded-lg border border-pink-500/10 space-y-2">
+              <img src="https://i.postimg.cc/Zqg3GGpG/qrcode.jpg" alt="AgentGuard Donation QR Code" class="w-36 h-auto rounded-lg border border-pink-500/20 shadow-md hover:scale-105 transition-transform" />
+              <div class="text-[11px] text-slate-400 text-center space-y-0.5">
+                <p class="font-medium text-slate-300" id="c-donate-scan">Scan via Mobile Banking / VietQR</p>
+                <p class="text-[10px] text-pink-400 font-semibold" id="c-donate-thanks">Thank you for empowering open-source AI safety! ❤️</p>
+              </div>
+            </div>
+          </div>
+          <div class="pt-1">
+            <span class="inline-flex items-center space-x-1.5 px-3 py-1 text-xs font-semibold rounded-lg bg-pink-500/10 text-pink-300 border border-pink-500/20 w-full justify-center">
+              <i data-lucide="coffee" class="w-3.5 h-3.5 text-amber-400"></i>
+              <span id="c-donate-coffee-badge">Buy Me a Coffee / VietQR</span>
+            </span>
+          </div>
         </div>
       </div>
     </section>
@@ -587,8 +630,15 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
         sec4Desc: "Join our community, provide feedback, get support from AI agents, or sponsor the project:",
         cStarTitle: "Star on GitHub",
         cStarDesc: "If you find AgentGuard useful for your AI agents, please give us a Star on GitHub to support the open-source community!",
+        cFeedbackTitle: "Feedback & Bug Reports",
+        cFeedbackDesc: "Have a proposal for a new guardrail or found a bug? Submit an issue to collaborate with us.",
+        btnStar: "Star on GitHub",
+        btnIssue: "GitHub Issues",
         cDonateTitle: "Support & Donate",
-        cDonateDesc: "Buy the author a coffee to support open-source development!"
+        cDonateDesc: "If you find AgentGuard useful and want to support ongoing open-source AI safety development, consider buying the author a coffee! ☕",
+        cDonateScan: "Scan via Mobile Banking / VietQR",
+        cDonateThanks: "Thank you for empowering open-source AI safety! ❤️",
+        cDonateBadge: "Buy Me a Coffee / VietQR"
       },
       vi: {
         back: "Bảng Điều Khiển",
@@ -619,8 +669,15 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
         sec4Desc: "Tham gia cộng đồng nhà phát triển, đóng góp ý kiến hoặc mời tác giả một ly cà phê:",
         cStarTitle: "Ủng Hộ 1 Sao Trên GitHub (Star)",
         cStarDesc: "Nếu bạn thấy AgentGuard hữu ích cho hệ thống Agent của mình, hãy tặng dự án 1 Star trên GitHub để tiếp thêm động lực phát triển nhé!",
+        cFeedbackTitle: "Báo Cáo Lỗi & Đề Xuất",
+        cFeedbackDesc: "Bạn có ý tưởng về chốt chặn an toàn mới hoặc phát hiện lỗi? Hãy mở issue để cùng thảo luận và hoàn thiện.",
+        btnStar: "Tặng 1 Sao (GitHub)",
+        btnIssue: "Đóng Góp Ý Kiến",
         cDonateTitle: "Ủng Hộ & Tài Trợ",
-        cDonateDesc: "Mời tác giả một ly cà phê để tiếp tục duy trì và phát triển mã nguồn mở AgentGuard!"
+        cDonateDesc: "Nếu bạn thấy AgentGuard hữu ích và muốn tiếp sức cho việc phát triển mã nguồn mở miễn phí lâu dài, hãy mời tác giả một ly cà phê nhé! ☕",
+        cDonateScan: "Quét mã QR qua ứng dụng Ngân hàng / Mobile Banking / VietQR",
+        cDonateThanks: "Chân thành cảm ơn sự đồng hành & ủng hộ của bạn! ❤️",
+        cDonateBadge: "Mời Cà Phê / VietQR"
       }
     };
 
@@ -659,6 +716,13 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
         if (document.getElementById('c-star-desc')) document.getElementById('c-star-desc').innerText = data.cStarDesc;
         if (document.getElementById('c-donate-title')) document.getElementById('c-donate-title').innerText = data.cDonateTitle;
         if (document.getElementById('c-donate-desc')) document.getElementById('c-donate-desc').innerText = data.cDonateDesc;
+        if (document.getElementById('c-feedback-title') && data.cFeedbackTitle) document.getElementById('c-feedback-title').innerText = data.cFeedbackTitle;
+        if (document.getElementById('c-feedback-desc') && data.cFeedbackDesc) document.getElementById('c-feedback-desc').innerText = data.cFeedbackDesc;
+        if (document.getElementById('btn-star-text') && data.btnStar) document.getElementById('btn-star-text').innerText = data.btnStar;
+        if (document.getElementById('btn-issue-text') && data.btnIssue) document.getElementById('btn-issue-text').innerText = data.btnIssue;
+        if (document.getElementById('c-donate-scan') && data.cDonateScan) document.getElementById('c-donate-scan').innerText = data.cDonateScan;
+        if (document.getElementById('c-donate-thanks') && data.cDonateThanks) document.getElementById('c-donate-thanks').innerText = data.cDonateThanks;
+        if (document.getElementById('c-donate-coffee-badge') && data.cDonateBadge) document.getElementById('c-donate-coffee-badge').innerText = data.cDonateBadge;
       }
 
       const btnEn = document.getElementById('guide-lang-en');
