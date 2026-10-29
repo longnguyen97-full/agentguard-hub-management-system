@@ -369,7 +369,10 @@ agent-management-system/
 │   ├── generate_screenshots.py # Script tự động chụp màn hình UI bằng Playwright (EN/VI)
 │   └── backup_manager.py       # Công cụ dòng lệnh quản lý dữ liệu, sao lưu & reset
 ├── docs/
-│   └── CLIENT_INTEGRATION_GUIDE.md # Hướng dẫn chi tiết cách nhúng SDK
+│   ├── CLIENT_INTEGRATION_GUIDE.md    # Hướng dẫn chi tiết nhúng SDK & API (Tiếng Anh)
+│   ├── CLIENT_INTEGRATION_GUIDE.vi.md # Hướng dẫn chi tiết nhúng SDK & API (Tiếng Việt)
+│   ├── MOCK_SYSTEMS_GUIDE.md          # Hướng dẫn test mock-systems & đọc chỉ số (Tiếng Anh)
+│   └── MOCK_SYSTEMS_GUIDE.vi.md       # Hướng dẫn test mock-systems & đọc chỉ số (Tiếng Việt)
 └── tests/                       # Toàn bộ test suite tự động (20 unit & integration tests)
 ```
 

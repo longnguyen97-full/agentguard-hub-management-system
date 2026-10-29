@@ -381,7 +381,10 @@ agent-management-system/
 │   ├── generate_screenshots.py # Playwright automated UI screenshot generator (EN/VI)
 │   └── backup_manager.py       # Data Lifecycle CLI for Backup, Restore & Purge
 ├── docs/
-│   └── CLIENT_INTEGRATION_GUIDE.md # SDK & API integration guide
+│   ├── CLIENT_INTEGRATION_GUIDE.md    # SDK & API Integration Manual (English)
+│   ├── CLIENT_INTEGRATION_GUIDE.vi.md # SDK & API Integration Manual (Vietnamese)
+│   ├── MOCK_SYSTEMS_GUIDE.md          # Satellite Mock Systems & Metrics Guide (English)
+│   └── MOCK_SYSTEMS_GUIDE.vi.md       # Satellite Mock Systems & Metrics Guide (Vietnamese)
 └── tests/                       # Comprehensive test suite (20 unit & integration tests)
 ```
 

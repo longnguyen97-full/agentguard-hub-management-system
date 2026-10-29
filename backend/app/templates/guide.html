@@ -455,12 +455,10 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
         <div class="bg-amber-950/20 border border-amber-500/30 rounded-xl p-5 space-y-2">
           <div class="flex items-center space-x-2 text-amber-400 font-bold text-sm">
             <i data-lucide="languages" class="w-4 h-4"></i>
-            <span>Tiếng Việt UTF-8 Trên Windows (Tránh lỗi dấu ?)</span>
+            <span id="note1-title">Tiếng Việt UTF-8 Trên Windows (Tránh lỗi dấu ?)</span>
           </div>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            Windows mặc định dùng <code>cp1252</code> làm biến dạng dấu tiếng Việt thành <code>?</code> và
-            <code>&#65533;</code>. Trong client Python, thêm <code>import os; os.environ["PYTHONUTF8"] = "1"</code> ở
-            dòng đầu và mở file bằng <code>encoding="utf-8"</code>. Trong PowerShell, gõ <code>chcp 65001</code>.
+          <p class="text-xs text-slate-300 leading-relaxed" id="note1-desc">
+            Windows mặc định dùng <code>cp1252</code> làm biến dạng dấu tiếng Việt thành <code>?</code> và <code>&#65533;</code>. Trong client Python, thêm <code>import os; os.environ["PYTHONUTF8"] = "1"</code> ở dòng đầu và mở file bằng <code>encoding="utf-8"</code>. Trong PowerShell, gõ <code>chcp 65001</code>.
           </p>
         </div>
 
@@ -468,12 +466,10 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-2">
           <div class="flex items-center space-x-2 text-indigo-400 font-bold text-sm">
             <i data-lucide="terminal" class="w-4 h-4"></i>
-            <span>Luôn Khởi Chạy Bằng <code>uv run</code></span>
+            <span id="note2-title">Luôn Khởi Chạy Bằng uv run</span>
           </div>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            Tránh lỗi <code>ModuleNotFoundError: No module named 'fastapi'</code> bằng cách khởi động qua
-            <code>uv run run.py</code> hoặc <code>uv run agent-hub</code> thay vì gọi python hệ thống chưa kích hoạt
-            venv.
+          <p class="text-xs text-slate-300 leading-relaxed" id="note2-desc">
+            Tránh lỗi <code>ModuleNotFoundError: No module named 'fastapi'</code> bằng cách khởi động qua <code>uv run run.py</code> hoặc <code>uv run agent-hub</code> thay vì gọi python hệ thống chưa kích hoạt venv.
           </p>
         </div>
 
@@ -481,12 +477,10 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-2">
           <div class="flex items-center space-x-2 text-emerald-400 font-bold text-sm">
             <i data-lucide="coins" class="w-4 h-4"></i>
-            <span>Tách Đoạn Tốn Phí vs Miễn Phí (0đ)</span>
+            <span id="note3-title">Tách Đoạn Tốn Phí vs Miễn Phí (0đ)</span>
           </div>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            Chỉ đặt <code>is_billable: true</code> cho các bước gọi LLM tốn token API. Đặt
-            <code>is_billable: false</code> (0đ) cho code Python, quét Regex, truy vấn Database nội bộ để báo cáo tài
-            chính chuẩn xác.
+          <p class="text-xs text-slate-300 leading-relaxed" id="note3-desc">
+            Chỉ đặt <code>is_billable: true</code> cho các bước gọi LLM tốn token API. Đặt <code>is_billable: false</code> (0đ) cho code Python, quét Regex, truy vấn Database nội bộ để báo cáo tài chính chuẩn xác.
           </p>
         </div>
 
@@ -494,11 +488,10 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-2">
           <div class="flex items-center space-x-2 text-sky-400 font-bold text-sm">
             <i data-lucide="shield-check" class="w-4 h-4"></i>
-            <span>Phê Duyệt An Toàn (Human-in-the-Loop)</span>
+            <span id="note4-title">Phê Duyệt An Toàn (Human-in-the-Loop)</span>
           </div>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            Khai báo các tool nhạy cảm (cập nhật DB, thanh toán, gửi email) vào <code>require_approval_tools</code> để
-            Agent tự động dừng ở trạng thái <code>WAITING_APPROVAL</code> chờ duyệt.
+          <p class="text-xs text-slate-300 leading-relaxed" id="note4-desc">
+            Khai báo các tool nhạy cảm (cập nhật DB, thanh toán, gửi email) vào <code>require_approval_tools</code> để Agent tự động dừng ở trạng thái <code>WAITING_APPROVAL</code> chờ duyệt.
           </p>
         </div>
       </div>
@@ -600,7 +593,7 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
         c4Title: "Hard Budget Guardrail",
         c4Desc: "Enforces strict step limits, token thresholds, and financial limits in both USD and VND to keep AI deployment costs predictable and bounded.",
         sec2: "2. Client SDK Quick Integration (3 Steps)",
-                sec2Desc: "Connect your external agents into AgentGuard with real-time fail-open safety. Choose between 1-click automated AI Assistant integration or manual SDK embedding:",
+        sec2Desc: "Connect your external agents into AgentGuard with real-time fail-open safety. Choose between 1-click automated AI Assistant integration or manual SDK embedding:",
         opt0Title: "Method 0: 1-Click Automated AI Assistant Embedding",
         opt0Desc: "No manual code editing required! If you use an AI coding assistant, simply feed it our standardized skill (skills/embed-agentguard/SKILL.md). The assistant analyzes your project, copies the SDK, and instruments your agent with fail-open safety automatically.",
         samplePrompt: "Sample prompt for your AI Assistant:",
@@ -626,6 +619,15 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
         m4Title: "4. Real-time USD ⇄ VND Cost",
         m4Desc: "Computed strictly from billable LLM tokens against official model pricing. Click the currency button on Card 4 to switch between USD and VND.",
         sec3: "4. REST API Quick Reference",
+        secNotesTitle: "Crucial Integration Notes & Troubleshooting",
+        note1Title: "Windows UTF-8 Encoding (Preventing ? Marks)",
+        note1Desc: "Windows defaults to cp1252 which garbles Unicode characters into ? marks. In Python clients, add import os; os.environ['PYTHONUTF8'] = '1' at the top and open files with encoding='utf-8'. In PowerShell, run chcp 65001.",
+        note2Title: "Always Launch With uv run",
+        note2Desc: "Prevent ModuleNotFoundError: No module named 'fastapi' by launching via uv run run.py or uv run agent-hub instead of calling system python directly.",
+        note3Title: "Separating Billable vs. Free ($0.00) Steps",
+        note3Desc: "Only set is_billable: true for paid LLM API token invocations. Set is_billable: false ($0.00) for local Python code, regex checks, and database queries for accurate financial auditing.",
+        note4Title: "Human-in-the-Loop Safe Approval",
+        note4Desc: "Declare sensitive tools (database mutations, payment transfers, emails) in require_approval_tools so the agent automatically pauses in state WAITING_APPROVAL.",
         sec4: "4. Community, Feedback & Sponsorship",
         sec4Desc: "Join our community, provide feedback, get support from AI agents, or sponsor the project:",
         cStarTitle: "Star on GitHub",
@@ -638,7 +640,8 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
         cDonateDesc: "If you find AgentGuard useful and want to support ongoing open-source AI safety development, consider buying the author a coffee! ☕",
         cDonateScan: "Scan via Mobile Banking / VietQR",
         cDonateThanks: "Thank you for empowering open-source AI safety! ❤️",
-        cDonateBadge: "Buy Me a Coffee / VietQR"
+        cDonateBadge: "Buy Me a Coffee / VietQR",
+        docLangLink: "English"
       },
       vi: {
         back: "Bảng Điều Khiển",
@@ -664,7 +667,32 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
         opt0F2: "Không gián đoạn (Cơ chế fail-open an toàn)",
         opt0F3: "Tách bạch công cụ miễn phí 0đ và LLM",
         manualSdksTitle: "Tích Hợp Thủ Công Bằng Bộ SDK",
-        sec3: "3. Tra Cứu Nhanh Các Điểm Cuối REST API",
+        secMockTitle: "3. Kiểm Thử Trực Tiếp Với Hệ Thống Vệ Tinh (mock-systems/)",
+        secMockDesc: "AgentGuard bao gồm 3 máy chủ dịch vụ vệ tinh độc lập chạy các Agent mô phỏng doanh nghiệp (FastAPI, Node.js, Python Worker) có nhúng sẵn Sentinel SDK:",
+        mockSys1Desc: "Agent chăm sóc khách hàng tra cứu đơn và sinh voucher. Kiểm thử luồng chuẩn 100% và tách bạch token LLM có phí vs công cụ 0₫ miễn phí.",
+        mockSys2Desc: "Agent tài chính phân tích hóa đơn điện EVN. Tự động kích hoạt chuyển tiền và tạm dừng ở CHỜ PHÊ DUYỆT để người vận hành duyệt trên Dashboard.",
+        mockSys3Desc: "Worker cào dữ liệu tự hành gặp bẫy chuyển hướng lặp. Bị bộ lọc băm Loop Detector ngắt khẩn cấp sau 2 lần lặp để bảo vệ ngân sách API.",
+        mockRunTitle: "🚀 Điều Phối Kiểm Thử Tự Động 1 Lệnh Duy Nhất:",
+        mockRunNote: "Tự bật cả 3 server, bắn gói tin mô phỏng, truyền telemetry trực tiếp vào Hub (:8000) và tự dọn dẹp. Gạt Dashboard sang Chế độ thực tế: BẬT để xem.",
+        howToReadTitle: "Hướng Dẫn Đọc Các Chỉ Số Trên Dashboard & Dòng Suy Luận ReAct",
+        m1Title: "1. Tổng Số Phiên Chạy vs Traces",
+        m1Desc: "Tổng phiên đếm số lượt tác vụ thực tế được Hub quản lý. Mỗi cuộc chat CSKH hoặc lệnh thanh toán là 1 Run độc lập gồm nhiều bước suy luận.",
+        m2Title: "2. Chờ Con Người Phê Duyệt",
+        m2Desc: "Huy hiệu màu cam thể hiện hành động nhạy cảm đang bị đóng băng. Bấm vào thẻ phiên chạy trên Dashboard và bấm Duyệt hoặc Từ chối.",
+        m3Title: "3. Công Cụ Tất Định (Miễn phí 0₫)",
+        m3Desc: "Truy vấn DB nội bộ hoặc lọc Regex được gắn nhãn 'Tất định (Miễn phí 0₫)' và 0 tokens để không làm sai lệch chi phí API.",
+        m4Title: "4. Ước Tính Chi Phí Quy Đổi USD ⇄ VND",
+        m4Desc: "Tính toán chính xác theo token LLM nhân đơn giá model chính thức. Bấm nút chuyển đổi tiền tệ trên Thẻ 4 để đổi giữa USD và VND.",
+        sec3: "4. Tra Cứu Nhanh Các Điểm Cuối REST API",
+        secNotesTitle: "Lưu Ý Tích Hợp Quan Trọng & Khắc Phục Sự Cố",
+        note1Title: "Tiếng Việt UTF-8 Trên Windows (Tránh lỗi dấu ?)",
+        note1Desc: "Windows mặc định dùng cp1252 làm biến dạng dấu tiếng Việt thành ? và . Trong client Python, thêm import os; os.environ['PYTHONUTF8'] = '1' ở dòng đầu và mở file bằng encoding='utf-8'. Trong PowerShell, gõ chcp 65001.",
+        note2Title: "Luôn Khởi Chạy Bằng uv run",
+        note2Desc: "Tránh lỗi ModuleNotFoundError: No module named 'fastapi' bằng cách khởi động qua uv run run.py hoặc uv run agent-hub thay vì gọi python hệ thống chưa kích hoạt venv.",
+        note3Title: "Tách Đoạn Tốn Phí vs Miễn Phí (0đ)",
+        note3Desc: "Chỉ đặt is_billable: true cho các bước gọi LLM tốn token API. Đặt is_billable: false (0đ) cho code Python, quét Regex, truy vấn Database nội bộ để báo cáo tài chính chuẩn xác.",
+        note4Title: "Phê Duyệt An Toàn (Human-in-the-Loop)",
+        note4Desc: "Khai báo các tool nhạy cảm (cập nhật DB, thanh toán, gửi email) vào require_approval_tools để Agent tự động dừng ở trạng thái WAITING_APPROVAL chờ duyệt.",
         sec4: "4. Cộng Đồng, Phản Hồi & Tài Trợ",
         sec4Desc: "Tham gia cộng đồng nhà phát triển, đóng góp ý kiến hoặc mời tác giả một ly cà phê:",
         cStarTitle: "Ủng Hộ 1 Sao Trên GitHub (Star)",
@@ -677,7 +705,8 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
         cDonateDesc: "Nếu bạn thấy AgentGuard hữu ích và muốn tiếp sức cho việc phát triển mã nguồn mở miễn phí lâu dài, hãy mời tác giả một ly cà phê nhé! ☕",
         cDonateScan: "Quét mã QR qua ứng dụng Ngân hàng / Mobile Banking / VietQR",
         cDonateThanks: "Chân thành cảm ơn sự đồng hành & ủng hộ của bạn! ❤️",
-        cDonateBadge: "Mời Cà Phê / VietQR"
+        cDonateBadge: "Mời Cà Phê / VietQR",
+        docLangLink: "Tiếng Việt"
       }
     };
 
@@ -691,39 +720,91 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
 
     function applyGuideTranslations() {
       const data = GUIDE_I18N[guideLang] || GUIDE_I18N['en'];
-      document.getElementById('txt-back-dashboard').innerText = data.back;
-      document.getElementById('hero-badge').innerText = data.badge;
-      document.getElementById('hero-title').innerText = data.title;
-      document.getElementById('hero-subtitle').innerText = data.subtitle;
+      
+      const setText = (id, val) => {
+        const el = document.getElementById(id);
+        if (el && val) el.innerText = val;
+      };
 
-      document.getElementById('sec1-title').querySelector('span').innerText = data.sec1;
-      document.getElementById('c1-title').innerText = data.c1Title;
-      document.getElementById('c1-desc').innerText = data.c1Desc;
-      document.getElementById('c2-title').innerText = data.c2Title;
-      document.getElementById('c2-desc').innerText = data.c2Desc;
-      document.getElementById('c3-title').innerText = data.c3Title;
-      document.getElementById('c3-desc').innerText = data.c3Desc;
-      document.getElementById('c4-title').innerText = data.c4Title;
-      document.getElementById('c4-desc').innerText = data.c4Desc;
+      setText('txt-back-dashboard', data.back);
+      setText('hero-badge', data.badge);
+      setText('hero-title', data.title);
+      setText('hero-subtitle', data.subtitle);
 
-      document.getElementById('sec2-title').querySelector('span').innerText = data.sec2;
-      document.getElementById('sec2-desc').innerText = data.sec2Desc;
-      document.getElementById('sec3-title').querySelector('span').innerText = data.sec3;
-      if (data.sec4 && document.getElementById('sec4-title')) {
-        document.getElementById('sec4-title').querySelector('span').innerText = data.sec4;
-        document.getElementById('sec4-desc').innerText = data.sec4Desc;
-        if (document.getElementById('c-star-title')) document.getElementById('c-star-title').innerText = data.cStarTitle;
-        if (document.getElementById('c-star-desc')) document.getElementById('c-star-desc').innerText = data.cStarDesc;
-        if (document.getElementById('c-donate-title')) document.getElementById('c-donate-title').innerText = data.cDonateTitle;
-        if (document.getElementById('c-donate-desc')) document.getElementById('c-donate-desc').innerText = data.cDonateDesc;
-        if (document.getElementById('c-feedback-title') && data.cFeedbackTitle) document.getElementById('c-feedback-title').innerText = data.cFeedbackTitle;
-        if (document.getElementById('c-feedback-desc') && data.cFeedbackDesc) document.getElementById('c-feedback-desc').innerText = data.cFeedbackDesc;
-        if (document.getElementById('btn-star-text') && data.btnStar) document.getElementById('btn-star-text').innerText = data.btnStar;
-        if (document.getElementById('btn-issue-text') && data.btnIssue) document.getElementById('btn-issue-text').innerText = data.btnIssue;
-        if (document.getElementById('c-donate-scan') && data.cDonateScan) document.getElementById('c-donate-scan').innerText = data.cDonateScan;
-        if (document.getElementById('c-donate-thanks') && data.cDonateThanks) document.getElementById('c-donate-thanks').innerText = data.cDonateThanks;
-        if (document.getElementById('c-donate-coffee-badge') && data.cDonateBadge) document.getElementById('c-donate-coffee-badge').innerText = data.cDonateBadge;
+      if (document.getElementById('sec1-title')) {
+        document.getElementById('sec1-title').querySelector('span').innerText = data.sec1;
       }
+      setText('c1-title', data.c1Title);
+      setText('c1-desc', data.c1Desc);
+      setText('c2-title', data.c2Title);
+      setText('c2-desc', data.c2Desc);
+      setText('c3-title', data.c3Title);
+      setText('c3-desc', data.c3Desc);
+      setText('c4-title', data.c4Title);
+      setText('c4-desc', data.c4Desc);
+
+      if (document.getElementById('sec2-title')) {
+        document.getElementById('sec2-title').querySelector('span').innerText = data.sec2;
+      }
+      setText('sec2-desc', data.sec2Desc);
+      setText('opt0-title', data.opt0Title);
+      setText('opt0-desc', data.opt0Desc);
+      setText('sample-prompt-label', data.samplePrompt);
+      setText('prompt-text', data.promptText);
+      setText('opt0-f1', data.opt0F1);
+      setText('opt0-f2', data.opt0F2);
+      setText('opt0-f3', data.opt0F3);
+      setText('manual-sdks-title', data.manualSdksTitle);
+
+      if (document.getElementById('sec-mock-title')) {
+        document.getElementById('sec-mock-title').querySelector('span').innerText = data.secMockTitle;
+      }
+      setText('sec-mock-desc', data.secMockDesc);
+      setText('mock-sys1-desc', data.mockSys1Desc);
+      setText('mock-sys2-desc', data.mockSys2Desc);
+      setText('mock-sys3-desc', data.mockSys3Desc);
+      setText('mock-run-title', data.mockRunTitle);
+      setText('mock-run-note', data.mockRunNote);
+      setText('how-to-read-title', data.howToReadTitle);
+      setText('m1-title', data.m1Title);
+      setText('m1-desc', data.m1Desc);
+      setText('m2-title', data.m2Title);
+      setText('m2-desc', data.m2Desc);
+      setText('m3-title', data.m3Title);
+      setText('m3-desc', data.m3Desc);
+      setText('m4-title', data.m4Title);
+      setText('m4-desc', data.m4Desc);
+
+      if (document.getElementById('sec3-title')) {
+        document.getElementById('sec3-title').querySelector('span').innerText = data.sec3;
+      }
+      if (document.getElementById('sec-notes-title')) {
+        document.getElementById('sec-notes-title').querySelector('span').innerText = data.secNotesTitle;
+      }
+      setText('note1-title', data.note1Title);
+      setText('note1-desc', data.note1Desc);
+      setText('note2-title', data.note2Title);
+      setText('note2-desc', data.note2Desc);
+      setText('note3-title', data.note3Title);
+      setText('note3-desc', data.note3Desc);
+      setText('note4-title', data.note4Title);
+      setText('note4-desc', data.note4Desc);
+
+      if (document.getElementById('sec4-title')) {
+        document.getElementById('sec4-title').querySelector('span').innerText = data.sec4;
+      }
+      setText('sec4-desc', data.sec4Desc);
+      setText('c-star-title', data.cStarTitle);
+      setText('c-star-desc', data.cStarDesc);
+      setText('c-feedback-title', data.cFeedbackTitle);
+      setText('c-feedback-desc', data.cFeedbackDesc);
+      setText('btn-star-text', data.btnStar);
+      setText('btn-issue-text', data.btnIssue);
+      setText('c-donate-title', data.cDonateTitle);
+      setText('c-donate-desc', data.cDonateDesc);
+      setText('c-donate-scan', data.cDonateScan);
+      setText('c-donate-thanks', data.cDonateThanks);
+      setText('c-donate-coffee-badge', data.cDonateBadge);
 
       const btnEn = document.getElementById('guide-lang-en');
       const btnVi = document.getElementById('guide-lang-vi');
@@ -740,5 +821,4 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
     lucide.createIcons();
   </script>
 </body>
-
 </html>
