@@ -18,6 +18,8 @@ from app.schemas.agent import (
 from app.core.guardrails import LoopDetector, BudgetGuardrail, ActionApprovalGuardrail
 from app.core.registry import registry, AgentRunHandle
 from app.core.tracer import tracer
+from app.core.db import db
+from app.core.alerts import alert_notifier
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +42,7 @@ class BaseAgent(abc.ABC):
         )
         self.handle: AgentRunHandle = registry.register_run(self.state)
         self.loop_detector = LoopDetector(max_consecutive_repeats=2)
+        self.budget_warning_sent = False
 
     async def execute(self):
         """Main execution lifecycle with observability hooks and guardrails."""
@@ -81,6 +84,7 @@ class BaseAgent(abc.ABC):
 
                 self.state.current_step = step_num
                 self.state.updated_at = get_utc_now()
+                db.save_run(self.state)
 
                 # 3. Plan / Reason Next Step
                 start_time = time.time()
@@ -95,6 +99,34 @@ class BaseAgent(abc.ABC):
                 self.state.total_tokens += step_tokens
                 self.state.total_cost_usd = round(self.state.total_cost_usd + step_cost, 6)
                 self.state.total_cost_vnd = round(self.state.total_cost_usd * settings.USD_TO_VND_RATE, 2)
+
+                # Check budget warning threshold (Early Warning Alert)
+                if not self.budget_warning_sent:
+                    warn_triggered, warn_msg = BudgetGuardrail.check_warning_threshold(
+                        current_cost=self.state.total_cost_usd,
+                        budget_usd=self.request.budget_usd,
+                        threshold_ratio=settings.BUDGET_ALERT_THRESHOLD_RATIO
+                    )
+                    if warn_triggered:
+                        self.budget_warning_sent = True
+                        alert_notifier.trigger(
+                            title=f"Budget Warning ({self.state.agent_name})",
+                            message=warn_msg,
+                            level="WARNING",
+                            metadata={
+                                "run_id": self.run_id,
+                                "current_cost": f"${self.state.total_cost_usd:.4f}",
+                                "budget_usd": f"${self.request.budget_usd:.4f}",
+                                "total_tokens": self.state.total_tokens
+                            }
+                        )
+                        registry.broadcast_event({
+                            "type": "budget_warning",
+                            "run_id": self.run_id,
+                            "message": warn_msg,
+                            "current_cost": self.state.total_cost_usd,
+                            "budget_usd": self.request.budget_usd
+                        })
 
                 # Langfuse generation log
                 tracer.log_generation(
@@ -121,6 +153,8 @@ class BaseAgent(abc.ABC):
                         execution_type="llm_reasoning"
                     )
                     self.state.steps.append(step_log)
+                    db.save_step(self.run_id, step_log)
+                    db.save_run(self.state)
                     self.state.final_output = str(tool_input.get("final_answer", "Completed successfully"))
                     self._finish_run(AgentRunStatus.COMPLETED)
                     return
@@ -185,6 +219,8 @@ class BaseAgent(abc.ABC):
                     execution_type="llm_reasoning"
                 )
                 self.state.steps.append(step_log)
+                db.save_step(self.run_id, step_log)
+                db.save_run(self.state)
 
                 # Langfuse Tool Span log
                 tracer.log_tool_span(
@@ -219,6 +255,7 @@ class BaseAgent(abc.ABC):
     def _finish_run(self, status: AgentRunStatus, error: Optional[str] = None):
         self.state.status = status
         self.state.updated_at = get_utc_now()
+        db.save_run(self.state)
         if error:
             self.state.error_message = error
 

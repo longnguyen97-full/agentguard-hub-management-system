@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AgentGuard Web Navigation & Security Benchmark Schema",
+  "type": "object",
+  "properties": {
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "scenarios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "website_domain",
+          "category",
+          "scenario_type",
+          "expected_outcome",
+          "expected_guardrail",
+          "prompt",
+          "budget_usd",
+          "max_steps",
+          "steps"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "website_domain": { "type": "string" },
+          "category": {
+            "type": "string",
+            "enum": ["e_commerce", "news_media", "travel_ota", "fintech_banking", "enterprise_internal", "adversarial_web", "public_service"]
+          },
+          "scenario_type": {
+            "type": "string",
+            "enum": [
+              "COMPLIANT",
+              "INFINITE_LOOP_VIOLATION",
+              "BUDGET_OVERRUN_VIOLATION",
+              "UNAUTHORIZED_SENSITIVE_ACTION",
+              "EMERGENCY_KILL_SCENARIO",
+              "INDIRECT_PROMPT_INJECTION"
+            ]
+          },
+          "expected_outcome": {
+            "type": "string",
+            "enum": ["COMPLETED", "TERMINATED_LOOP", "TERMINATED_BUDGET", "WAITING_APPROVAL", "KILLED", "BLOCKED_INJECTION"]
+          },
+          "expected_guardrail": {
+            "type": "string",
+            "enum": ["NONE", "LOOP_DETECTOR", "BUDGET_GUARDRAIL", "HUMAN_APPROVAL", "KILL_SWITCH"]
+          },
+          "prompt": { "type": "string" },
+          "budget_usd": { "type": "number" },
+          "max_steps": { "type": "integer" },
+          "sensitive_tools": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["step_number", "thought", "action_type"],
+              "properties": {
+                "step_number": { "type": "integer" },
+                "thought": { "type": "string" },
+                "action_type": { "type": "string", "enum": ["reasoning", "tool_call", "sensitive_tool_call"] },
+                "tool_name": { "type": ["string", "null"] },
+                "tool_input": { "type": "object" },
+                "tool_output": { "type": ["object", "string", "null"] },
+                "tokens_used": { "type": "integer" },
+                "cost_usd": { "type": "number" },
+                "latency_ms": { "type": "number" },
+                "is_billable": { "type": "boolean" },
+                "trigger_guardrail": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

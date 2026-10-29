@@ -1,18 +1,38 @@
 """
 Agent Monitoring Lightweight Client SDK.
 Dành cho các hệ thống Agent bên ngoài muốn kết nối và bắn telemetry về Hub giám sát.
+Hỗ trợ đầy đủ tiếng Việt UTF-8 trên mọi nền tảng (Windows / Linux / macOS).
 """
 
+import os
+import sys
 import httpx
 from typing import Optional, Dict, Any
+
+# Đảm bảo UTF-8 hoạt động chuẩn trên Windows
+os.environ["PYTHONUTF8"] = "1"
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
 
 
 class AgentTracker:
     """Client SDK để kết nối vào Agent Monitoring Hub."""
 
-    def __init__(self, endpoint: str = "http://localhost:8000"):
+    def __init__(self, endpoint: str = "http://localhost:8000", api_key: Optional[str] = None):
         self.endpoint = endpoint.rstrip("/")
-        self.client = httpx.Client(timeout=10.0)
+        self.api_key = api_key or os.environ.get("AGENTGUARD_API_KEY")
+        headers = {"Content-Type": "application/json; charset=utf-8"}
+        if self.api_key:
+            headers["X-API-Key"] = self.api_key
+
+        self.client = httpx.Client(
+            headers=headers,
+            timeout=10.0
+        )
 
     def start_run(
         self,
@@ -90,4 +110,3 @@ class AgentSession:
             f"{self.tracker.endpoint}/api/agents/external/{self.run_id}/finish",
             json={"status": "FAILED", "error": error_message}
         )
-

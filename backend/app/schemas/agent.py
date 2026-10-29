@@ -1,7 +1,9 @@
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
+
+from app.core.sanitizer import sanitize_text
 
 
 def get_utc_now():
@@ -47,6 +49,11 @@ class AgentStepLog(BaseModel):
     execution_type: str = "llm_reasoning"  # "llm_reasoning" | "deterministic_tool" | "cache_hit"
     timestamp: datetime = Field(default_factory=get_utc_now)
 
+    @field_validator("thought", "tool_name", mode="before")
+    @classmethod
+    def sanitize_step_strings(cls, v):
+        return sanitize_text(v)
+
 
 class AgentRunRequest(BaseModel):
     prompt: str
@@ -61,6 +68,11 @@ class AgentRunRequest(BaseModel):
     user_id: Optional[str] = "user_demo"
     is_simulation: bool = True
 
+    @field_validator("prompt", "agent_name", mode="before")
+    @classmethod
+    def sanitize_request_strings(cls, v):
+        return sanitize_text(v)
+
 
 class AgentRunState(BaseModel):
     run_id: str
@@ -73,6 +85,11 @@ class AgentRunState(BaseModel):
     total_cost_usd: float = 0.0
     total_cost_vnd: float = 0.0
     is_simulation: bool = True
+
+    @field_validator("prompt", "agent_name", mode="before")
+    @classmethod
+    def sanitize_request_strings(cls, v):
+        return sanitize_text(v)
     pending_approval: Optional[ToolApprovalRequest] = None
     steps: List[AgentStepLog] = Field(default_factory=list)
     final_output: Optional[str] = None

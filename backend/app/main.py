@@ -1,12 +1,15 @@
+from typing import Optional
 from pathlib import Path
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Request, Depends
+from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from jinja2 import Environment, FileSystemLoader
 
 from app.config import settings
 from app.api.routes import router as agent_router
+from app.core.otlp import process_otlp_trace_payload
+from app.core.auth import verify_api_key
 
 app = FastAPI(
     title="AgentGuard",
@@ -51,6 +54,14 @@ async def serve_user_guide(request: Request):
     return HTMLResponse(content=template.render())
 
 
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    icon_path = assets_dir / "logo-icon.svg"
+    if icon_path.exists():
+        return FileResponse(icon_path, media_type="image/svg+xml")
+    return HTMLResponse(status_code=204)
+
+
 @app.get("/health")
 async def health_check():
     return {
@@ -60,3 +71,15 @@ async def health_check():
         "langfuse_host": settings.LANGFUSE_HOST,
         "debug": settings.DEBUG,
     }
+
+
+@app.post("/v1/traces")
+@app.post("/api/otlp/v1/traces")
+async def receive_otlp_traces(request: Request, _api_key: Optional[str] = Depends(verify_api_key)):
+    """Receives and processes standard OpenTelemetry trace spans (OTLP/HTTP JSON)."""
+    try:
+        payload = await request.json()
+        result = process_otlp_trace_payload(payload)
+        return result
+    except Exception as e:
+        return {"partialSuccess": {"errorMessage": str(e)}}

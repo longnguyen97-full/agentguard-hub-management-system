@@ -14,10 +14,13 @@ class Settings(BaseSettings):
     DEFAULT_MAX_STEPS: int = 10
     DEFAULT_TOKEN_LIMIT: int = 10000
     DEFAULT_BUDGET_USD: float = 0.50
+    BUDGET_ALERT_THRESHOLD_RATIO: float = 0.70  # Ngưỡng cảnh báo chi phí sớm (mặc định 70% ngân sách)
     USD_TO_VND_RATE: float = 25400.0  # Tỷ giá quy đổi USD -> VND
     SIMULATION_MODE: bool = True  # Chế độ mô phỏng / Mock sandbox vs Live Mode
     
     ALERT_WEBHOOK_URL: Optional[str] = None
+    DATABASE_PATH: str = "data/agentguard.db"
+    API_KEY: Optional[str] = None  # None: Open dev mode | String (e.g. 'ag_live_secret_key'): Requires API Key
     
     model_config = SettingsConfigDict(
         env_file=".env",

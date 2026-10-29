@@ -2,7 +2,9 @@ import asyncio
 import logging
 from datetime import datetime, timezone
 from typing import Dict, List, Optional
-from app.schemas.agent import AgentRunState, AgentRunStatus, ApprovalStatus, ApprovalDecision
+from app.schemas.agent import AgentRunState, AgentRunStatus, ApprovalStatus, ApprovalDecision, AgentStepLog
+from app.core.db import db
+from app.core.alerts import alert_notifier
 
 
 def get_utc_now():
@@ -21,15 +23,29 @@ class AgentRunHandle:
 
 
 class AgentRegistry:
-    """Central registry and state manager for active and historical agent runs."""
+    """Central registry and state manager with SQLite persistence and Webhook alerts."""
 
     def __init__(self):
         self.runs: Dict[str, AgentRunHandle] = {}
         self._subscribers: List[asyncio.Queue] = []
+        self._load_persisted_runs()
+
+    def _load_persisted_runs(self):
+        """Loads historical runs from SQLite database on startup."""
+        try:
+            persisted_runs = db.load_all_runs()
+            for run_state in persisted_runs:
+                self.runs[run_state.run_id] = AgentRunHandle(run_state)
+            if persisted_runs:
+                logger.info(f"Loaded {len(persisted_runs)} historical runs from SQLite persistence.")
+        except Exception as e:
+            logger.error(f"Failed to load historical runs from DB: {e}")
 
     def register_run(self, state: AgentRunState) -> AgentRunHandle:
         handle = AgentRunHandle(state)
         self.runs[state.run_id] = handle
+        # Persist to SQLite
+        db.save_run(state)
         self.broadcast_event({"type": "run_registered", "run": state.model_dump(mode="json")})
         return handle
 
@@ -44,6 +60,32 @@ class AgentRegistry:
         # Return sorted by created_at desc
         return sorted([h.state for h in self.runs.values()], key=lambda s: s.created_at, reverse=True)
 
+    def record_step(self, run_id: str, step: AgentStepLog):
+        """Records a step log, updates running totals, and persists to SQLite."""
+        handle = self.runs.get(run_id)
+        if not handle:
+            return
+
+        handle.state.steps.append(step)
+        handle.state.current_step = step.step_number
+        handle.state.total_tokens += step.tokens_used
+        handle.state.total_cost_usd = round(handle.state.total_cost_usd + step.cost_usd, 6)
+        from app.config import settings
+        handle.state.total_cost_vnd = round(handle.state.total_cost_usd * settings.USD_TO_VND_RATE, 2)
+        handle.state.updated_at = get_utc_now()
+
+        # Persist to SQLite
+        db.save_step(run_id, step)
+        db.save_run(handle.state)
+
+        self.broadcast_event({
+            "type": "step_completed",
+            "run_id": run_id,
+            "step": step.model_dump(mode="json"),
+            "total_tokens": handle.state.total_tokens,
+            "total_cost": handle.state.total_cost_usd
+        })
+
     def update_status(self, run_id: str, status: AgentRunStatus, error_message: Optional[str] = None):
         handle = self.runs.get(run_id)
         if not handle:
@@ -52,6 +94,27 @@ class AgentRegistry:
         handle.state.updated_at = get_utc_now()
         if error_message:
             handle.state.error_message = error_message
+
+        # Persist to SQLite
+        db.save_run(handle.state)
+
+        # Trigger Webhook Alert if approval needed or failed
+        if status == AgentRunStatus.WAITING_APPROVAL:
+            tool_name = handle.state.pending_approval.tool_name if handle.state.pending_approval else "Unknown Tool"
+            alert_notifier.trigger(
+                title=f"Approval Required: {handle.state.agent_name}",
+                message=f"Agent execution paused for sensitive action `{tool_name}`. Awaiting supervisor decision.",
+                level="WARNING",
+                metadata={"run_id": run_id, "tool": tool_name, "prompt": handle.state.prompt[:100]}
+            )
+        elif status == AgentRunStatus.FAILED:
+            alert_notifier.trigger(
+                title=f"Agent Guardrail Triggered: {handle.state.agent_name}",
+                message=f"Run failed or halted by safety guardrail: {error_message or 'Unknown reason'}",
+                level="CRITICAL",
+                metadata={"run_id": run_id, "error": error_message or "N/A"}
+            )
+
         self.broadcast_event({"type": "status_changed", "run_id": run_id, "status": status.value, "error": error_message})
 
     def request_kill(self, run_id: str) -> bool:
@@ -64,6 +127,17 @@ class AgentRegistry:
         handle.state.status = AgentRunStatus.KILLED
         handle.state.error_message = "Agent execution terminated by operator kill switch."
         handle.state.updated_at = get_utc_now()
+
+        # Persist to SQLite
+        db.save_run(handle.state)
+
+        # Dispatch Alert
+        alert_notifier.trigger(
+            title=f"Emergency Kill Switch Activated",
+            message=f"Operator terminated run `{run_id}` ({handle.state.agent_name}).",
+            level="CRITICAL",
+            metadata={"run_id": run_id, "agent_name": handle.state.agent_name}
+        )
 
         # If waiting on approval, wake it up immediately so it exits cleanly
         if not handle.approval_event.is_set():
@@ -88,6 +162,18 @@ class AgentRegistry:
         handle.state.pending_approval.decided_by = decision.user
         handle.state.pending_approval.decided_at = get_utc_now()
         handle.state.updated_at = get_utc_now()
+
+        # Persist to SQLite
+        db.save_run(handle.state)
+
+        # Dispatch Alert
+        action_verb = "APPROVED" if decision.approved else "REJECTED"
+        alert_notifier.trigger(
+            title=f"Human-in-the-Loop Decision: {action_verb}",
+            message=f"Operator `{decision.user}` has {action_verb} action for run `{run_id}`. Comment: {decision.comment or 'None'}",
+            level="SUCCESS" if decision.approved else "WARNING",
+            metadata={"run_id": run_id, "decision": action_verb, "user": decision.user}
+        )
 
         # Unblock the agent loop
         handle.approval_event.set()

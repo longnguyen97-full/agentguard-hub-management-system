@@ -4,6 +4,28 @@
 # All other components are bound to localhost (127.0.0.1) to only accept connections from the local machine.
 # External connections from other machines will not be able to reach these services directly.
 services:
+  agentguard-hub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      LANGFUSE_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY:-pk-lf-test}
+      LANGFUSE_SECRET_KEY: ${LANGFUSE_SECRET_KEY:-sk-lf-test}
+      LANGFUSE_HOST: ${LANGFUSE_HOST:-http://langfuse-web:3000}
+      APP_HOST: 0.0.0.0
+      APP_PORT: 8000
+      SIMULATION_MODE: "false"
+      ALERT_WEBHOOK_URL: ${ALERT_WEBHOOK_URL:-}
+      API_KEY: ${API_KEY:-}
+      DATABASE_PATH: /app/data/agentguard.db
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - langfuse-web
+
   langfuse-worker:
     image: docker.langfuse.com/langfuse/langfuse-worker:4
     restart: always

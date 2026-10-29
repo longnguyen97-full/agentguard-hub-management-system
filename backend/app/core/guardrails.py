@@ -67,6 +67,21 @@ class BudgetGuardrail:
 
         return True, None
 
+    @classmethod
+    def check_warning_threshold(
+        cls,
+        current_cost: float,
+        budget_usd: float,
+        threshold_ratio: float = 0.70
+    ) -> Tuple[bool, Optional[str]]:
+        """Returns True and warning message if current spend reaches or exceeds warning threshold ratio."""
+        if budget_usd <= 0:
+            return False, None
+        ratio = current_cost / budget_usd
+        if ratio >= threshold_ratio:
+            return True, f"Budget threshold warning: Current spend reached {ratio*100:.1f}% of budget limit (${current_cost:.4f} / ${budget_usd:.4f})."
+        return False, None
+
 
 class ActionApprovalGuardrail:
     """Checks whether an action/tool requires human intervention and authorization."""

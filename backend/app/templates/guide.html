@@ -220,6 +220,66 @@ session.finish(final_output="Invoice processed successfully!")</code></pre>
       </div>
     </section>
 
+    <!-- Crucial Integration Notes & Gotchas -->
+    <section id="crucial-notes" class="space-y-4">
+      <h2 id="sec-notes-title" class="text-xl font-bold text-white flex items-center space-x-2">
+        <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-400"></i>
+        <span>Crucial Integration Notes &amp; Troubleshooting (Lưu Ý Quan Trọng)</span>
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Note 1: Windows UTF-8 -->
+        <div class="bg-amber-950/20 border border-amber-500/30 rounded-xl p-5 space-y-2">
+          <div class="flex items-center space-x-2 text-amber-400 font-bold text-sm">
+            <i data-lucide="languages" class="w-4 h-4"></i>
+            <span>Tiếng Việt UTF-8 Trên Windows (Tránh lỗi dấu ?)</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Windows mặc định dùng <code>cp1252</code> làm biến dạng dấu tiếng Việt thành <code>?</code> và
+            <code>&#65533;</code>. Trong client Python, thêm <code>import os; os.environ["PYTHONUTF8"] = "1"</code> ở
+            dòng đầu và mở file bằng <code>encoding="utf-8"</code>. Trong PowerShell, gõ <code>chcp 65001</code>.
+          </p>
+        </div>
+
+        <!-- Note 2: uv run -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-2">
+          <div class="flex items-center space-x-2 text-indigo-400 font-bold text-sm">
+            <i data-lucide="terminal" class="w-4 h-4"></i>
+            <span>Luôn Khởi Chạy Bằng <code>uv run</code></span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Tránh lỗi <code>ModuleNotFoundError: No module named 'fastapi'</code> bằng cách khởi động qua
+            <code>uv run run.py</code> hoặc <code>uv run agent-hub</code> thay vì gọi python hệ thống chưa kích hoạt
+            venv.
+          </p>
+        </div>
+
+        <!-- Note 3: Billable separation -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-2">
+          <div class="flex items-center space-x-2 text-emerald-400 font-bold text-sm">
+            <i data-lucide="coins" class="w-4 h-4"></i>
+            <span>Tách Đoạn Tốn Phí vs Miễn Phí (0đ)</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Chỉ đặt <code>is_billable: true</code> cho các bước gọi LLM tốn token API. Đặt
+            <code>is_billable: false</code> (0đ) cho code Python, quét Regex, truy vấn Database nội bộ để báo cáo tài
+            chính chuẩn xác.
+          </p>
+        </div>
+
+        <!-- Note 4: Human-in-the-loop -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-2">
+          <div class="flex items-center space-x-2 text-sky-400 font-bold text-sm">
+            <i data-lucide="shield-check" class="w-4 h-4"></i>
+            <span>Phê Duyệt An Toàn (Human-in-the-Loop)</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Khai báo các tool nhạy cảm (cập nhật DB, thanh toán, gửi email) vào <code>require_approval_tools</code> để
+            Agent tự động dừng ở trạng thái <code>WAITING_APPROVAL</code> chờ duyệt.
+          </p>
+        </div>
+      </div>
+    </section>
+
     <!-- Section 4: Community, Feedback & Sponsorship -->
     <section id="community" class="space-y-4">
       <h2 id="sec4-title" class="text-xl font-bold text-white flex items-center space-x-2">
@@ -231,36 +291,21 @@ session.finish(final_output="Invoice processed successfully!")</code></pre>
       </p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Community Telegram Card -->
+        <!-- Star on GitHub Card -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
-          <div class="flex items-center space-x-2.5 text-sky-400">
-            <i data-lucide="message-circle" class="w-5 h-5"></i>
-            <h3 class="font-bold text-white text-sm" id="c-tg-title">Telegram Developer Community</h3>
+          <div class="flex items-center space-x-2.5 text-amber-400">
+            <i data-lucide="star" class="w-5 h-5 fill-amber-400"></i>
+            <h3 class="font-bold text-white text-sm" id="c-star-title">Star on GitHub</h3>
           </div>
-          <p class="text-xs text-slate-400 leading-relaxed" id="c-tg-desc">
-            Join our Telegram group with real-time AI Support Agent to ask questions, report bugs, and exchange ideas
-            with other agent engineers.
+          <p class="text-xs text-slate-400 leading-relaxed" id="c-star-desc">
+            If you find AgentGuard useful for monitoring and securing AI agents, please give our repository a Star on
+            GitHub! Your support helps the open-source project grow.
           </p>
-          <a href="https://t.me/+zHJ-OV4OzZ9hZjE1" target="_blank"
-            class="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 transition">
-            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-            <span>Join Telegram Group</span>
+          <a href="https://github.com/longnguyen97-full/agent-management-system/" target="_blank"
+            class="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition">
+            <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+            <span id="btn-star-text">⭐ Star on GitHub</span>
           </a>
-        </div>
-
-        <!-- Donation QR Card -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3 text-center">
-          <div class="flex items-center justify-center space-x-2 text-pink-400">
-            <i data-lucide="coffee" class="w-5 h-5"></i>
-            <h3 class="font-bold text-white text-sm" id="c-donate-title">Support &amp; Donate</h3>
-          </div>
-          <p class="text-xs text-slate-400" id="c-donate-desc">
-            Buy the author a coffee to support open-source AI development!
-          </p>
-          <div class="p-2 bg-white rounded-xl inline-block border border-slate-700">
-            <img src="/assets/donate-qr.jpg" alt="Donation QR" class="w-36 h-auto rounded-lg mx-auto" />
-          </div>
-          <p class="text-[11px] text-slate-500 font-mono">Scan via Mobile Banking / VietQR</p>
         </div>
       </div>
     </section>
@@ -292,8 +337,8 @@ session.finish(final_output="Invoice processed successfully!")</code></pre>
         sec3: "3. REST API Quick Reference",
         sec4: "4. Community, Feedback & Sponsorship",
         sec4Desc: "Join our community, provide feedback, get support from AI agents, or sponsor the project:",
-        cTgTitle: "Telegram Developer Community",
-        cTgDesc: "Join our Telegram group with real-time AI Support Agent to ask questions, report bugs, and exchange ideas with other agent engineers.",
+        cStarTitle: "Star on GitHub",
+        cStarDesc: "If you find AgentGuard useful for your AI agents, please give us a Star on GitHub to support the open-source community!",
         cDonateTitle: "Support & Donate",
         cDonateDesc: "Buy the author a coffee to support open-source development!"
       },
@@ -316,8 +361,8 @@ session.finish(final_output="Invoice processed successfully!")</code></pre>
         sec3: "3. Tra Cứu Nhanh Các Điểm Cuối REST API",
         sec4: "4. Cộng Đồng, Phản Hồi & Tài Trợ",
         sec4Desc: "Tham gia cộng đồng nhà phát triển, đóng góp ý kiến hoặc mời tác giả một ly cà phê:",
-        cTgTitle: "Cộng Đồng Nhà Phát Triển Telegram",
-        cTgDesc: "Tham gia nhóm Telegram có sẵn Bot AI Support trả lời thắc mắc kỹ thuật, báo cáo lỗi và trao đổi cùng cộng đồng xây dựng Agent.",
+        cStarTitle: "Ủng Hộ 1 Sao Trên GitHub (Star)",
+        cStarDesc: "Nếu bạn thấy AgentGuard hữu ích cho hệ thống Agent của mình, hãy tặng dự án 1 Star trên GitHub để tiếp thêm động lực phát triển nhé!",
         cDonateTitle: "Ủng Hộ & Tài Trợ",
         cDonateDesc: "Mời tác giả một ly cà phê để tiếp tục duy trì và phát triển mã nguồn mở AgentGuard!"
       }
@@ -354,8 +399,8 @@ session.finish(final_output="Invoice processed successfully!")</code></pre>
       if (data.sec4 && document.getElementById('sec4-title')) {
         document.getElementById('sec4-title').querySelector('span').innerText = data.sec4;
         document.getElementById('sec4-desc').innerText = data.sec4Desc;
-        if (document.getElementById('c-tg-title')) document.getElementById('c-tg-title').innerText = data.cTgTitle;
-        if (document.getElementById('c-tg-desc')) document.getElementById('c-tg-desc').innerText = data.cTgDesc;
+        if (document.getElementById('c-star-title')) document.getElementById('c-star-title').innerText = data.cStarTitle;
+        if (document.getElementById('c-star-desc')) document.getElementById('c-star-desc').innerText = data.cStarDesc;
         if (document.getElementById('c-donate-title')) document.getElementById('c-donate-title').innerText = data.cDonateTitle;
         if (document.getElementById('c-donate-desc')) document.getElementById('c-donate-desc').innerText = data.cDonateDesc;
       }
