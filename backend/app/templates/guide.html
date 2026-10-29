@@ -17,7 +17,7 @@
 
   <!-- Header -->
   <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
         <img src="/assets/logo-icon.svg" alt="AgentGuard Logo" class="w-8 h-8" />
         <div>
@@ -132,29 +132,94 @@
       </div>
     </section>
 
-    <!-- Section 2: Integration via SDK -->
+    <!-- Section 2: Client Integration Methods -->
     <section class="space-y-6">
-      <h2 id="sec2-title" class="text-xl font-bold text-white flex items-center space-x-2">
-        <i data-lucide="terminal" class="w-5 h-5 text-indigo-400"></i>
-        <span>2. Client SDK Quick Integration (3 Steps)</span>
-      </h2>
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <h2 id="sec2-title" class="text-xl font-bold text-white flex items-center space-x-2">
+          <i data-lucide="cpu" class="w-5 h-5 text-indigo-400"></i>
+          <span>2. Client Integration Guide (AI Assistant &amp; SDKs)</span>
+        </h2>
+        <a href="https://github.com" target="_blank" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium flex items-center space-x-1">
+          <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+          <span id="lbl-full-integration-link">Full Integration Manual (docs/CLIENT_INTEGRATION_GUIDE.md)</span>
+        </a>
+      </div>
 
-      <p id="sec2-desc" class="text-xs text-slate-300">
-        Copy <code class="text-indigo-300 bg-slate-900 px-1 py-0.5 rounded">agent_sdk.py</code> into your project and
-        stream steps into AgentGuard in real time:
+      <p id="sec2-desc" class="text-xs text-slate-300 leading-relaxed">
+        Connect your external agents into AgentGuard with real-time fail-open safety. Choose between 1-click automated AI Assistant integration or manual SDK embedding:
       </p>
 
-      <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 overflow-x-auto">
-        <pre class="font-mono text-xs text-indigo-200"><code>from agent_sdk import AgentTracker
+      <!-- Option 0: AI Coding Assistant Automated Integration (Recommended) -->
+      <div class="p-5 rounded-xl bg-gradient-to-r from-indigo-950/60 to-purple-950/40 border border-indigo-500/30 space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">RECOMMENDED</span>
+            <h3 id="opt0-title" class="text-sm font-bold text-indigo-200 flex items-center space-x-1.5">
+              <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
+              <span>Method 0: 1-Click Automated AI Assistant Embedding</span>
+            </h3>
+          </div>
+          <span class="text-[11px] font-mono text-slate-400">Antigravity / Cursor / Claude Code / Copilot</span>
+        </div>
 
-# 1. Initialize tracker pointing to AgentGuard Hub
+        <p id="opt0-desc" class="text-xs text-slate-300 leading-relaxed">
+          No manual code editing required! If you use an AI coding assistant, simply feed it our standardized skill (<code class="text-indigo-300 font-mono">skills/embed-agentguard/SKILL.md</code>). The assistant analyzes your project, copies the SDK, and instruments your agent with fail-open safety automatically.
+        </p>
+
+        <!-- Copyable Prompt Box -->
+        <div class="bg-slate-950/80 border border-slate-800 rounded-lg p-3 space-y-1.5">
+          <div class="flex items-center justify-between text-[11px] text-slate-400">
+            <span class="font-medium text-slate-300" id="lbl-sample-prompt">Sample prompt for your AI Assistant:</span>
+            <span class="text-[10px] text-slate-500">Copy &amp; paste into chat</span>
+          </div>
+          <div class="flex items-center justify-between bg-slate-900 border border-slate-800 rounded px-3 py-2 text-xs font-mono text-indigo-300">
+            <code id="prompt-code-text">Use embed-agentguard skill to wrap this AI agent with AgentGuard guardrails and telemetry at http://localhost:8000</code>
+            <button onclick="copyPromptText()" id="btn-copy-prompt" class="ml-2 px-2 py-0.5 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-200 rounded transition flex items-center space-x-1">
+              <i data-lucide="copy" class="w-3 h-3"></i>
+              <span id="lbl-copy-btn">Copy</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] text-slate-400 pt-1">
+          <div class="flex items-center space-x-1.5">
+            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span id="opt0-f1">Auto stack &amp; loop detection</span>
+          </div>
+          <div class="flex items-center space-x-1.5">
+            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span id="opt0-f2">Zero downtime (Fail-open safety)</span>
+          </div>
+          <div class="flex items-center space-x-1.5">
+            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span id="opt0-f3">Deterministic tools marked $0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabbed Manual SDK Snippets -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 id="manual-sdks-title" class="text-xs font-bold uppercase tracking-wider text-slate-400">Manual SDK Integration</h3>
+          <div class="flex items-center space-x-2 text-xs">
+            <button onclick="switchSdkTab('python')" id="sdk-tab-py" class="px-2.5 py-1 rounded-md font-bold bg-indigo-600 text-white transition">Python (agent_sdk.py)</button>
+            <button onclick="switchSdkTab('ts')" id="sdk-tab-ts" class="px-2.5 py-1 rounded-md font-medium bg-slate-800 text-slate-400 hover:text-white transition">TypeScript / Node.js</button>
+          </div>
+        </div>
+
+        <!-- Python Code Tab -->
+        <div id="sdk-content-py" class="bg-slate-900 border border-slate-800 rounded-xl p-4 overflow-x-auto">
+          <pre class="font-mono text-xs text-indigo-200"><code>from agent_sdk import AgentTracker
+
+# 1. Initialize tracker pointing to AgentGuard Hub (:8000)
 tracker = AgentTracker(endpoint="http://localhost:8000")
 
-# 2. Register run session
+# 2. Register run session with budget & step limits
 session = tracker.start_run(
     agent_name="ProductionAgent",
     prompt="Query customer invoice #4088 and process refund",
-    budget_usd=0.20
+    budget_usd=0.20,
+    max_steps=10
 )
 
 # 3. Log billable LLM thought & tool call
@@ -168,8 +233,38 @@ session.log_step(
     is_billable=True
 )
 
-# 4. Finish session
+# 4. Finish session safely
 session.finish(final_output="Invoice processed successfully!")</code></pre>
+        </div>
+
+        <!-- TypeScript Code Tab -->
+        <div id="sdk-content-ts" class="hidden bg-slate-900 border border-slate-800 rounded-xl p-4 overflow-x-auto">
+          <pre class="font-mono text-xs text-indigo-200"><code>import { AgentHubClient } from '@/lib/agentHubClient';
+
+// 1. Initialize TypeScript client (points to AGENT_HUB_URL or :8000)
+const hub = new AgentHubClient(process.env.AGENT_HUB_URL || 'http://localhost:8000');
+
+// 2. Start session
+const run = await hub.startRun({
+  agent_name: 'NextJsChatBot',
+  prompt: 'Calculate user shipping costs and confirm checkout',
+  budget_usd: 0.15,
+  max_steps: 8
+});
+
+// 3. Log step with fail-open safety
+await hub.logStep(run.run_id, {
+  step_number: 1,
+  thought: 'Executing tax & shipping calculation via local microservice',
+  tool_name: 'calc_shipping',
+  tool_input: { zip: '70000', weight_kg: 2.5 },
+  tool_output: { fee_vnd: 35000 },
+  is_billable: false // Deterministic local code = $0.00
+});
+
+// 4. Conclude session
+await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order confirmed' });</code></pre>
+        </div>
       </div>
     </section>
 
@@ -214,6 +309,26 @@ session.finish(final_output="Invoice processed successfully!")</code></pre>
               <td class="p-3 text-purple-400 font-bold">GET</td>
               <td class="p-3">/api/agents/stream</td>
               <td class="p-3 font-sans text-slate-400">Server-Sent Events (SSE) realtime broadcast</td>
+            </tr>
+            <tr>
+              <td class="p-3 text-blue-400 font-bold">GET</td>
+              <td class="p-3">/api/agents/data/stats</td>
+              <td class="p-3 font-sans text-slate-400">Storage analytics for Dashboard SQLite &amp; Langfuse</td>
+            </tr>
+            <tr>
+              <td class="p-3 text-emerald-400 font-bold">POST</td>
+              <td class="p-3">/api/agents/data/backup</td>
+              <td class="p-3 font-sans text-slate-400">Create timestamped backup archive (.zip)</td>
+            </tr>
+            <tr>
+              <td class="p-3 text-indigo-400 font-bold">POST</td>
+              <td class="p-3">/api/agents/data/restore</td>
+              <td class="p-3 font-sans text-slate-400">Restore state from backup with automated rollback</td>
+            </tr>
+            <tr>
+              <td class="p-3 text-rose-400 font-bold">POST</td>
+              <td class="p-3">/api/agents/data/reset</td>
+              <td class="p-3 font-sans text-slate-400">Safe data purge (Dashboard / Langfuse / All)</td>
             </tr>
           </tbody>
         </table>
@@ -333,7 +448,15 @@ session.finish(final_output="Invoice processed successfully!")</code></pre>
         c4Title: "Hard Budget Guardrail",
         c4Desc: "Enforces strict step limits, token thresholds, and financial limits in both USD and VND to keep AI deployment costs predictable and bounded.",
         sec2: "2. Client SDK Quick Integration (3 Steps)",
-        sec2Desc: "Copy agent_sdk.py into your project and stream steps into AgentGuard in real time:",
+                sec2Desc: "Connect your external agents into AgentGuard with real-time fail-open safety. Choose between 1-click automated AI Assistant integration or manual SDK embedding:",
+        opt0Title: "Method 0: 1-Click Automated AI Assistant Embedding",
+        opt0Desc: "No manual code editing required! If you use an AI coding assistant, simply feed it our standardized skill (skills/embed-agentguard/SKILL.md). The assistant analyzes your project, copies the SDK, and instruments your agent with fail-open safety automatically.",
+        samplePrompt: "Sample prompt for your AI Assistant:",
+        promptText: "Use embed-agentguard skill to wrap this AI agent with AgentGuard guardrails and telemetry at http://localhost:8000",
+        opt0F1: "Auto stack & loop detection",
+        opt0F2: "Zero downtime (Fail-open safety)",
+        opt0F3: "Deterministic tools marked $0.00",
+        manualSdksTitle: "Manual SDK Integration",
         sec3: "3. REST API Quick Reference",
         sec4: "4. Community, Feedback & Sponsorship",
         sec4Desc: "Join our community, provide feedback, get support from AI agents, or sponsor the project:",
@@ -357,7 +480,15 @@ session.finish(final_output="Invoice processed successfully!")</code></pre>
         c4Title: "Giới Hạn Ngân Sách Tự Động",
         c4Desc: "Áp dụng trần cứng về số bước suy luận, lượng token và chi phí bằng cả USD lẫn VND, đảm bảo ngân sách luôn nằm trong tầm kiểm soát.",
         sec2: "2. Tích Hợp Bằng Client SDK (3 Bước Đơn Giản)",
-        sec2Desc: "Chỉ cần copy file agent_sdk.py vào dự án Agent của bạn và gửi dữ liệu về AgentGuard theo thời gian thực:",
+        sec2Desc: "Kết nối AI Agent của bạn vào AgentGuard với cơ chế an toàn fail-open thời gian thực. Lựa chọn giữa tích hợp tự động 1 chạm bằng Trợ lý AI hoặc nhúng SDK thủ công:",
+        opt0Title: "Phương Án 0: Tích Hợp Tự Động 1 Chạm Bằng Trợ Lý AI Coding",
+        opt0Desc: "Không cần tự viết code! Nếu bạn sử dụng trợ lý lập trình AI (Antigravity, Cursor, Claude Code, Copilot, Windsurf), chỉ cần cung cấp file AI Skill chuẩn hóa (skills/embed-agentguard/SKILL.md). Trợ lý sẽ tự quét dự án, sao chép SDK và nhúng chốt chặn an toàn fail-open hoàn toàn tự động.",
+        samplePrompt: "Câu lệnh mẫu gửi cho Trợ lý AI của bạn:",
+        promptText: "Dùng skill embed-agentguard để nhúng toàn bộ chốt chặn an toàn và telemetry của AgentGuard vào bot này kết nối tới http://localhost:8000",
+        opt0F1: "Tự nhận diện framework & vòng lặp",
+        opt0F2: "Không gián đoạn (Cơ chế fail-open an toàn)",
+        opt0F3: "Tách bạch công cụ miễn phí 0đ và LLM",
+        manualSdksTitle: "Tích Hợp Thủ Công Bằng Bộ SDK",
         sec3: "3. Tra Cứu Nhanh Các Điểm Cuối REST API",
         sec4: "4. Cộng Đồng, Phản Hồi & Tài Trợ",
         sec4Desc: "Tham gia cộng đồng nhà phát triển, đóng góp ý kiến hoặc mời tác giả một ly cà phê:",

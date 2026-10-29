@@ -33,102 +33,177 @@
   class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
 
   <!-- Navigation Bar -->
-  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-30">
+    <div class="max-w-8xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">
 
       <!-- Brand & Unified Name -->
-      <div class="flex items-center space-x-3">
-        <a href="/dashboard" class="flex items-center space-x-3">
-          <img src="/assets/logo-icon.svg" alt="AgentGuard Logo" class="w-8 h-8" />
+      <div class="flex items-center space-x-2.5 shrink-0">
+        <a href="/dashboard" class="flex items-center space-x-2 sm:space-x-2.5">
+          <img src="/assets/logo-icon.svg" alt="AgentGuard Logo" class="w-7 h-7 sm:w-8 h-8" />
           <div>
-            <div class="flex items-center space-x-2">
-              <span class="text-lg font-extrabold text-white tracking-tight">Agent<span
-                  class="text-indigo-400">Guard</span></span>
-              <span
-                class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 font-mono font-semibold">HUB</span>
+            <div class="flex items-center space-x-1.5">
+              <span class="text-base sm:text-lg font-extrabold text-white tracking-tight">Agent<span class="text-indigo-400">Guard</span></span>
+              <span class="text-[9px] sm:text-[10px] px-1 py-0.2 rounded bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 font-mono font-semibold">HUB</span>
             </div>
-            <p id="nav-app-subtitle" class="text-xs text-slate-400">AI Agent Control Plane, Safety Guardrails &amp;
-              Tracing</p>
+            <p id="nav-app-subtitle" class="text-[11px] text-slate-400 hidden lg:block">AI Agent Control Plane &amp; Safety Guardrails</p>
           </div>
         </a>
       </div>
 
-      <!-- Actions Bar (Streamlined) -->
-      <div class="flex items-center space-x-2 sm:space-x-2.5">
+      <!-- Actions Bar (Strictly Responsive: Compact on Mobile/Tablet, Full on Desktop xl+) -->
+      <div class="flex items-center space-x-1.5 sm:space-x-2">
 
-        <!-- Simulation Mode Toggle Button -->
+        <!-- Simulation Mode Toggle Button (Compact text on mobile) -->
         <button id="sim-mode-btn" onclick="toggleSimulationMode()"
-          class="flex items-center space-x-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition shadow-sm"
+          class="flex items-center space-x-1.5 px-2 sm:px-2.5 py-1 sm:py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition shadow-sm shrink-0"
           title="Toggle Simulation Sandbox vs Live Mode">
           <span id="sim-mode-dot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-          <span id="sim-mode-text">Simulation: ON</span>
+          <span id="sim-mode-text" class="text-xs">Simulation: ON</span>
         </button>
 
-        <!-- ROI & Cost Estimator Button -->
+        <!-- ROI & Cost Estimator Button (Desktop xl+ only, in mobile drawer otherwise) -->
         <button onclick="openEstimatorModal()"
-          class="hidden md:flex items-center space-x-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition"
-          title="Interactive Token & Cost Estimator">
+          class="hidden xl:flex items-center space-x-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition"
+          title="Interactive Token &amp; Cost Estimator">
           <i data-lucide="calculator" class="w-3.5 h-3.5 text-indigo-400"></i>
           <span id="nav-calc-link">Estimator</span>
         </button>
 
-        <!-- Alerts & Security Controls Group -->
-        <div class="flex items-center space-x-1.5">
-          <!-- Webhook Alerts Pill -->
-          <button onclick="openWebhookModal()" id="webhook-pill"
-            class="flex items-center space-x-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
-            title="Multi-Channel Webhook Alerts (Slack/Discord/n8n)">
-            <i data-lucide="bell" class="w-3.5 h-3.5 text-amber-400"></i>
-            <span id="nav-webhook-status">Alerts</span>
-          </button>
+        <!-- Webhook Alerts Pill (Tablet md+ and Desktop) -->
+        <button onclick="openWebhookModal()" id="webhook-pill"
+          class="hidden md:flex items-center space-x-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
+          title="Multi-Channel Webhook Alerts (Slack/Discord/n8n)">
+          <i data-lucide="bell" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span id="nav-webhook-status">Alerts</span>
+        </button>
 
+        <!-- Desktop Controls Group (Visible only on xl ≥ 1280px) -->
+        <div class="hidden xl:flex items-center space-x-1.5">
           <!-- API Security Pill -->
           <button onclick="promptApiKey()" id="api-key-pill"
-            class="hidden sm:flex items-center space-x-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
+            class="flex items-center space-x-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
             title="Operator API Key Settings">
             <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
             <span id="nav-auth-status">API Key</span>
           </button>
+
+          <!-- 1. Data Backup & Restore Pill -->
+          <button onclick="openDataModal()" id="data-pill"
+            class="flex items-center space-x-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
+            title="Backup &amp; Restore Archives">
+            <i data-lucide="archive" class="w-3.5 h-3.5 text-sky-400"></i>
+            <span id="nav-data-text">Backup &amp; Restore</span>
+          </button>
+
+          <!-- 2. Reset / Wipe Current Data Pill -->
+          <button onclick="openResetModal()" id="reset-pill"
+            class="flex items-center space-x-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 transition shadow-sm"
+            title="Xóa trắng dữ liệu hiện tại về 0">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5 text-rose-400"></i>
+            <span id="nav-reset-text">Reset Data</span>
+          </button>
         </div>
 
-        <!-- Documentation & Tools Icon Cluster -->
-        <div class="flex items-center space-x-1 bg-slate-800/80 p-0.5 rounded-lg border border-slate-700">
+        <!-- Documentation & Tools Icon Cluster (Desktop md+) -->
+        <div class="hidden md:flex items-center space-x-1 bg-slate-800/80 p-0.5 rounded-lg border border-slate-700 shrink-0">
           <a href="/guide" target="_blank" class="p-1 rounded-md text-slate-400 hover:text-sky-300 transition"
-            title="User Guide & Integration Manual">
-            <i data-lucide="book-open" class="w-4 h-4"></i>
+            title="User Guide &amp; Integration Manual">
+            <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
           </a>
           <a href="/docs" target="_blank" class="p-1 rounded-md text-slate-400 hover:text-emerald-300 transition"
             title="Swagger API Documentation (/docs)">
-            <i data-lucide="code" class="w-4 h-4"></i>
+            <i data-lucide="code" class="w-3.5 h-3.5"></i>
           </a>
           <a href="http://localhost:3000" target="_blank"
             class="p-1 rounded-md text-slate-400 hover:text-indigo-300 transition"
             title="Langfuse Tracing Core (:3000)">
-            <i data-lucide="external-link" class="w-4 h-4"></i>
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
           </a>
         </div>
 
-        <!-- Language & Currency Toggle -->
-        <div class="flex items-center bg-slate-800/90 p-0.5 rounded-lg border border-slate-700"
-          title="Switch Language & Currency">
+        <!-- Language & Currency Toggle (Compact on all devices) -->
+        <div class="flex items-center bg-slate-800/90 p-0.5 rounded-lg border border-slate-700 shrink-0"
+          title="Switch Language &amp; Currency">
           <button id="lang-btn-en" onclick="setLanguage('en')"
-            class="px-2 py-0.5 text-xs rounded transition bg-indigo-600 text-white font-medium shadow-sm"
+            class="px-1.5 sm:px-2 py-0.5 text-xs rounded transition bg-indigo-600 text-white font-medium shadow-sm"
             title="English (USD $)">
-            <span>EN ($)</span>
+            <span>EN</span>
           </button>
           <button id="lang-btn-vi" onclick="setLanguage('vi')"
-            class="px-2 py-0.5 text-xs rounded transition text-slate-400 hover:text-white font-medium"
+            class="px-1.5 sm:px-2 py-0.5 text-xs rounded transition text-slate-400 hover:text-white font-medium"
             title="Tiếng Việt (VND ₫)">
-            <span>VI (₫)</span>
+            <span>VI</span>
           </button>
         </div>
 
+        <!-- Mobile & Tablet Menu Toggle Button (Visible on screens < xl) -->
+        <button onclick="toggleMobileMenu()" id="btn-mobile-menu"
+          class="xl:hidden p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition flex items-center space-x-1 shrink-0"
+          title="Toggle Navigation Menu">
+          <i data-lucide="menu" class="w-4 h-4"></i>
+          <span class="text-xs font-medium hidden sm:inline" id="lbl-tools-menu-text">Menu</span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Responsive Drawer for Tablet & Mobile (< xl) -->
+    <div id="mobile-drawer" class="hidden xl:hidden border-t border-slate-800 bg-slate-900/95 backdrop-blur px-4 py-3 space-y-3 animate-in slide-in-from-top-2 duration-150 shadow-2xl">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+        <button onclick="openEstimatorModal(); toggleMobileMenu()"
+          class="flex items-center space-x-2 p-2 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition font-medium">
+          <i data-lucide="calculator" class="w-4 h-4 text-indigo-400"></i>
+          <span>Estimator (ROI)</span>
+        </button>
+
+        <button onclick="openWebhookModal(); toggleMobileMenu()"
+          class="flex items-center space-x-2 p-2 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-amber-300 border border-slate-700 transition font-medium">
+          <i data-lucide="bell" class="w-4 h-4 text-amber-400"></i>
+          <span>Webhook Alerts</span>
+        </button>
+
+        <button onclick="promptApiKey(); toggleMobileMenu()"
+          class="flex items-center space-x-2 p-2 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition font-medium">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+          <span>Operator API Key</span>
+        </button>
+
+        <button onclick="openDataModal(); toggleMobileMenu()"
+          class="flex items-center space-x-2 p-2 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-sky-300 border border-slate-700 transition font-medium">
+          <i data-lucide="archive" class="w-4 h-4 text-sky-400"></i>
+          <span>Backup &amp; Restore</span>
+        </button>
+
+        <button onclick="openResetModal(); toggleMobileMenu()"
+          class="col-span-2 sm:col-span-4 flex items-center justify-center space-x-2 p-2.5 rounded-lg bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 transition font-medium">
+          <i data-lucide="trash-2" class="w-4 h-4 text-rose-400"></i>
+          <span>Reset Dữ Liệu Hiện Tại (Purge All Data)</span>
+        </button>
+      </div>
+
+      <div class="flex items-center justify-around pt-2 border-t border-slate-800 text-xs text-slate-400">
+        <a href="/guide" target="_blank" class="flex items-center space-x-1 hover:text-sky-300 transition">
+          <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+          <span>User Guide</span>
+        </a>
+        <a href="/docs" target="_blank" class="flex items-center space-x-1 hover:text-emerald-300 transition">
+          <i data-lucide="code" class="w-3.5 h-3.5"></i>
+          <span>Swagger API</span>
+        </a>
+        <a href="http://localhost:3000" target="_blank" class="flex items-center space-x-1 hover:text-indigo-300 transition">
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          <span>Langfuse (:3000)</span>
+        </a>
+        <button onclick="openDonateModal(); toggleMobileMenu()" class="flex items-center space-x-1 text-pink-400 hover:text-pink-300 transition">
+          <i data-lucide="heart" class="w-3.5 h-3.5"></i>
+          <span>Donate</span>
+        </button>
       </div>
     </div>
   </header>
 
   <!-- Main Content -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-5">
+  <main class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-5">
 
     <!-- Langfuse Observability & Telemetry Integration Banner -->
     <div id="langfuse-banner"
@@ -166,7 +241,7 @@
     </div>
 
     <!-- Metrics Header Overview (4 Cards) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
 
       <!-- Card 1: Total Runs / Traces -->
       <div
@@ -211,10 +286,10 @@
       <div
         class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm relative overflow-hidden">
         <div>
-          <div class="flex items-center space-x-2">
-            <p id="lbl-estimated-cost" class="text-xs font-medium text-slate-400">Estimated Cost</p>
+          <div class="flex items-center justify-between gap-1.5">
+            <p id="lbl-estimated-cost" class="text-xs font-medium text-slate-400 truncate">Estimated Cost</p>
             <button onclick="toggleCurrency()" id="currency-toggle-btn"
-              class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition">
+              class="px-1.5 py-0.5 text-[9px] font-bold rounded bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition shrink-0">
               USD ⇄ VND
             </button>
           </div>
@@ -253,47 +328,51 @@
           </button>
         </div>
 
-        <div class="flex items-center flex-wrap gap-2 pt-2 border-t border-slate-800/80">
-          <span id="lbl-quick-scenarios" class="text-xs font-semibold text-slate-400 mr-1">Quick Scenarios:</span>
+        <div class="pt-2 border-t border-slate-800/80 space-y-2">
+          <div class="flex items-center justify-between">
+            <span id="lbl-quick-scenarios" class="text-xs font-semibold text-slate-400 shrink-0">Quick Scenarios:</span>
+            <span class="text-[10px] text-slate-500 sm:hidden">Swipe ⇄</span>
+          </div>
+          <div class="flex items-center gap-2 overflow-x-auto pb-1.5 pt-0.5 scrollbar-none sm:flex-wrap">
 
           <!-- 1: Standard Research -->
           <button id="btn-scen-1" onclick="runScenario(1)"
-            class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-md border border-slate-700 transition flex items-center space-x-1.5 shadow-sm">
+            class="shrink-0 whitespace-nowrap text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-md border border-slate-700 transition flex items-center space-x-1.5 shadow-sm">
             <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i>
             <span id="txt-scen-1">1. Standard Task</span>
           </button>
 
           <!-- 2: Sensitive HITL -->
           <button id="btn-scen-2" onclick="runScenario(2)"
-            class="text-xs bg-amber-950/40 hover:bg-amber-900/60 text-amber-300 border border-amber-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
+            class="shrink-0 whitespace-nowrap text-xs bg-amber-950/40 hover:bg-amber-900/60 text-amber-300 border border-amber-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
             <i data-lucide="user-check" class="w-3.5 h-3.5 text-amber-400"></i>
             <span id="txt-scen-2">2. Sensitive Action (HITL)</span>
           </button>
 
           <!-- 3: Infinite Loop -->
           <button id="btn-scen-3" onclick="runScenario(3)"
-            class="text-xs bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
+            class="shrink-0 whitespace-nowrap text-xs bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
             <i data-lucide="repeat" class="w-3.5 h-3.5 text-rose-400"></i>
             <span id="txt-scen-3">3. Infinite Loop Guardrail</span>
           </button>
 
           <!-- 4: Budget Spike Ceiling -->
           <button id="btn-scen-4" onclick="runScenario(4)"
-            class="text-xs bg-purple-950/40 hover:bg-purple-900/60 text-purple-300 border border-purple-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
+            class="shrink-0 whitespace-nowrap text-xs bg-purple-950/40 hover:bg-purple-900/60 text-purple-300 border border-purple-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
             <i data-lucide="coins" class="w-3.5 h-3.5 text-purple-400"></i>
             <span id="txt-scen-4">4. Budget Ceiling Spike</span>
           </button>
 
           <!-- 5: Prompt Injection Defense -->
           <button id="btn-scen-5" onclick="runScenario(5)"
-            class="text-xs bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
+            class="shrink-0 whitespace-nowrap text-xs bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
             <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-red-400"></i>
             <span id="txt-scen-5">5. Prompt Injection Defense</span>
           </button>
 
           <!-- 6: Tool Failover -->
           <button id="btn-scen-6" onclick="runScenario(6)"
-            class="text-xs bg-blue-950/40 hover:bg-blue-900/60 text-blue-300 border border-blue-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
+            class="shrink-0 whitespace-nowrap text-xs bg-blue-950/40 hover:bg-blue-900/60 text-blue-300 border border-blue-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
             <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-blue-400"></i>
             <span id="txt-scen-6">6. Tool Timeout Resilience</span>
           </button>
@@ -340,7 +419,7 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
         <div class="flex items-center justify-between flex-wrap gap-2 pt-1 border-t border-slate-800/80">
           <div class="flex items-center space-x-2">
             <button onclick="sendLiveProbe()" id="btn-live-probe"
-              class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-3.5 py-1.5 rounded-md transition shadow-sm shadow-emerald-600/30 flex items-center space-x-1.5">
+              class="shrink-0 whitespace-nowrap text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-3.5 py-1.5 rounded-md transition shadow-sm shadow-emerald-600/30 flex items-center space-x-1.5">
               <i data-lucide="radio" class="w-3.5 h-3.5"></i>
               <span id="lbl-send-probe">Send Live Ingestion Probe</span>
             </button>
@@ -366,69 +445,120 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
     </div>
 
     <!-- Main 2-Column Split: Runs List & Live Trajectory Inspector -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-      <!-- Left Column: Runs List -->
-      <div class="lg:col-span-5 space-y-3">
-        <div class="flex items-center justify-between">
-          <h2 class="text-sm font-semibold text-slate-300 flex items-center space-x-2">
-            <i data-lucide="list" class="w-4 h-4 text-indigo-400"></i>
-            <span id="lbl-agent-sessions">Agent Sessions</span>
-          </h2>
-          <div class="flex items-center space-x-2">
-            <button onclick="exportAllRuns()"
-              class="px-2 py-1 text-[11px] font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-md flex items-center space-x-1 transition"
-              title="Export All Sessions Audit (CSV)">
-              <i data-lucide="file-spreadsheet" class="w-3 h-3 text-emerald-400"></i>
-              <span>Export CSV</span>
-            </button>
-            <span id="live-indicator" class="flex items-center space-x-1.5 text-xs text-emerald-400">
-              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span id="lbl-live-stream">Live Stream</span>
-            </span>
-          </div>
-        </div>
-
-        <div id="runs-container" class="space-y-3 max-h-[640px] overflow-y-auto pr-1">
-          <!-- Dynamic Run Cards go here -->
-          <div class="p-8 text-center text-slate-500 text-sm border border-dashed border-slate-800 rounded-xl">
-            Loading sessions...
-          </div>
-        </div>
+    <div class="space-y-3">
+      <!-- Mobile View Switcher Tabs (Visible ONLY on phones < md, Tablet md+ shows side-by-side!) -->
+      <div id="mobile-view-tabs" class="flex md:hidden items-center bg-slate-900 border border-slate-800 rounded-xl p-1">
+        <button onclick="switchMobileColumn('runs')" id="btn-col-runs"
+          class="flex-1 py-1.5 text-xs font-bold rounded-lg bg-indigo-600 text-white transition flex items-center justify-center space-x-1.5 shadow-sm">
+          <i data-lucide="list" class="w-3.5 h-3.5"></i>
+          <span id="lbl-mobile-tab-runs">1. Danh Sách Phiên</span>
+        </button>
+        <button onclick="switchMobileColumn('inspector')" id="btn-col-inspector"
+          class="flex-1 py-1.5 text-xs font-medium rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center space-x-1.5">
+          <i data-lucide="git-branch" class="w-3.5 h-3.5"></i>
+          <span id="lbl-mobile-tab-inspector">2. Chi Tiết Bước</span>
+        </button>
       </div>
 
-      <!-- Right Column: Trajectory & Step Inspector -->
-      <div class="lg:col-span-7 bg-slate-900/70 border border-slate-800 rounded-xl p-5 flex flex-col min-h-[500px]">
-        <div id="inspector-header"
-          class="border-b border-slate-800 pb-4 flex items-center justify-between flex-wrap gap-3">
-          <div>
-            <h3 id="inspector-title" class="font-bold text-slate-200 text-base">Select a session to inspect</h3>
-            <p id="inspector-subtitle" class="text-xs text-slate-400">View real-time reasoning thoughts, tool calls, and
-              trace trees</p>
+      <!-- 2 Columns: Stacked on Mobile (< md), Side-by-Side on Tablet & Desktop (md:grid-cols-12) -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-5 lg:gap-6">
+
+        <!-- Left Column: Runs List -->
+        <div id="runs-column" class="md:col-span-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <h2 class="text-sm font-semibold text-slate-300 flex items-center space-x-2">
+              <i data-lucide="list" class="w-4 h-4 text-indigo-400"></i>
+              <span id="lbl-agent-sessions">Agent Sessions</span>
+            </h2>
+            <div class="flex items-center space-x-2">
+              <button onclick="exportAllRuns()"
+                class="px-2 py-1 text-[11px] font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-md flex items-center space-x-1 transition"
+                title="Export All Sessions Audit (CSV)">
+                <i data-lucide="file-spreadsheet" class="w-3 h-3 text-emerald-400"></i>
+                <span>Export CSV</span>
+              </button>
+              <span id="live-indicator" class="flex items-center space-x-1.5 text-xs text-emerald-400">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span id="lbl-live-stream">Live Stream</span>
+              </span>
+            </div>
           </div>
-          <div id="inspector-actions" class="flex items-center space-x-2 hidden">
-            <!-- Dynamic kill/langfuse actions -->
+
+          <!-- Quick Search & Status Filter Chips -->
+          <div class="space-y-2 pt-0.5">
+            <div class="relative">
+              <i data-lucide="search" class="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5"></i>
+              <input id="run-search-input" type="text" placeholder="Filter by ID, task or prompt..."
+                oninput="onSearchRuns(this.value)"
+                class="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-8 pr-7 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" />
+              <button id="run-search-clear" onclick="clearRunSearch()" class="hidden absolute right-2.5 top-2 text-slate-500 hover:text-slate-300 transition">
+                <i data-lucide="x" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+
+            <!-- Status Filter Chips -->
+            <div class="flex items-center space-x-1.5 overflow-x-auto text-[11px] pb-1 scrollbar-none" id="run-filter-chips">
+              <button onclick="setRunStatusFilter('ALL')" id="filter-chip-ALL"
+                class="px-2 py-0.5 rounded-md font-bold border bg-indigo-600 text-white border-indigo-400 whitespace-nowrap shadow-sm transition">
+                <span id="lbl-filter-all">All</span> <span id="count-chip-ALL" class="text-[10px] opacity-80 font-mono">(0)</span>
+              </button>
+              <button onclick="setRunStatusFilter('WAITING_APPROVAL')" id="filter-chip-WAITING_APPROVAL"
+                class="px-2 py-0.5 rounded-md font-medium border bg-slate-800/80 text-amber-400 border-slate-700 hover:border-amber-600/50 whitespace-nowrap transition">
+                <span id="lbl-filter-approval">Approval</span> <span id="count-chip-WAITING_APPROVAL" class="text-[10px] opacity-80 font-mono">(0)</span>
+              </button>
+              <button onclick="setRunStatusFilter('RUNNING')" id="filter-chip-RUNNING"
+                class="px-2 py-0.5 rounded-md font-medium border bg-slate-800/80 text-blue-400 border-slate-700 hover:border-blue-600/50 whitespace-nowrap transition">
+                <span id="lbl-filter-running">Running</span> <span id="count-chip-RUNNING" class="text-[10px] opacity-80 font-mono">(0)</span>
+              </button>
+              <button onclick="setRunStatusFilter('COMPLETED')" id="filter-chip-COMPLETED"
+                class="px-2 py-0.5 rounded-md font-medium border bg-slate-800/80 text-emerald-400 border-slate-700 hover:border-emerald-600/50 whitespace-nowrap transition">
+                <span id="lbl-filter-completed">Done</span> <span id="count-chip-COMPLETED" class="text-[10px] opacity-80 font-mono">(0)</span>
+              </button>
+              <button onclick="setRunStatusFilter('KILLED')" id="filter-chip-KILLED"
+                class="px-2 py-0.5 rounded-md font-medium border bg-slate-800/80 text-rose-400 border-slate-700 hover:border-rose-600/50 whitespace-nowrap transition">
+                <span id="lbl-filter-killed">Halted</span> <span id="count-chip-KILLED" class="text-[10px] opacity-80 font-mono">(0)</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="runs-container" class="space-y-3 max-h-[640px] overflow-y-auto pr-1">
+            <!-- Dynamic Run Cards go here -->
+            <div class="p-8 text-center text-slate-500 text-sm border border-dashed border-slate-800 rounded-xl">
+              Loading sessions...
+            </div>
           </div>
         </div>
 
-        <!-- Trajectory Steps Container -->
-        <div id="inspector-steps" class="flex-1 py-4 space-y-4 overflow-y-auto max-h-[550px]">
-          <div class="h-full flex flex-col items-center justify-center text-center text-slate-500 p-8 space-y-2">
-            <i data-lucide="git-branch" class="w-10 h-10 text-slate-700"></i>
-            <p id="lbl-empty-trajectory" class="text-sm">Click any agent run on the left to inspect its trajectory steps
-              and controls.</p>
+        <!-- Right Column: Trajectory & Step Inspector -->
+        <div id="inspector-column" class="md:col-span-7 bg-slate-900/70 border border-slate-800 rounded-xl p-4 sm:p-5 flex flex-col min-h-[500px]">
+          <div id="inspector-header"
+            class="border-b border-slate-800 pb-4 flex items-center justify-between flex-wrap gap-3">
+            <div>
+              <h3 id="inspector-title" class="font-bold text-slate-200 text-base">Select a session to inspect</h3>
+              <p id="inspector-subtitle" class="text-xs text-slate-400">View real-time reasoning thoughts, tool calls, and trace trees</p>
+            </div>
+            <div id="inspector-actions" class="flex items-center space-x-2 hidden">
+              <!-- Dynamic kill/langfuse actions -->
+            </div>
+          </div>
+
+          <!-- Trajectory Steps Container -->
+          <div id="inspector-steps" class="flex-1 py-4 space-y-4 overflow-y-auto max-h-[550px]">
+            <div class="h-full flex flex-col items-center justify-center text-center text-slate-500 p-8 space-y-2">
+              <i data-lucide="git-branch" class="w-10 h-10 text-slate-700"></i>
+              <p id="lbl-empty-trajectory" class="text-sm">Click any agent run on the left to inspect its trajectory steps and controls.</p>
+            </div>
           </div>
         </div>
+
       </div>
-
     </div>
-
   </main>
 
   <!-- Footer: Community & Support Links separated from header core features -->
   <footer class="border-t border-slate-800/80 bg-slate-900/60 backdrop-blur py-4 mt-auto">
     <div
-      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+      class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
 
       <!-- Brand & Tagline -->
       <div class="flex items-center space-x-2">
@@ -463,7 +593,7 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
   <div id="estimator-modal"
     class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
     <div
-      class="bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 animate-in fade-in duration-200">
+      class="bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full p-4 sm:p-6 max-h-[92vh] overflow-y-auto shadow-2xl space-y-4 animate-in fade-in duration-200">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
         <div class="flex items-center space-x-2 text-indigo-400 font-bold text-sm">
           <i data-lucide="calculator" class="w-4 h-4"></i>
@@ -572,11 +702,234 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
     </div>
   </div>
 
+  <!-- Data Lifecycle & Backup/Restore/Reset Modal -->
+  <div id="data-modal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
+    <div
+      class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-4 sm:p-6 max-h-[92vh] overflow-y-auto shadow-2xl space-y-4 animate-in fade-in duration-200">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div class="flex items-center space-x-2 text-sky-400 font-bold text-sm">
+          <i data-lucide="archive" class="w-4 h-4"></i>
+          <span id="lbl-data-modal-title">Data Lifecycle &amp; Backup / Restore</span>
+        </div>
+        <button onclick="closeDataModal()"
+          class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Storage Metrics Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+        <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-1">
+          <span class="text-slate-400 flex items-center justify-between text-[11px]">
+            <span id="lbl-stat-sqlite">Dashboard Database</span>
+            <i data-lucide="database" class="w-3.5 h-3.5 text-indigo-400"></i>
+          </span>
+          <div class="font-bold text-slate-200 text-sm font-mono" id="data-stat-sqlite-size">--</div>
+          <p class="text-[10px] text-slate-500 font-mono" id="data-stat-sqlite-runs">-- runs • -- steps</p>
+        </div>
+
+        <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-1">
+          <span class="text-slate-400 flex items-center justify-between text-[11px]">
+            <span id="lbl-stat-lf">Langfuse &amp; ClickHouse</span>
+            <i data-lucide="activity" class="w-3.5 h-3.5 text-emerald-400"></i>
+          </span>
+          <div class="font-bold text-slate-200 text-sm font-mono" id="data-stat-lf-status">--</div>
+          <p class="text-[10px] text-slate-500 font-mono" id="data-stat-lf-traces">-- traces • -- events</p>
+        </div>
+
+        <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-1">
+          <span class="text-slate-400 flex items-center justify-between text-[11px]">
+            <span id="lbl-stat-bk">Stored Backups</span>
+            <i data-lucide="folder-archive" class="w-3.5 h-3.5 text-amber-400"></i>
+          </span>
+          <div class="font-bold text-slate-200 text-sm font-mono" id="data-stat-bk-count">--</div>
+          <p class="text-[10px] text-slate-500 font-mono" id="data-stat-bk-size">-- total on disk</p>
+        </div>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="flex border-b border-slate-800 text-xs font-medium space-x-4">
+        <button onclick="switchDataTab('backup')" id="tab-btn-backup"
+          class="pb-2 border-b-2 border-sky-400 text-sky-400 transition flex items-center space-x-1.5 font-bold">
+          <i data-lucide="download-cloud" class="w-3.5 h-3.5"></i>
+          <span id="lbl-tab-backup">1. Create Backup</span>
+        </button>
+        <button onclick="switchDataTab('restore')" id="tab-btn-restore"
+          class="pb-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center space-x-1.5">
+          <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i>
+          <span id="lbl-tab-restore">2. Restore from Archive</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: CREATE BACKUP -->
+      <div id="data-tab-backup" class="space-y-3 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label id="lbl-backup-scope" class="block text-slate-400 font-medium mb-1">Backup Target Scope:</label>
+            <select id="backup-target-select" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-sky-500 font-sans text-xs">
+              <option value="all">Full System (Dashboard SQLite + Langfuse Telemetry)</option>
+              <option value="dashboard">Dashboard Only (SQLite sessions &amp; steps)</option>
+              <option value="langfuse">Langfuse Tracing Only (ClickHouse &amp; Postgres)</option>
+            </select>
+          </div>
+          <div>
+            <label id="lbl-backup-note" class="block text-slate-400 font-medium mb-1">Backup Note / Description:</label>
+            <input id="backup-note-input" type="text" placeholder="e.g. Pre-demo snapshot"
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-sky-500 font-sans text-xs" />
+          </div>
+        </div>
+
+        <div class="p-3 bg-slate-950/70 rounded-xl border border-slate-800 text-[11px] text-slate-400 space-y-1">
+          <p id="lbl-backup-info" class="text-slate-300 font-medium">📦 Backup Package Includes:</p>
+          <ul class="list-disc list-inside space-y-0.5 text-slate-400 font-mono text-[11px]">
+            <li>`agentguard.db` (Atomic SQLite file with WAL flush)</li>
+            <li>`dashboard_runs_export.json` (Human-readable structured audit)</li>
+            <li>`langfuse_postgres.sql` (Relational tracing metadata &amp; schemas)</li>
+            <li>`langfuse_clickhouse_events.json` (High-throughput analytics snapshot)</li>
+          </ul>
+        </div>
+
+        <div class="flex items-center justify-between pt-1">
+          <span id="backup-status-text" class="text-[11px] font-mono text-slate-400"></span>
+          <button onclick="triggerCreateBackup()" id="btn-create-backup"
+            class="px-4 py-2 text-xs font-semibold rounded-lg bg-sky-600 hover:bg-sky-500 text-white transition flex items-center space-x-1.5 shadow-sm shadow-sky-600/30">
+            <i data-lucide="archive" class="w-3.5 h-3.5"></i>
+            <span id="lbl-btn-create-bk">Generate Backup (.ZIP)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB 2: RESTORE -->
+      <div id="data-tab-restore" class="hidden space-y-3 text-xs">
+        <div class="flex items-center justify-between">
+          <span id="lbl-existing-backups" class="font-medium text-slate-300">Available Backup Archives:</span>
+          <button onclick="loadBackupsList()" class="text-[11px] text-sky-400 hover:text-sky-300 flex items-center space-x-1">
+            <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+            <span>Refresh</span>
+          </button>
+        </div>
+
+        <div id="backups-list-container" class="max-h-48 overflow-y-auto space-y-1.5 pr-1">
+          <div class="p-4 text-center text-slate-500 font-mono text-[11px]">Loading archives...</div>
+        </div>
+
+        <!-- External Upload & Restore -->
+        <div class="pt-2 border-t border-slate-800">
+          <label id="lbl-upload-restore" class="block text-slate-400 font-medium mb-1">Upload &amp; Restore External Archive (.zip / .db):</label>
+          <div class="flex items-center space-x-2">
+            <input type="file" id="backup-file-upload" accept=".zip,.db"
+              class="text-[11px] text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700" />
+            <button onclick="uploadAndRestoreBackup()" id="btn-upload-restore"
+              class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 transition">
+              Upload &amp; Restore
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="flex justify-end pt-2 border-t border-slate-800">
+        <button onclick="closeDataModal()"
+          class="px-4 py-2 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+          Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+    <!-- Dedicated Data Reset (Purge Current Data) Modal -->
+  <div id="reset-modal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
+    <div
+      class="bg-slate-900 border border-rose-900/60 rounded-2xl max-w-lg w-full p-4 sm:p-6 max-h-[92vh] overflow-y-auto shadow-2xl shadow-rose-950/50 space-y-4 animate-in fade-in duration-200">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div class="flex items-center space-x-2 text-rose-400 font-bold text-sm">
+          <i data-lucide="trash-2" class="w-4 h-4 text-rose-500"></i>
+          <span id="lbl-reset-modal-title">Reset Dữ Liệu Hiện Tại (Purge All Data)</span>
+        </div>
+        <button onclick="closeResetModal()"
+          class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Warning Box -->
+      <div class="p-3.5 bg-rose-500/10 border border-rose-500/30 rounded-xl text-rose-300 space-y-2 text-xs">
+        <div class="flex items-center space-x-2 font-bold text-xs text-rose-400">
+          <i data-lucide="alert-octagon" class="w-4 h-4 text-rose-400"></i>
+          <span id="lbl-reset-box-title">Xác nhận xóa hết dữ liệu đang tích lũy</span>
+        </div>
+        <p id="lbl-reset-box-desc" class="text-[11px] leading-relaxed text-slate-300">
+          Thao tác này sẽ xóa sạch toàn bộ các phiên chạy (runs), bước suy luận (steps) và sự kiện telemetry trên ClickHouse về 0 để làm sạch hệ thống.
+        </p>
+      </div>
+
+      <!-- Target Scope Selection -->
+      <div class="space-y-2 text-xs">
+        <label id="lbl-reset-target-scope" class="block text-slate-400 font-medium">Chọn phạm vi dữ liệu cần xóa:</label>
+        <div class="space-y-2 bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-xs">
+          <label class="flex items-start space-x-2.5 cursor-pointer text-slate-200">
+            <input type="radio" name="dedicated-reset-scope" value="all" checked class="mt-0.5 text-rose-500 focus:ring-rose-500" />
+            <div>
+              <span class="font-semibold" id="lbl-reset-opt-all">Xóa toàn bộ (Dashboard SQLite + Langfuse ClickHouse)</span>
+              <p class="text-[11px] text-slate-400" id="lbl-reset-opt-all-sub">Xóa trắng toàn bộ phiên chạy và telemetry để đo lường từ đầu.</p>
+            </div>
+          </label>
+          <label class="flex items-start space-x-2.5 cursor-pointer text-slate-200 pt-1.5 border-t border-slate-800/80">
+            <input type="radio" name="dedicated-reset-scope" value="dashboard" class="mt-0.5 text-rose-500 focus:ring-rose-500" />
+            <div>
+              <span class="font-semibold" id="lbl-reset-opt-dash">Chỉ xóa phiên chạy Dashboard</span>
+              <p class="text-[11px] text-slate-400" id="lbl-reset-opt-dash-sub">Chỉ xóa bảng runs và steps trong SQLite, giữ lại ClickHouse.</p>
+            </div>
+          </label>
+          <label class="flex items-start space-x-2.5 cursor-pointer text-slate-200 pt-1.5 border-t border-slate-800/80">
+            <input type="radio" name="dedicated-reset-scope" value="langfuse" class="mt-0.5 text-rose-500 focus:ring-rose-500" />
+            <div>
+              <span class="font-semibold" id="lbl-reset-opt-lf">Chỉ xóa telemetry Langfuse &amp; ClickHouse</span>
+              <p class="text-[11px] text-slate-400" id="lbl-reset-opt-lf-sub">Chỉ làm rỗng bảng traces và events trên ClickHouse.</p>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Confirmation Checkbox -->
+      <div class="pt-1">
+        <label class="flex items-center space-x-2 text-xs text-rose-300 cursor-pointer select-none">
+          <input type="checkbox" id="dedicated-reset-confirm-cb" class="rounded text-rose-500 focus:ring-rose-500" />
+          <span id="lbl-dedicated-reset-confirm" class="font-medium">Tôi hiểu và xác nhận muốn xóa sạch dữ liệu hiện tại về 0.</span>
+        </label>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center justify-between pt-3 border-t border-slate-800">
+        <span id="reset-status-msg" class="text-xs font-mono"></span>
+        <div class="flex items-center space-x-2">
+          <button onclick="closeResetModal()"
+            class="px-4 py-2 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+            Hủy Bỏ
+          </button>
+          <button onclick="executeDedicatedReset()" id="btn-execute-dedicated-reset"
+            class="px-4 py-2 text-xs font-bold rounded-lg bg-rose-600 hover:bg-rose-500 text-white transition flex items-center space-x-1.5 shadow-sm shadow-rose-600/30">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            <span id="lbl-btn-dedicated-reset">Xác Nhận Xóa Hết Dữ Liệu Ngay</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Webhook Configuration Modal -->
   <div id="webhook-modal"
     class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
     <div
-      class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 animate-in fade-in duration-200">
+      class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-4 sm:p-6 max-h-[92vh] overflow-y-auto shadow-2xl space-y-4 animate-in fade-in duration-200">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
         <div class="flex items-center space-x-2 text-amber-400 font-bold text-sm">
           <i data-lucide="bell-ring" class="w-4 h-4"></i>
@@ -639,7 +992,7 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
   <div id="donate-modal"
     class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
     <div
-      class="bg-slate-900 border border-slate-700 rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4 text-center animate-in fade-in duration-200">
+      class="bg-slate-900 border border-slate-700 rounded-2xl max-w-sm w-full p-4 sm:p-6 max-h-[92vh] overflow-y-auto shadow-2xl space-y-4 text-center animate-in fade-in duration-200">
       <div class="flex items-center justify-between pb-2 border-b border-slate-800">
         <div class="flex items-center space-x-2 text-pink-400 font-bold text-sm">
           <i data-lucide="heart" class="w-4 h-4 fill-pink-400"></i>
@@ -683,6 +1036,25 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
         swaggerLink: "Swagger API",
         navDonate: "Donate",
         footerDonate: "Donate",
+        navDataText: "Backup",
+        dataModalTitle: "Data Lifecycle & Backup / Restore",
+        statSqlite: "Dashboard Database",
+        statLf: "Langfuse & ClickHouse",
+        statBk: "Stored Backups",
+        tabBackup: "1. Create Backup",
+        tabRestore: "2. Restore from Archive",
+        tabReset: "3. Reset Data (Purge)",
+        backupScope: "Backup Target Scope:",
+        backupNote: "Backup Note / Description:",
+        backupInfo: "📦 Backup Package Includes:",
+        btnCreateBk: "Generate Backup (.ZIP)",
+        existingBackups: "Available Backup Archives:",
+        uploadRestore: "Upload & Restore External Archive (.zip / .db):",
+        resetWarningTitle: "Danger Zone: Data Deletion & Reset",
+        resetWarningDesc: "This action will permanently purge runs, step trajectories, and ClickHouse telemetry events. An automated pre-reset snapshot will be saved in backups/ before purging.",
+        resetTarget: "Select Target Scope to Reset:",
+        resetConfirm: "I understand that this action will purge operational data.",
+        btnReset: "Execute Reset",
         footerStar: "Star on GitHub",
         footerTagline: "Open-Source AI Agent Control Plane, Safety Guardrails & Tracing Hub",
         donateTitle: "Support AgentGuard Project",
@@ -727,6 +1099,14 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
         liveStream: "Live Stream",
         noSessionsSim: "No agent sessions yet. Click one of the test scenarios above!",
         noSessionsLive: "No live external agent runs yet. Ingest via SDK or check Langfuse traces at :3000!",
+        searchSessionsPlaceholder: "Filter by ID, task or prompt...",
+        filterAll: "All",
+        filterApproval: "Approval",
+        filterRunning: "Running",
+        filterCompleted: "Done",
+        filterKilled: "Halted",
+        noFilterMatches: "No sessions matching the selected filter or search query.",
+        resetFilters: "Reset Filters",
         selectSessionTitle: "Select a session to inspect",
         selectSessionSubtitle: "View real-time reasoning thoughts, tool calls, and trace trees",
         emptyTrajectory: "Click any agent run on the left to inspect its trajectory steps and controls.",
@@ -760,6 +1140,28 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
         swaggerLink: "Tài liệu API",
         navDonate: "Ủng Hộ",
         footerDonate: "Ủng Hộ",
+        navDataText: "Sao Lưu",
+        dataModalTitle: "Quản Lý Vòng Đời Dữ Liệu & Sao Lưu / Phục Hồi",
+        statSqlite: "Cơ Sở Dữ Liệu Dashboard",
+        statLf: "Langfuse & ClickHouse",
+        statBk: "Bản Sao Lưu Hiện Có",
+        tabBackup: "1. Tạo Bản Sao Lưu",
+        tabRestore: "2. Phục Hồi Từ Bản Lưu",
+        tabReset: "3. Xóa & Đặt Lại (Reset)",
+        backupScope: "Phạm Vi Cần Sao Lưu:",
+        backupNote: "Ghi Chú / Mô Tả Bản Lưu:",
+        backupInfo: "📦 Gói Sao Lưu Bao Gồm:",
+        btnCreateBk: "Tạo Bản Sao Lưu (.ZIP)",
+        existingBackups: "Danh Sách Bản Sao Lưu Hiện Có:",
+        uploadRestore: "Tải Lên & Phục Hồi Tệp Sao Lưu Ngoài (.zip / .db):",
+        resetWarningTitle: "Vùng Nguy Hiểm: Xóa & Đặt Lại Dữ Liệu",
+        resetWarningDesc: "Thao tác này sẽ xóa vĩnh viễn các phiên chạy, các bước suy luận và sự kiện telemetry trên ClickHouse. Bản sao lưu an toàn tự động sẽ được tạo trước khi xóa.",
+        resetTarget: "Chọn Phạm Vi Dữ Liệu Cần Đặt Lại:",
+        resetConfirm: "Tôi hiểu rằng hành động này sẽ xóa dữ liệu vận hành hiện tại.",
+        btnReset: "Thực Hiện Đặt Lại (Reset)",
+        resetSuccess: "Đã đặt lại dữ liệu thành công! Bản lưu an toàn đã được ghi nhận.",
+        restoreSuccess: "Đã phục hồi dữ liệu thành công!",
+        backupSuccess: "Đã tạo bản sao lưu thành công!",
         footerStar: "Tặng 1 Sao GitHub ⭐",
         footerTagline: "Trung tâm Điều khiển, Chốt chặn An toàn & Quản trị AI Agent Mã nguồn mở",
         donateTitle: "Ủng Hộ Dự Án AgentGuard",
@@ -804,6 +1206,14 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
         liveStream: "Trực Tiếp (Live)",
         noSessionsSim: "Chưa có phiên chạy nào. Hãy bấm chọn một trong các kịch bản mẫu phía trên!",
         noSessionsLive: "Chưa có phiên chạy thực tế nào. Kết nối qua SDK hoặc kiểm tra traces trên Langfuse :3000!",
+        searchSessionsPlaceholder: "Tìm theo ID, tác vụ hoặc câu lệnh...",
+        filterAll: "Tất cả",
+        filterApproval: "Chờ duyệt",
+        filterRunning: "Đang chạy",
+        filterCompleted: "Hoàn thành",
+        filterKilled: "Đã dừng",
+        noFilterMatches: "Không tìm thấy phiên nào khớp với bộ lọc hoặc từ khóa tìm kiếm.",
+        resetFilters: "Đặt Lại Bộ Lọc",
         selectSessionTitle: "Chọn một phiên để theo dõi chi tiết",
         selectSessionSubtitle: "Xem quá trình suy luận, gọi tool và cây tracing thời gian thực",
         emptyTrajectory: "Bấm chọn phiên chạy bên trái để kiểm tra chi tiết các bước và bảng điều khiển.",
@@ -1238,6 +1648,13 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
     async function handleEvent(event) {
       if (event.type === 'connected') return;
 
+      if (event.type === 'system_data_restored' || event.type === 'system_data_reset' || event.type === 'runs_reloaded' || event.type === 'runs_cleared') {
+        loadRuns();
+        fetchLangfuseTelemetry();
+        loadDataStats();
+        return;
+      }
+
       if (event.type === 'simulation_mode_changed') {
         simulationMode = event.simulation_mode;
         updateSimulationButton();
@@ -1297,6 +1714,55 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
       }
     }
 
+    let runStatusFilter = 'ALL';
+    let runSearchQuery = '';
+
+    function onSearchRuns(val) {
+      runSearchQuery = (val || '').trim().toLowerCase();
+      const clearBtn = document.getElementById('run-search-clear');
+      if (clearBtn) {
+        if (runSearchQuery) clearBtn.classList.remove('hidden');
+        else clearBtn.classList.add('hidden');
+      }
+      renderRunsList();
+    }
+
+    function clearRunSearch() {
+      const input = document.getElementById('run-search-input');
+      if (input) input.value = '';
+      onSearchRuns('');
+    }
+
+    function setRunStatusFilter(status) {
+      runStatusFilter = status;
+      updateFilterChipsUi();
+      renderRunsList();
+    }
+
+    function updateFilterChipsUi() {
+      const statuses = ['ALL', 'WAITING_APPROVAL', 'RUNNING', 'COMPLETED', 'KILLED'];
+      statuses.forEach(st => {
+        const chip = document.getElementById(`filter-chip-${st}`);
+        if (!chip) return;
+        if (st === runStatusFilter) {
+          chip.className = "px-2 py-0.5 rounded-md font-bold border bg-indigo-600 text-white border-indigo-400 whitespace-nowrap shadow-sm transition";
+        } else {
+          chip.className = "px-2 py-0.5 rounded-md font-medium border bg-slate-800/80 text-slate-400 border-slate-700 hover:text-slate-200 hover:border-slate-600 whitespace-nowrap transition";
+        }
+      });
+    }
+
+    function resetAllFilters() {
+      runStatusFilter = 'ALL';
+      runSearchQuery = '';
+      const input = document.getElementById('run-search-input');
+      if (input) input.value = '';
+      const clearBtn = document.getElementById('run-search-clear');
+      if (clearBtn) clearBtn.classList.add('hidden');
+      updateFilterChipsUi();
+      renderRunsList();
+    }
+
     function renderRunsList() {
       const container = document.getElementById('runs-container');
       const allList = Object.values(allRuns).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
@@ -1310,7 +1776,49 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
         runs = allList.filter(r => r.is_simulation === false);
       }
 
+      // Update chip counts for currently active mode
+      const counts = {
+        ALL: runs.length,
+        WAITING_APPROVAL: runs.filter(r => r.status === 'WAITING_APPROVAL').length,
+        RUNNING: runs.filter(r => r.status === 'RUNNING').length,
+        COMPLETED: runs.filter(r => r.status === 'COMPLETED').length,
+        KILLED: runs.filter(r => r.status === 'KILLED').length
+      };
+      setElText('count-chip-ALL', `(${counts.ALL})`);
+      setElText('count-chip-WAITING_APPROVAL', `(${counts.WAITING_APPROVAL})`);
+      setElText('count-chip-RUNNING', `(${counts.RUNNING})`);
+      setElText('count-chip-COMPLETED', `(${counts.COMPLETED})`);
+      setElText('count-chip-KILLED', `(${counts.KILLED})`);
+
+      // Filter by status chip
+      if (runStatusFilter !== 'ALL') {
+        runs = runs.filter(r => r.status === runStatusFilter);
+      }
+
+      // Filter by search query (id, prompt, agent_name)
+      if (runSearchQuery) {
+        runs = runs.filter(r => {
+          const id = (r.run_id || '').toLowerCase();
+          const p = (r.prompt || '').toLowerCase();
+          const name = (r.agent_name || '').toLowerCase();
+          return id.includes(runSearchQuery) || p.includes(runSearchQuery) || name.includes(runSearchQuery);
+        });
+      }
+
       if (runs.length === 0) {
+        if (runStatusFilter !== 'ALL' || runSearchQuery) {
+          container.innerHTML = `
+            <div class="p-6 text-center text-slate-500 text-xs border border-dashed border-slate-800 rounded-xl space-y-3">
+              <i data-lucide="filter-x" class="w-6 h-6 mx-auto text-slate-600"></i>
+              <p>${t('noFilterMatches')}</p>
+              <button onclick="resetAllFilters()" class="px-3 py-1 text-xs bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 rounded-lg transition">
+                ${t('resetFilters')}
+              </button>
+            </div>
+          `;
+          lucide.createIcons();
+          return;
+        }
         const emptyMsg = simulationMode ? t('noSessionsSim') : t('noSessionsLive');
         container.innerHTML = `
           <div class="p-8 text-center text-slate-500 text-sm border border-dashed border-slate-800 rounded-xl space-y-2">
@@ -1383,6 +1891,9 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
     let replayTimer = null;
 
     function selectRun(runId) {
+      if (window.innerWidth < 768) {
+        switchMobileColumn('inspector');
+      }
       if (activeRunId !== runId) {
         replayIndex = null;
         stopReplayTimer();
@@ -1947,6 +2458,382 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
       }
     }
 
+    
+    // =========================================================================
+    // Backup & Restore Module
+    // =========================================================================
+    let currentDataTab = 'backup';
+
+    
+    // =========================================================================
+    // Mobile & Tablet Responsive Handlers
+    // =========================================================================
+    let currentMobileCol = 'runs';
+
+    function toggleMobileMenu() {
+      const drawer = document.getElementById('mobile-drawer');
+      const btn = document.getElementById('btn-mobile-menu');
+      if (!drawer) return;
+      const isHidden = drawer.classList.contains('hidden');
+      if (isHidden) {
+        drawer.classList.remove('hidden');
+        if (btn) btn.innerHTML = '<i data-lucide="x" class="w-4 h-4"></i>';
+      } else {
+        drawer.classList.add('hidden');
+        if (btn) btn.innerHTML = '<i data-lucide="menu" class="w-4 h-4"></i>';
+      }
+      lucide.createIcons();
+    }
+
+    function switchMobileColumn(col) {
+      currentMobileCol = col;
+      const btnRuns = document.getElementById('btn-col-runs');
+      const btnInsp = document.getElementById('btn-col-inspector');
+      const colRuns = document.getElementById('runs-column');
+      const colInsp = document.getElementById('inspector-column');
+
+      if (!colRuns || !colInsp) return;
+
+      // Only toggle on phone screens (< 768px). On Tablet (>= 768px), both columns are always visible!
+      if (window.innerWidth < 768) {
+        if (col === 'runs') {
+          if (btnRuns) btnRuns.className = "flex-1 py-1.5 text-xs font-bold rounded-lg bg-indigo-600 text-white transition flex items-center justify-center space-x-1.5 shadow-sm";
+          if (btnInsp) btnInsp.className = "flex-1 py-1.5 text-xs font-medium rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center space-x-1.5";
+          colRuns.classList.remove('hidden');
+          colInsp.classList.add('hidden');
+        } else {
+          if (btnInsp) btnInsp.className = "flex-1 py-1.5 text-xs font-bold rounded-lg bg-indigo-600 text-white transition flex items-center justify-center space-x-1.5 shadow-sm";
+          if (btnRuns) btnRuns.className = "flex-1 py-1.5 text-xs font-medium rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center space-x-1.5";
+          colInsp.classList.remove('hidden');
+          colRuns.classList.add('hidden');
+        }
+      } else {
+        colRuns.classList.remove('hidden');
+        colInsp.classList.remove('hidden');
+      }
+      lucide.createIcons();
+    }
+
+    window.addEventListener('resize', () => {
+      const colRuns = document.getElementById('runs-column');
+      const colInsp = document.getElementById('inspector-column');
+      if (window.innerWidth >= 768) {
+        if (colRuns) colRuns.classList.remove('hidden');
+        if (colInsp) colInsp.classList.remove('hidden');
+      } else {
+        switchMobileColumn(currentMobileCol);
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      const colRuns = document.getElementById('runs-column');
+      const colInsp = document.getElementById('inspector-column');
+      if (window.innerWidth >= 1024) {
+        if (colRuns) colRuns.classList.remove('hidden');
+        if (colInsp) {
+          colInsp.classList.remove('hidden');
+          colInsp.classList.add('flex');
+        }
+      } else {
+        if (colInsp) colInsp.classList.remove('flex');
+        switchMobileColumn(currentMobileCol);
+      }
+    });
+
+    function openDataModal() {
+      const modal = document.getElementById('data-modal');
+      if (modal) modal.classList.remove('hidden');
+      loadDataStats();
+      loadBackupsList();
+      lucide.createIcons();
+    }
+
+    function closeDataModal() {
+      const modal = document.getElementById('data-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function switchDataTab(tab) {
+      currentDataTab = tab;
+      const tabBk = document.getElementById('tab-btn-backup');
+      const tabRes = document.getElementById('tab-btn-restore');
+      const contentBk = document.getElementById('data-tab-backup');
+      const contentRes = document.getElementById('data-tab-restore');
+
+      if (tab === 'backup') {
+        tabBk.className = "pb-2 border-b-2 border-sky-400 text-sky-400 transition flex items-center space-x-1.5 font-bold";
+        tabRes.className = "pb-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center space-x-1.5";
+        contentBk.classList.remove('hidden');
+        contentRes.classList.add('hidden');
+      } else {
+        tabRes.className = "pb-2 border-b-2 border-sky-400 text-sky-400 transition flex items-center space-x-1.5 font-bold";
+        tabBk.className = "pb-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center space-x-1.5";
+        contentRes.classList.remove('hidden');
+        contentBk.classList.add('hidden');
+        loadBackupsList();
+      }
+      lucide.createIcons();
+    }
+
+    async function loadDataStats() {
+      try {
+        const res = await fetch('/api/agents/data/stats');
+        if (!res.ok) return;
+        const stats = await res.json();
+
+        // Dashboard Stats
+        const d = stats.dashboard;
+        setElText('data-stat-sqlite-size', d.size_formatted);
+        setElText('data-stat-sqlite-runs', `${d.runs_count} runs • ${d.steps_count} steps`);
+
+        // Langfuse Stats
+        const lf = stats.langfuse;
+        const connText = lf.connected ? 'Connected' : 'Offline';
+        setElText('data-stat-lf-status', connText);
+        setElText('data-stat-lf-traces', `${lf.total_traces} traces • ${lf.clickhouse_events_count} events`);
+
+        // Backups Stats
+        const bk = stats.backups_summary;
+        setElText('data-stat-bk-count', `${bk.total_count} archives`);
+        setElText('data-stat-bk-size', `${bk.total_size_formatted} on disk`);
+      } catch (err) {
+        console.error('Failed to load data stats:', err);
+      }
+    }
+
+    async function triggerCreateBackup() {
+      const scopeSelect = document.getElementById('backup-target-select');
+      const noteInput = document.getElementById('backup-note-input');
+      const statusText = document.getElementById('backup-status-text');
+      const btn = document.getElementById('btn-create-backup');
+
+      const target = scopeSelect ? scopeSelect.value : 'all';
+      const note = (noteInput && noteInput.value.trim()) || 'Manual Web Backup';
+
+      if (btn) btn.disabled = true;
+      if (statusText) {
+        statusText.className = 'text-[11px] font-mono text-sky-400';
+        statusText.innerText = currentLang === 'vi' ? 'Đang tạo bản sao lưu...' : 'Creating backup archive...';
+      }
+
+      try {
+        const res = await fetch('/api/agents/data/backup', {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ target: target, note: note, include_langfuse: true })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          if (statusText) {
+            statusText.className = 'text-[11px] font-mono text-emerald-400';
+            statusText.innerText = currentLang === 'vi' ? `Đã tạo: ${data.filename}` : `Created: ${data.filename}`;
+          }
+          if (noteInput) noteInput.value = '';
+          loadDataStats();
+          loadBackupsList();
+        } else {
+          if (statusText) {
+            statusText.className = 'text-[11px] font-mono text-rose-400';
+            statusText.innerText = `Error: ${data.detail || 'Failed'}`;
+          }
+        }
+      } catch (err) {
+        if (statusText) {
+          statusText.className = 'text-[11px] font-mono text-rose-400';
+          statusText.innerText = `Error: ${err.message}`;
+        }
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    async function loadBackupsList() {
+      const container = document.getElementById('backups-list-container');
+      if (!container) return;
+      container.innerHTML = `<div class="p-4 text-center text-slate-500 font-mono text-[11px]">Loading archives...</div>`;
+
+      try {
+        const res = await fetch('/api/agents/data/backups');
+        if (!res.ok) {
+          container.innerHTML = `<div class="p-3 text-center text-rose-400 text-xs">Failed to load backups</div>`;
+          return;
+        }
+        const backups = await res.json();
+        if (backups.length === 0) {
+          container.innerHTML = `<div class="p-4 text-center text-slate-500 font-mono text-[11px]">${currentLang === 'vi' ? 'Chưa có bản sao lưu nào trong backups/' : 'No backup archives found in backups/'}</div>`;
+          return;
+        }
+
+        container.innerHTML = backups.map(b => `
+          <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 flex items-center justify-between hover:border-slate-700 transition">
+            <div class="space-y-0.5 min-w-0 pr-2">
+              <div class="flex items-center space-x-2">
+                <i data-lucide="file-archive" class="w-3.5 h-3.5 text-amber-400 shrink-0"></i>
+                <span class="text-xs font-mono font-medium text-slate-200 truncate" title="${b.filename}">${b.filename}</span>
+                <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-400">${b.size_formatted}</span>
+              </div>
+              <p class="text-[10px] text-slate-500 font-mono truncate">${b.created_at} • ${b.note || 'No description'}</p>
+            </div>
+            <div class="flex items-center space-x-1.5 shrink-0">
+              <a href="/api/agents/data/backup/download/${b.filename}" class="p-1.5 rounded text-slate-400 hover:text-sky-300 hover:bg-slate-800 transition" title="Download Archive">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              </a>
+              <button onclick="triggerRestoreBackup('${b.filename}')" class="px-2 py-1 text-[11px] font-semibold rounded bg-sky-950/60 hover:bg-sky-900 text-sky-300 border border-sky-800/60 transition">
+                Restore
+              </button>
+            </div>
+          </div>
+        `).join('');
+        lucide.createIcons();
+      } catch (err) {
+        container.innerHTML = `<div class="p-3 text-center text-rose-400 text-xs">Error: ${err.message}</div>`;
+      }
+    }
+
+    async function triggerRestoreBackup(filename) {
+      const confirmMsg = currentLang === 'vi'
+        ? `Phục hồi từ bản lưu '${filename}'? Dữ liệu hiện tại sẽ được thay thế bằng nội dung bản lưu.`
+        : `Restore from archive '${filename}'? Active data will be replaced with this archive.`;
+      if (!confirm(confirmMsg)) return;
+
+      try {
+        const res = await fetch('/api/agents/data/restore', {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ filename: filename, target: 'all' })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          alert(currentLang === 'vi' ? 'Đã phục hồi dữ liệu thành công!' : 'Data restored successfully!');
+          closeDataModal();
+          loadRuns();
+          fetchLangfuseTelemetry();
+          loadDataStats();
+        } else {
+          alert(`Restore failed: ${data.detail || 'Unknown error'}`);
+        }
+      } catch (err) {
+        alert(`Restore network error: ${err.message}`);
+      }
+    }
+
+    async function uploadAndRestoreBackup() {
+      const fileInput = document.getElementById('backup-file-upload');
+      if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+        alert(currentLang === 'vi' ? 'Vui lòng chọn file .zip hoặc .db để phục hồi!' : 'Please select a .zip or .db archive file!');
+        return;
+      }
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('target', 'all');
+
+      const btn = document.getElementById('btn-upload-restore');
+      if (btn) btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/agents/data/restore/upload', {
+          method: 'POST',
+          headers: {
+            'X-API-Key': storedApiKey || ''
+          },
+          body: formData
+        });
+        const data = await res.json();
+        if (res.ok) {
+          alert(currentLang === 'vi' ? 'Tải lên & Phục hồi thành công!' : 'Uploaded & Restored successfully!');
+          fileInput.value = '';
+          closeDataModal();
+          loadRuns();
+          fetchLangfuseTelemetry();
+          loadDataStats();
+        } else {
+          alert(`Upload restore failed: ${data.detail || 'Unknown error'}`);
+        }
+      } catch (err) {
+        alert(`Upload error: ${err.message}`);
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    // =========================================================================
+    // Dedicated Reset (Purge Current Data) Module
+    // =========================================================================
+    function openResetModal() {
+      const modal = document.getElementById('reset-modal');
+      const cb = document.getElementById('dedicated-reset-confirm-cb');
+      const msg = document.getElementById('reset-status-msg');
+      if (cb) cb.checked = false;
+      if (msg) msg.innerText = '';
+      if (modal) modal.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeResetModal() {
+      const modal = document.getElementById('reset-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    async function executeDedicatedReset() {
+      const cb = document.getElementById('dedicated-reset-confirm-cb');
+      const msg = document.getElementById('reset-status-msg');
+      const btn = document.getElementById('btn-execute-dedicated-reset');
+
+      if (!cb || !cb.checked) {
+        if (msg) {
+          msg.className = 'text-xs text-rose-400 font-medium';
+          msg.innerText = currentLang === 'vi' ? 'Vui lòng tích vào ô xác nhận để xóa!' : 'Please check the confirmation box!';
+        }
+        return;
+      }
+
+      const radio = document.querySelector('input[name="dedicated-reset-scope"]:checked');
+      const target = radio ? radio.value : 'all';
+
+      if (btn) btn.disabled = true;
+      if (msg) {
+        msg.className = 'text-xs text-amber-400 font-mono';
+        msg.innerText = currentLang === 'vi' ? 'Đang xóa sạch toàn bộ dữ liệu...' : 'Purging all current data...';
+      }
+
+      try {
+        const res = await fetch('/api/agents/data/reset', {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ confirm: true, target: target })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          if (msg) {
+            msg.className = 'text-xs text-emerald-400 font-medium';
+            msg.innerText = currentLang === 'vi' ? 'Đã xóa sạch dữ liệu hiện tại về 0!' : 'All current data purged to 0!';
+          }
+          // Immediately wipe local state
+          allRuns = {};
+          activeRunId = null;
+          loadRuns();
+          fetchLangfuseTelemetry();
+          loadDataStats();
+          setTimeout(() => {
+            closeResetModal();
+          }, 800);
+        } else {
+          if (msg) {
+            msg.className = 'text-xs text-rose-400 font-medium';
+            msg.innerText = `Error: ${data.detail || 'Reset failed'}`;
+          }
+        }
+      } catch (err) {
+        if (msg) {
+          msg.className = 'text-xs text-rose-400 font-medium';
+          msg.innerText = `Network error: ${err.message}`;
+        }
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
     function promptApiKey() {
       const current = localStorage.getItem('agentguard_api_key') || '';
       const promptText = currentLang === 'vi'
@@ -2093,6 +2980,32 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
     }
+
+        // Global Escape and Backdrop Modal Dismissal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeEstimatorModal();
+        closeDataModal();
+        closeResetModal();
+        closeWebhookModal();
+        closeDonateModal();
+      }
+    });
+
+    ['estimator-modal', 'data-modal', 'reset-modal', 'webhook-modal', 'donate-modal'].forEach(id => {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            if (id === 'estimator-modal') closeEstimatorModal();
+            if (id === 'data-modal') closeDataModal();
+            if (id === 'reset-modal') closeResetModal();
+            if (id === 'webhook-modal') closeWebhookModal();
+            if (id === 'donate-modal') closeDonateModal();
+          }
+        });
+      }
+    });
 
     // Initialize Language & State on load
     updateLanguageButtons();

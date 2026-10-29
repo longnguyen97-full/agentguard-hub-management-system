@@ -104,6 +104,9 @@
     - Công cụ mô phỏng ngân sách vận hành Agent theo quy mô thực tế (số phiên/ngày, số bước, số token), phân tích chi phí giữa các Model và tính toán số tiền tiết kiệm được nhờ Chốt Chặn Guardrails.
 15. **Hệ Thống Biểu Giá Linh Hoạt & Đồng Bộ Tự Động (Dynamic Pricing Registry)**:
     - Chuẩn hóa biểu giá chính thức từ OpenAI, DeepMind, Anthropic, DeepSeek và vLLM Local; hỗ trợ nút 1-click **"Đồng Bộ Giá Mới"** kéo trực tiếp dữ liệu biểu giá mới nhất từ chỉ mục mở LiteLLM.
+16. **Quản Lý Vòng Đời Dữ Liệu & Phục Hồi Thảm Họa (Backup / Restore / Reset)**:
+    - Sao lưu toàn diện cả Dashboard SQLite và Langfuse Tracing (ClickHouse/PostgreSQL) thành các tệp nén `.zip` với 1-click trên Web UI hoặc lệnh CLI (`scripts/backup_manager.py`).
+    - Cơ chế bảo vệ an toàn: tự động tạo bản lưu snapshot dự phòng trước khi phục hồi (restore) hoặc xóa (reset).
 
 ---
 
@@ -182,23 +185,7 @@ uv run agent-hub
 
 ---
 
-## 🤖 Nhúng SDK Tự Động Cho Người Dùng Không Biết Code (Claude / Codex / Cursor Skill)
 
-Người dùng không rành lập trình không cần phải tự sửa code! Dự án cung cấp sẵn một **AI Skill chuẩn hóa** tại [`skills/embed-agentguard/SKILL.md`](skills/embed-agentguard/SKILL.md).
-
-Chỉ cần nhập một câu lệnh vào Claude Code, Cursor hoặc Codex:
-```markdown
-"Tích hợp AgentGuard vào con bot này giúp tôi"
-```
-
-Trợ lý AI sẽ tự động:
-1. Quét mã nguồn để xác định ngôn ngữ (Python hay TypeScript/Node.js).
-2. Tự chép bộ Sentinel SDK (`agent_sdk.py` hoặc `agentHubClient.ts`) vào thư mục thích hợp.
-3. Thêm cấu hình `AGENT_HUB_URL=http://localhost:8000` vào file `.env`.
-4. Bọc các bước chạy của bot vào `start_run()`, `log_step()`, `finish()` theo cơ chế an toàn *fail-open* (nếu Hub tắt thì bot vẫn chạy bình thường).
-5. Kiểm tra kết nối và cung cấp link Dashboard `:8000` để xem kết quả ngay.
-
----
 
 ## 🧪 Các Kịch Bản Kiểm Thử Có Sẵn (Demo Scenarios)
 
@@ -213,9 +200,32 @@ Truy cập Dashboard tại `http://localhost:8000/dashboard`, bạn có thể b�
 
 ---
 
-## 🔌 Tích Hợp Agent Bên Ngoài Bằng SDK Siêu Nhẹ
+## 🔌 Tích Hợp Agent Bên Ngoài Vào AgentGuard Hub
 
-Bạn có thể kết nối bất kỳ Agent nào (dù viết bằng LangChain, CrewAI, AutoGen hay Python thuần) vào hệ thống bằng [`agent_sdk.py`](agent_sdk.py):
+AgentGuard cho phép kết nối **bất kỳ hệ thống Agent độc lập nào** (Python, Node.js, Next.js, Go) vào Trung tâm Điều khiển qua AI Skill tự động, Python SDK hoặc TypeScript client.
+
+### 🤖 Phương Án 0: Tích Hợp Tự Động 1 Chạm Bằng Trợ Lý AI (Khuyến Nghị Tuyệt Đối)
+
+Người dùng không cần phải tự sửa code thủ công! Nếu bạn sử dụng trợ lý lập trình AI (**Google Antigravity**, **Cursor**, **Claude Code**, **GitHub Copilot**, **Windsurf**), dự án cung cấp sẵn một **AI Skill chuẩn hóa** tại [`skills/embed-agentguard/SKILL.md`](skills/embed-agentguard/SKILL.md).
+
+Chỉ cần nhập một câu lệnh vào cửa sổ chat với AI:
+```markdown
+"Hãy dùng skill embed-agentguard để nhúng chốt chặn giám sát AgentGuard vào bot này (kết nối http://localhost:8000)"
+```
+
+Trợ lý AI sẽ tự động:
+1. Quét mã nguồn để xác định ngôn ngữ (Python hay TypeScript/Node.js) và framework (LangChain, CrewAI, AutoGen, v.v.).
+2. Tự chép bộ Sentinel SDK (`agent_sdk.py` hoặc `agentHubClient.ts`) vào thư mục thích hợp.
+3. Thêm cấu hình `AGENT_HUB_URL=http://localhost:8000` vào file `.env`.
+4. Bọc các bước chạy của bot vào `start_run()`, `log_step()`, `finish()` theo cơ chế an toàn **fail-open** (nếu Hub tắt thì bot vẫn chạy bình thường).
+5. Tách biệt công cụ nội bộ 0₫ vs lượt gọi LLM có phí.
+6. Gửi ping kiểm tra `/health` và cung cấp link Dashboard `:8000` để xem kết quả ngay.
+
+---
+
+### 🐍 Phương Án A: Tích Hợp Thủ Công Bằng Python SDK (`agent_sdk.py`)
+
+Bạn có thể kết nối bất kỳ Agent nào (LangChain, CrewAI, AutoGen hay Python thuần) vào hệ thống bằng [`agent_sdk.py`](agent_sdk.py):
 
 ```python
 from agent_sdk import AgentTracker
@@ -308,7 +318,8 @@ agent-management-system/
 │       │   ├── export.py        # Tiện ích xuất báo cáo kiểm toán (CSV / JSON)
 │       │   ├── otlp.py          # Tiếp nhận trace chuẩn OpenTelemetry OTLP
 │       │   ├── pricing.py       # Biểu giá LLM động & đồng bộ token economics
-│       │   └── sanitizer.py     # Tự động sửa lỗi font tiếng Việt & Unicode
+│       │   ├── sanitizer.py     # Tự động sửa lỗi font tiếng Việt & Unicode
+│       │   └── backup.py        # Động cơ Sao lưu, Phục hồi & Đặt lại dữ liệu
 │       ├── agents/
 │       │   ├── base.py          # Abstract BaseAgent định nghĩa vòng đời quan sát
 │       │   └── sample_agent.py  # Agent mẫu thông minh hỗ trợ các kịch bản ReAct
@@ -320,10 +331,11 @@ agent-management-system/
 │           ├── dashboard.html   # Giao diện giám sát & điều khiển thời gian thực (Đa ngôn ngữ & Song tệ)
 │           └── guide.html       # Trang tài liệu hướng dẫn sử dụng & cẩm nang tích hợp
 ├── scripts/
-│   └── generate_screenshots.py # Script tự động chụp màn hình UI bằng Playwright (EN/VI)
+│   ├── generate_screenshots.py # Script tự động chụp màn hình UI bằng Playwright (EN/VI)
+│   └── backup_manager.py       # Công cụ dòng lệnh quản lý dữ liệu, sao lưu & reset
 ├── docs/
 │   └── CLIENT_INTEGRATION_GUIDE.md # Hướng dẫn chi tiết cách nhúng SDK
-└── tests/                       # Toàn bộ test suite tự động (18 unit & integration tests)
+└── tests/                       # Toàn bộ test suite tự động (20 unit & integration tests)
 ```
 
 ---

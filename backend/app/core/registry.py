@@ -204,4 +204,21 @@ class AgentRegistry:
                 pass
 
 
+    def reload_from_db(self):
+        """Clears memory state and reloads freshly from SQLite database."""
+        self.runs.clear()
+        self._load_persisted_runs()
+        self.broadcast_event({
+            "type": "runs_reloaded",
+            "count": len(self.runs)
+        })
+
+    def clear_all(self):
+        """Wipes in-memory runs dictionary and broadcasts event."""
+        self.runs.clear()
+        self.broadcast_event({
+            "type": "runs_cleared"
+        })
+
+
 registry = AgentRegistry()

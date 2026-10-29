@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     
     ALERT_WEBHOOK_URL: Optional[str] = None
     DATABASE_PATH: str = "data/agentguard.db"
+    BACKUP_DIR: str = "backups"
     API_KEY: Optional[str] = None  # None: Open dev mode | String (e.g. 'ag_live_secret_key'): Requires API Key
     
     model_config = SettingsConfigDict(
@@ -30,4 +31,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-

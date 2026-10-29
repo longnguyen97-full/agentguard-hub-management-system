@@ -35,11 +35,20 @@ env.bak/
 venv.bak/
 .uv/
 
+# Node.js & Frontend dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
 # Environment Variables & Secrets
 .env
 .env.local
 .env.*.local
 !.env.example
+*.pem
+*.key
 
 # IDE & Editors
 .vscode/
@@ -52,6 +61,7 @@ venv.bak/
 # Internal evaluations and benchmark datasets
 evals/
 
+# OS specific files
 .DS_Store
 Thumbs.db
 desktop.ini
@@ -73,14 +83,34 @@ coverage.xml
 dmypy.json
 .ruff_cache/
 
-# Logs & Databases
+# Databases, SQLite & WAL Journals
 *.log
 *.sqlite
 *.sqlite3
 *.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Backups, Archives & Snapshot Exports
+backups/*
+!backups/.gitkeep
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.bak
+*.csv
+
+# Docker & Container Data Volumes
+.docker/
+docker-data/
+clickhouse-data/
+postgres-data/
 
 # OS / Temporary files
 *.pid
-.docker/
 tmp/
 temp/
+*.tmp

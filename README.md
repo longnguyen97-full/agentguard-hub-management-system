@@ -90,6 +90,7 @@
 - **📖 Interactive User Guide (`/guide`)**: Dedicated, comprehensive documentation accessible directly from the top menu.
 - **🔍 Deep Tracing Stack**: Pre-configured, self-hosted Langfuse cluster (Web UI, ClickHouse, PostgreSQL, Redis, MinIO) via Docker Compose.
 - **🔌 Zero-Friction Client SDK (`agent_sdk.py`)**: Seamlessly connects external agents (LangChain, CrewAI, AutoGen, or vanilla scripts) into the central monitoring hub.
+- **📦 Data Lifecycle & Disaster Recovery (Backup / Restore / Reset)**: Automated 1-click backup of Dashboard SQLite databases and Langfuse PostgreSQL/ClickHouse traces into compressed `.zip` archives. Features automated pre-restore and pre-reset rollback protection, live Web UI management modal, and dedicated CLI (`scripts/backup_manager.py`).
 
 ---
 
@@ -162,7 +163,25 @@ Open the Web Dashboard at `http://localhost:8000/dashboard` to test preset scena
 
 ## 🔌 Integrating Any External Agent (Live Agent Sessions)
 
-AgentGuard allows connecting **any external system** (Python, Node.js, Next.js, Go) into its live Control Plane via REST API, Python SDK (`agent_sdk.py`), or TypeScript helper client.
+AgentGuard allows connecting **any external system** (Python, Node.js, Next.js, Go) into its live Control Plane via 1-click AI Agent Skill, Python SDK (`agent_sdk.py`), or TypeScript helper client.
+
+### 🤖 Option 0: 1-Click Automated AI Assistant Integration (Recommended)
+
+Don't want to write or edit code manually? If you use an AI coding assistant (**Google Antigravity**, **Cursor**, **Claude Code**, **GitHub Copilot**, or **Windsurf**), you can embed AgentGuard into any AI bot with a single prompt using our official **AI Assistant Skill** ([`skills/embed-agentguard/SKILL.md`](skills/embed-agentguard/SKILL.md)):
+
+```markdown
+"Use embed-agentguard skill to wrap this AI agent with AgentGuard guardrails and telemetry at http://localhost:8000"
+```
+
+The coding assistant will automatically:
+1. Scan your project structure (Python, TypeScript, or Next.js; LangChain, CrewAI, AutoGen, LlamaIndex, or custom loop).
+2. Copy the appropriate Sentinel SDK (`agent_sdk.py` or `agentHubClient.ts`).
+3. Add `AGENT_HUB_URL=http://localhost:8000` to `.env`.
+4. Wrap existing LLM calls with `start_run()`, `log_step()`, and `finish()` with fail-open safety (ensuring your agent never crashes if the Hub is offline).
+5. Mark deterministic tools ($0.00 / 0 tokens) vs billable LLM reasoning calls.
+6. Verify `/health` connectivity and provide a direct link to your live Dashboard.
+
+---
 
 ### 🐍 Option A: Python Agent (using `agent_sdk.py`)
 
@@ -267,22 +286,7 @@ await fetch(`http://localhost:8000/api/agents/external/${run_id}/finish`, {
 
 ---
 
-## 🤖 Zero-Code AI Integration for Non-Devs (Claude / Codex / Cursor Skill)
 
-Don't want to write code? You can embed AgentGuard into any AI bot with a single prompt using our official **AI Assistant Skill** ([`skills/embed-agentguard/SKILL.md`](skills/embed-agentguard/SKILL.md)):
-
-```markdown
-"Embed AgentGuard into my agent and connect to http://localhost:8000"
-```
-
-The coding assistant (Claude Code, Cursor, Codex, or Antigravity) will automatically:
-1. Scan your project structure (Python, TypeScript, or Next.js).
-2. Copy the appropriate Sentinel SDK (`agent_sdk.py` or `agentHubClient.ts`).
-3. Add `AGENT_HUB_URL=http://localhost:8000` to `.env`.
-4. Wrap existing LLM calls with `start_run()`, `log_step()`, and `finish()` with fail-open safety.
-5. Verify connectivity and provide a direct link to your live Dashboard.
-
----
 
 ## 🏢 Live Satellite Mock Systems (`mock-systems/`)
 
@@ -356,10 +360,11 @@ agent-management-system/
 │           ├── dashboard.html   # Real-time dark-themed monitoring & control UI
 │           └── guide.html       # Interactive User Guide & Manual
 ├── scripts/
-│   └── generate_screenshots.py # Playwright automated UI screenshot generator (EN/VI)
+│   ├── generate_screenshots.py # Playwright automated UI screenshot generator (EN/VI)
+│   └── backup_manager.py       # Data Lifecycle CLI for Backup, Restore & Purge
 ├── docs/
 │   └── CLIENT_INTEGRATION_GUIDE.md # SDK & API integration guide
-└── tests/                       # Comprehensive test suite (18 unit & integration tests)
+└── tests/                       # Comprehensive test suite (20 unit & integration tests)
 ```
 
 ---

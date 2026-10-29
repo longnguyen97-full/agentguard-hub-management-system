@@ -2,8 +2,9 @@ import asyncio
 import json
 import uuid
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException, Query, Response
-from fastapi.responses import StreamingResponse
+from pathlib import Path
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, UploadFile, File
+from fastapi.responses import StreamingResponse, FileResponse
 
 from app.schemas.agent import (
     AgentRunRequest,
@@ -21,6 +22,7 @@ from app.core.auth import verify_api_key
 from app.core.export import export_run_to_json, export_run_to_csv, export_all_runs_to_csv
 from app.core.alerts import notifier, AlertNotifier
 from app.core.pricing import pricing_registry
+from app.core.backup import backup_manager
 from app.agents.sample_agent import SampleMonitoredAgent
 
 router = APIRouter(prefix="/api/agents", tags=["Agents"])
@@ -90,6 +92,95 @@ async def sync_models_pricing(_api_key: Optional[str] = Depends(verify_api_key))
 async def get_simulation_mode():
     """Returns whether system is running in mock simulation mode or live production mode."""
     return {"simulation_mode": settings.SIMULATION_MODE}
+
+
+# --- Backup, Restore & Data Lifecycle Management ---
+@router.get("/data/stats")
+async def get_data_storage_stats():
+    """Returns storage analytics, run counts, and database size for Dashboard and Langfuse."""
+    return backup_manager.get_storage_stats()
+
+
+@router.get("/data/backups")
+async def list_data_backups():
+    """Lists all available backup archives with metadata."""
+    return backup_manager.list_backups()
+
+
+@router.post("/data/backup")
+async def create_data_backup(payload: Optional[dict] = None, _api_key: Optional[str] = Depends(verify_api_key)):
+    """Creates a full backup archive of Dashboard SQLite data and Langfuse tracing records."""
+    data = payload or {}
+    target = data.get("target", "all")
+    note = data.get("note", "Manual User Backup")
+    include_langfuse = data.get("include_langfuse", True)
+    res = backup_manager.create_backup(target=target, note=note, include_langfuse=include_langfuse)
+    return res
+
+
+@router.get("/data/backup/download/{filename}")
+async def download_backup_file(filename: str):
+    """Downloads a specific backup archive file."""
+    safe_name = Path(filename).name
+    file_path = backup_manager.backup_dir / safe_name
+    if not file_path.exists() or not file_path.is_file():
+        raise HTTPException(status_code=404, detail="Backup file not found.")
+    return FileResponse(
+        path=str(file_path),
+        filename=safe_name,
+        media_type="application/zip" if safe_name.endswith(".zip") else "application/octet-stream"
+    )
+
+
+@router.post("/data/restore")
+async def restore_data_backup(payload: Optional[dict] = None, _api_key: Optional[str] = Depends(verify_api_key)):
+    """Restores data from a specified backup file."""
+    if not payload or not payload.get("filename"):
+        raise HTTPException(status_code=400, detail="Missing 'filename' in restore request.")
+    filename = payload.get("filename")
+    target = payload.get("target", "all")
+    try:
+        res = backup_manager.restore_backup(filename, target=target)
+        return res
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Backup archive not found.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to restore backup: {str(e)}")
+
+
+@router.post("/data/restore/upload")
+async def upload_and_restore_backup(
+    file: UploadFile = File(...),
+    target: str = Query("all"),
+    _api_key: Optional[str] = Depends(verify_api_key)
+):
+    """Uploads an external backup archive (.zip or .db) and restores it."""
+    safe_name = Path(file.filename or "uploaded_backup.zip").name
+    dest_path = backup_manager.backup_dir / f"upload_{safe_name}"
+    try:
+        content = await file.read()
+        dest_path.write_bytes(content)
+        res = backup_manager.restore_backup(str(dest_path), target=target)
+        return res
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to restore uploaded archive: {str(e)}")
+
+
+@router.post("/data/reset")
+async def reset_system_data(payload: dict, _api_key: Optional[str] = Depends(verify_api_key)):
+    """
+    Safely resets operational data (sessions, steps, ClickHouse telemetry).
+    Requires explicit confirmation payload: {'confirm': true, 'target': 'all'|'dashboard'|'langfuse'}.
+    """
+    if not payload.get("confirm"):
+        raise HTTPException(
+            status_code=400,
+            detail="Confirmation required. Pass {'confirm': true, 'target': 'all'|'dashboard'|'langfuse'} to execute reset."
+        )
+    target = payload.get("target", "all")
+    preserve_auth = payload.get("preserve_langfuse_auth", True)
+    res = backup_manager.reset_data(target=target, preserve_langfuse_auth=preserve_auth)
+    return res
 
 
 # --- Langfuse & ClickHouse Live Telemetry ---

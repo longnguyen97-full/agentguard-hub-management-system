@@ -248,5 +248,66 @@ class DatabaseManager:
         return steps
 
 
+    def reset_all(self) -> int:
+        """Deletes all runs and steps from SQLite and reclaims disk space."""
+        try:
+            with self._get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT count(*) FROM agent_runs")
+                count = cursor.fetchone()[0]
+                cursor.execute("DELETE FROM agent_steps")
+                cursor.execute("DELETE FROM agent_runs")
+                conn.commit()
+                cursor.execute("VACUUM")
+                conn.commit()
+            logger.info(f"Reset SQLite database: deleted {count} historical runs.")
+            return count
+        except Exception as e:
+            logger.error(f"Failed to reset SQLite database: {e}")
+            raise
+
+    def get_storage_stats(self) -> dict:
+        """Returns database disk usage, runs count, and steps count."""
+        size_bytes = self.db_path.stat().st_size if self.db_path.exists() else 0
+        runs_count = 0
+        steps_count = 0
+        try:
+            with self._get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT count(*) FROM agent_runs")
+                runs_count = cursor.fetchone()[0]
+                cursor.execute("SELECT count(*) FROM agent_steps")
+                steps_count = cursor.fetchone()[0]
+        except Exception as e:
+            logger.error(f"Failed to get storage stats: {e}")
+
+        size_formatted = f"{size_bytes / 1024:.1f} KB" if size_bytes < 1048576 else f"{size_bytes / 1048576:.2f} MB"
+        return {
+            "db_path": str(self.db_path),
+            "size_bytes": size_bytes,
+            "size_formatted": size_formatted,
+            "runs_count": runs_count,
+            "steps_count": steps_count,
+        }
+
+    def backup_to_file(self, target_path: Path) -> Path:
+        """Creates an atomic SQLite backup file using sqlite3 backup API."""
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+        with self._get_connection() as source:
+            with sqlite3.connect(str(target_path)) as dest:
+                source.backup(dest)
+        return target_path
+
+    def restore_from_file(self, backup_path: Path) -> int:
+        """Restores database from an external SQLite file."""
+        if not backup_path.exists():
+            raise FileNotFoundError(f"Backup file not found: {backup_path}")
+        with sqlite3.connect(str(backup_path)) as source:
+            with self._get_connection() as dest:
+                source.backup(dest)
+        self._init_db()
+        return len(self.load_all_runs())
+
+
 db = DatabaseManager()
 

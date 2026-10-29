@@ -41,7 +41,57 @@ AgentGuard kết hợp 2 tầng giám sát độc lập nhưng bổ trợ lẫn 
 
 ---
 
-## 2. Phương Án 1: Tích Hợp Cho Node.js / TypeScript / Next.js
+## 2. Phương Án 0 (Khuyến Nghị Tuyệt Đối): Tích Hợp Tự Động Bằng Trợ Lý AI Coding
+
+> **Dành cho**: Developer sử dụng **Google Antigravity**, **Cursor**, **Claude Code**, **GitHub Copilot Workspace**, hoặc **Windsurf**.  
+> **Ưu điểm**: Bạn **không cần phải tự tay copy/paste mã hay sửa thủ công từng file**. Trợ lý AI sẽ đọc tài liệu kỹ thuật và bộ quy chuẩn chuẩn hóa của AgentGuard để nhúng chốt chặn vào hệ thống của bạn chỉ với **1 câu lệnh duy nhất**.
+
+### 🌟 Bộ AI Skill Chuẩn Hóa: `skills/embed-agentguard/SKILL.md`
+
+AgentGuard cung cấp sẵn một AI Skill được tối ưu hóa theo quy chuẩn Agentic Coding tại:
+👉 [`skills/embed-agentguard/SKILL.md`](../skills/embed-agentguard/SKILL.md)
+
+### 🚀 Câu Lệnh Kích Hoạt (Prompt Mẫu)
+
+Mở cửa sổ Chat với Trợ lý AI của bạn (Antigravity / Cursor / Claude Code) và nhập:
+
+#### Tiếng Việt:
+```text
+Hãy đọc file skills/embed-agentguard/SKILL.md và tự động nhúng toàn bộ chốt chặn giám sát AgentGuard vào project agent này (kết nối về Hub tại http://localhost:8000). Đảm bảo giữ nguyên logic hiện tại và áp dụng cơ chế an toàn fail-open.
+```
+
+#### English:
+```text
+Read skills/embed-agentguard/SKILL.md and embed AgentGuard monitoring, safety guardrails, and telemetry into this AI agent project (connecting to Hub at http://localhost:8000). Ensure zero-downtime fail-open safety.
+```
+
+### ⚙️ Quy Trình 6 Bước Mà Trợ Lý AI Sẽ Tự Thực Hiện:
+
+```mermaid
+flowchart TD
+    A["1. Quét Kiến Trúc Dự Án<br/>(Python / TypeScript / Framework)"] --> B["2. Tự Động Chép Sentinel SDK<br/>(agent_sdk.py hoặc agentHubClient.ts)"]
+    B --> C["3. Nhúng Biến Môi Trường<br/>AGENT_HUB_URL=http://localhost:8000 vào .env"]
+    C --> D["4. Bọc Vòng Lặp Suy Luận Với Cơ Chế Fail-Open<br/>(start_run -> log_step -> finish/fail)"]
+    D --> E["5. Tách Biệt Chi Phí API vs Công Cụ 0₫<br/>(is_billable: true / false)"]
+    E --> F["6. Ping Kiểm Tra /health & Cung Cấp Link Dashboard"]
+```
+
+1. **Nhận diện Runtime & Framework**: Tự động phát hiện dự án dùng Python (LangChain, CrewAI, AutoGen, LlamaIndex, script thuần) hay Node.js/TypeScript (Next.js App Router, Express, NestJS).
+2. **Cung cấp Client Helper tương thích**:
+   - Dự án Python: Tạo hoặc chép `agent_sdk.py`.
+   - Dự án TypeScript: Tạo `src/lib/agentHubClient.ts`.
+3. **Cấu hình biến môi trường**: Tự động bổ sung `AGENT_HUB_URL=http://localhost:8000` vào `.env`.
+4. **Bọc chốt chặn an toàn với nguyên lý Fail-Open (Zero Downtime)**:
+   - Toàn bộ lệnh gọi tới AgentGuard Hub được bảo vệ trong khối `try...except` / `try...catch` không đồng bộ.
+   - Nếu AgentGuard Hub tắt hoặc bảo trì, **agent của bạn vẫn chạy hoàn toàn bình thường**, không bao giờ bị dừng ngoài ý muốn!
+5. **Định danh chi phí chuẩn xác ($0.00 vs API Tokens)**:
+   - Các bước suy luận LLM (OpenAI, Claude, Gemini) được đánh dấu `is_billable: true` kèm số token và chi phí.
+   - Các công cụ tất định nội bộ (Regex check, query SQL, format dữ liệu) được đánh dấu `is_billable: false` ($0.00 / 0 token) để không làm sai lệch báo cáo chi phí.
+6. **Kiểm thử & Bàn giao**: Gửi tín hiệu kiểm tra tới `http://localhost:8000/health` và cung cấp link mở Dashboard trực tiếp: `http://localhost:8000/dashboard`.
+
+---
+
+## 3. Phương Án 1: Tích Hợp Thủ Công Cho Node.js / TypeScript / Next.js
 
 Dành cho các ứng dụng web fullstack (như Next.js, Express, NestJS).
 

@@ -1,6 +1,6 @@
 ---
 name: embed-agentguard
-description: Automatically inspects any AI Agent project (Python or TypeScript/Node.js) and embeds AgentGuard monitoring, guardrails, and telemetry without breaking existing functionality. Supports both English and Vietnamese users.
+description: Automatically inspects any AI Agent project (Python or TypeScript/Node.js) and embeds AgentGuard monitoring, guardrails, and telemetry without breaking existing functionality. Supports both English and Vietnamese users across Antigravity, Cursor, Claude Code, Windsurf, and GitHub Copilot.
 ---
 
 # AgentGuard Embedder Skill
@@ -15,12 +15,12 @@ When the user requests to monitor, protect, or embed AgentGuard into their AI Ag
 ## 2. Inspect Codebase & Detect Runtime
 Scan the target workspace to identify:
 - **Language**: Python (`requirements.txt`, `pyproject.toml`, `.py` files) or TypeScript/JavaScript (`package.json`, `.ts`, `.js` files).
-- **Framework**: LangChain, CrewAI, AutoGen, LlamaIndex, Next.js API Routes, or vanilla agent loops.
+- **Framework**: LangChain, CrewAI, AutoGen, LlamaIndex, Next.js API Routes, FastAPI, or vanilla agent loops.
 - **Entrypoints**: Locate the core reasoning loop, tool execution dispatcher, or API handlers.
 
 ## 3. Inject Client SDK & Environment
 - **For Python**:
-  - Ensure `agent_sdk.py` is present in the project (copy from AgentGuard template if missing).
+  - Ensure `agent_sdk.py` is present in the project (copy from AgentGuard repository or template if missing).
   - Add `AGENT_HUB_URL=http://localhost:8000` to `.env` (fallback: `http://localhost:8000`).
 - **For TypeScript / Node.js**:
   - Ensure `agentHubClient.ts` is placed in `src/lib/` or `utils/`.
@@ -34,6 +34,33 @@ Wrap existing execution steps following the 3-phase lifecycle:
    - Mark `is_billable: false` ($0.00 / 0 tokens) for deterministic local computations (regex, DB queries, local formatting).
 3. **Finish / Error**: Call `finish(final_output)` on success or `fail(error)` in catch blocks.
 4. **Zero Downtime Guarantee (Fail-Open)**: Always wrap AgentGuard network calls inside `try...catch` / non-blocking handlers so that if AgentGuard Hub is temporarily offline, the user's agent continues to function without error.
+
+### Reference Fail-Open Wrapper Pattern:
+```python
+# Python Fail-Open Example
+try:
+    session = tracker.start_run(agent_name="MyBot", prompt=user_prompt)
+except Exception as e:
+    session = None  # Silently fallback without crashing agent logic
+
+# Inside agent step:
+if session:
+    try:
+        session.log_step(thought=thought, tool_name=tool, is_billable=is_billable)
+    except Exception:
+        pass
+```
+
+```typescript
+// TypeScript Fail-Open Example
+let runId: string | null = null;
+try {
+  const run = await hub.startRun({ agent_name: 'MyBot', prompt: userPrompt });
+  runId = run.run_id;
+} catch {
+  // Hub offline: proceed smoothly
+}
+```
 
 ## 5. Verification & Summary
 1. Send a lightweight ping to `http://localhost:8000/health` to verify Hub connectivity.
