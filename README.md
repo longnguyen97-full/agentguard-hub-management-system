@@ -288,20 +288,38 @@ await fetch(`http://localhost:8000/api/agents/external/${run_id}/finish`, {
 
 
 
-## 🏢 Live Satellite Mock Systems (`mock-systems/`)
+## 🏢 Live Satellite Mock Systems (`mock-systems/`) & Metrics Guide
 
-Instead of just running mock scripts, AgentGuard includes **3 fully functioning standalone host systems** with embedded Sentinel SDKs:
+AgentGuard includes **3 fully functioning standalone host systems** with embedded Sentinel SDKs that simulate enterprise AI operations across different tech stacks (FastAPI, Node.js, Python Worker):
 
-| System | Port & Stack | Agent Role | Tested Guardrails |
-| :--- | :--- | :--- | :--- |
-| **1. E-Commerce Service** | `:8010` (FastAPI) | Customer care bot, order status & voucher generator | 🟢 **100% Compliant Flow** (Billable vs $0.00) |
-| **2. Fintech & E-Wallet** | `:8020` (Node.js) | Autonomous bill payment & money transfer | ⏸️ **Human-in-the-Loop Approval** (Paused) |
-| **3. Autonomous Crawler** | `:8030` (Python Worker) | Bulk forum & finance report crawler | 🛡️ **Loop Detector** & 💰 **Budget Limiter** |
+| Satellite System | Port & Stack | Agent Persona | Tested Guardrails | Expected Behavior |
+| :--- | :--- | :--- | :--- | :--- |
+| **1. E-Commerce Service** | `:8010` (FastAPI) | `CustomerCareBot`: Order tracking, inventory query, coupon generation | 🟢 **Cost Breakdown** ($0.00 vs Billable) | Separates billable LLM reasoning from $0.00 deterministic tool calls. Status: `COMPLETED`. |
+| **2. FinTech Transfer** | `:8020` (Node.js) | `BankTransferAgent`: Autonomous wallet transfer | ⏸️ **Human-in-the-Loop** (`WAITING_APPROVAL`) | Intercepts high-value transaction. Operator approves/rejects live on Dashboard. |
+| **3. Autonomous Crawler** | `:8030` (Python Worker) | `MarketCrawlerWorker`: Scraping market reports | 🛡️ **Loop Detector** & 💰 **Budget Limiter** | SHA-256 arg hasher halts run on 2nd repeat. Status: `LOOP_DETECTED`. |
 
-Launch all 3 systems and trigger live end-to-end telemetry into Hub (:8000) with 1 command:
+### 🚀 1-Command Orchestration
+
 ```bash
+# Option A: One-Shot Autonomous Test & Exit (E2E Verification)
 uv run python mock-systems/run_all.py --test
+
+# Option B: Persistent Daemon Mode (Keeps :8010, :8020, :8030 alive for cURL/Postman)
+uv run python mock-systems/run_all.py --daemon
 ```
+
+### 📊 Step-by-Step Metric Interpretation
+
+When viewing sessions in **Live Mode** (`http://localhost:8000/dashboard`):
+
+1. **Total Runs (Tổng Số Phiên Chạy)**: Total agent sessions ingested from satellite systems.
+2. **Pending Approval (Đang Chờ Phê Duyệt)**: Counts runs paused in `WAITING_APPROVAL` (e.g. from `:8020`). Click **Authorize** to proceed or **Reject** to abort.
+3. **Total Tokens (Tổng Token Ghi Nhận)**: Sum of all billable LLM tokens consumed. Note that deterministic steps (e.g., local database lookup) consume `0 tokens`.
+4. **Estimated Cost (Ước Tính Chi Phí)**: Live calculated cost in USD or VND (e.g. `240 tokens * $0.00035/1k = ₫2`). Toggle between **VND (₫)** and **USD ($)** at the top bar.
+5. **ReAct Trajectory Inspector**: Click any session to replay step-by-step thoughts, inputs, outputs, execution latencies (ms), and cost tags.
+6. **Langfuse Deep Traces (:3000)**: Click the **Open Langfuse** button to inspect the full OpenTelemetry waterfall spans, token distributions, and ClickHouse latency histograms.
+
+> 📖 **Comprehensive Documentation**: See [`docs/MOCK_SYSTEMS_GUIDE.md`](docs/MOCK_SYSTEMS_GUIDE.md) and interactive guide at [http://localhost:8000/guide](http://localhost:8000/guide).
 
 ## 🧪 Automated Test Suite
 

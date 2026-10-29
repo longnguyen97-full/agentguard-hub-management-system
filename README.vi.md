@@ -266,10 +266,45 @@ session.log_step(
 session.finish(final_output="Đã hoàn thành! Mã giảm giá THANKYOU10 đã được gửi.")
 ```
 
-> Thử nghiệm ngay kịch bản mẫu này:
+> Chạy kiểm thử tự động toàn diện trên cả 3 hệ thống vệ tinh:
 > ```bash
-> uv run python examples/external_agent_demo.py
+> uv run python mock-systems/run_all.py --test
 > ```
+
+---
+
+## 🛰️ Kiểm Thử Thực Tế Với Hệ Thống Vệ Tinh (Mock Systems) & Hướng Dẫn Đọc Chỉ Số
+
+Thay vì chỉ chạy các script mô phỏng cục bộ, AgentGuard cung cấp sẵn **3 hệ thống vệ tinh độc lập** đại diện cho các tech stack doanh nghiệp thực tế (FastAPI, Node.js, Python Worker):
+
+| Hệ Thống Vệ Tinh | Cổng & Stack | Vai Trò AI Agent | Chốt Chặn & Tính Năng Kiểm Thử | Hành Vi Mong Đợi |
+| :--- | :--- | :--- | :--- | :--- |
+| **1. E-Commerce Service** | `:8010` (FastAPI) | `CustomerCareBot`: Tra cứu đơn hàng, kiểm tra kho, sinh mã giảm giá | 🟢 **Phân tách chi phí** ($0.00 vs LLM có phí) | Tách bạch bước suy luận LLM (tính tiền token API) vs công cụ nội bộ (0₫). Trạng thái: `HOÀN TẤT`. |
+| **2. FinTech Transfer** | `:8020` (Node.js) | `BankTransferAgent`: Chuyển tiền tự động | ⏸️ **Human-in-the-Loop** (`WAITING_APPROVAL`) | Tự động tạm dừng khi phát hiện giao dịch nhạy cảm. Quản trị viên duyệt/từ chối trực tiếp trên Dashboard. |
+| **3. Autonomous Crawler** | `:8030` (Python Worker) | `MarketCrawlerWorker`: Cào báo cáo thị trường | 🛡️ **Loop Detector** & 💰 **Budget Limiter** | Thuật toán băm SHA-256 đối số chặn đứng vòng lặp sau 2 lần lặp. Trạng thái: `LOOP_DETECTED`. |
+
+### 🚀 Điều Phối 1 Lệnh Duy Nhất
+
+```bash
+# Cách 1: Tự động chạy kiểm thử E2E cả 3 hệ thống và tự dọn dẹp
+uv run python mock-systems/run_all.py --test
+
+# Cách 2: Khởi chạy dạng daemon giữ sống cả 3 cổng :8010, :8020, :8030 để test bằng cURL / Postman
+uv run python mock-systems/run_all.py --daemon
+```
+
+### 📊 Hướng Dẫn Đọc Các Chỉ Số Trên Dashboard & Langfuse
+
+Khi chuyển sang **Chế độ Trực Tiếp (Live Mode)** trên Dashboard (`http://localhost:8000/dashboard`):
+
+1. **Tổng Số Phiên Chạy**: Tổng số phiên agent thực gửi về từ các dịch vụ vệ tinh.
+2. **Đang Chờ Phê Duyệt**: Số phiên bị chốt chặn tạm dừng ở trạng thái `WAITING_APPROVAL` (ví dụ từ `:8020`). Bấm **Duyệt** để cho phép chạy tiếp hoặc **Từ chối** để hủy.
+3. **Tổng Token Ghi Nhận**: Tổng số token suy luận có tính phí API. Các bước chạy công cụ nội bộ (ví dụ truy vấn DB) tiêu thụ `0 tokens`.
+4. **Ước Tính Chi Phí**: Chi phí quy đổi theo thời gian thực (hỗ trợ chuyển đổi **VND ₫** và **USD $** trên thanh menu).
+5. **Thanh Soi Hành Trình ReAct (Inspector)**: Bấm vào phiên bất kỳ để xem lại từng bước suy luận, câu lệnh, tham số gọi tool, thời gian trễ (ms) và thẻ chi phí.
+6. **Truy Vết Sâu Langfuse (:3000)**: Bấm nút **Open Langfuse** để xem biểu đồ OTel waterfall spans, phân bổ token và đồ thị trễ ClickHouse.
+
+> 📖 **Xem tài liệu chi tiết**: [`docs/MOCK_SYSTEMS_GUIDE.md`](docs/MOCK_SYSTEMS_GUIDE.md) và cẩm nang tương tác trực tiếp tại [http://localhost:8000/guide](http://localhost:8000/guide).
 
 ---
 

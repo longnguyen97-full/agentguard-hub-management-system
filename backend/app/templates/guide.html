@@ -268,11 +268,120 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
       </div>
     </section>
 
-    <!-- Section 3: REST API Quick Reference -->
+    <!-- Section 3: Live Testing with Satellite Mock Systems & Metrics Guide -->
+    <section class="space-y-6">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <h2 id="sec-mock-title" class="text-xl font-bold text-white flex items-center space-x-2">
+          <i data-lucide="network" class="w-5 h-5 text-indigo-400"></i>
+          <span>3. Live Testing with Satellite Mock Systems (mock-systems/)</span>
+        </h2>
+        <a href="https://github.com" target="_blank" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium flex items-center space-x-1">
+          <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+          <span id="lbl-mock-guide-link">Full Mock Systems Manual (docs/MOCK_SYSTEMS_GUIDE.md)</span>
+        </a>
+      </div>
+
+      <p id="sec-mock-desc" class="text-xs text-slate-300 leading-relaxed">
+        AgentGuard includes 3 standalone satellite host systems running realistic business agents (FastAPI, Node.js, and Python Worker) with embedded Sentinel SDKs:
+      </p>
+
+      <!-- 3 Satellite Systems Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <!-- System 1 -->
+        <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-emerald-400 flex items-center space-x-1.5">
+              <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+              <span>1. E-Commerce (:8010)</span>
+            </span>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">FastAPI</span>
+          </div>
+          <p id="mock-sys1-desc" class="text-xs text-slate-300 leading-relaxed">
+            Customer care agent handles order inquiry and issues coupon. Tests 100% compliant flow and separates billable LLM tokens from free $0.00 deterministic tools.
+          </p>
+        </div>
+
+        <!-- System 2 -->
+        <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-amber-400 flex items-center space-x-1.5">
+              <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
+              <span>2. Fintech &amp; Wallet (:8020)</span>
+            </span>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/30">Node.js</span>
+          </div>
+          <p id="mock-sys2-desc" class="text-xs text-slate-300 leading-relaxed">
+            Financial agent parses electric bill. Triggers sensitive bank transfer and pauses in WAITING_APPROVAL for human operator confirmation on Dashboard.
+          </p>
+        </div>
+
+        <!-- System 3 -->
+        <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-rose-400 flex items-center space-x-1.5">
+              <i data-lucide="spider" class="w-3.5 h-3.5"></i>
+              <span>3. Crawler Worker (:8030)</span>
+            </span>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-300 border border-rose-500/30">Python</span>
+          </div>
+          <p id="mock-sys3-desc" class="text-xs text-slate-300 leading-relaxed">
+            Autonomous web crawler encounters infinite pagination trap. Intercepted by Loop Detector hash filter after 2 repetitions to protect API budget.
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Run Command Box -->
+      <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-bold text-slate-200" id="lbl-mock-run-title">🚀 1-Command Automated Satellite Test Suite:</span>
+          <span class="text-[11px] font-mono text-indigo-400">run_all.py --test</span>
+        </div>
+        <pre class="bg-slate-950 p-3 rounded-lg text-xs font-mono text-indigo-300 border border-slate-800/80 overflow-x-auto"><code>uv run python mock-systems/run_all.py --test</code></pre>
+        <p id="lbl-mock-run-note" class="text-[11px] text-slate-400">
+          Starts all 3 servers, dispatches realistic payloads, streams trajectories live into Hub (:8000), and exits cleanly. Toggle dashboard to <strong>Live Mode: ON</strong> to observe.
+        </p>
+      </div>
+
+      <!-- How to Read Dashboard Metrics Guide -->
+      <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-3">
+        <h3 id="lbl-how-to-read-title" class="text-sm font-bold text-indigo-300 flex items-center space-x-1.5">
+          <i data-lucide="bar-chart-3" class="w-4 h-4 text-indigo-400"></i>
+          <span>How to Read Dashboard Metrics &amp; Reasoning Trajectories</span>
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div class="bg-slate-950/80 p-3 rounded-lg border border-slate-800 space-y-1">
+            <span class="font-bold text-slate-200" id="lbl-m1-title">1. Total Runs vs. Traces</span>
+            <p id="lbl-m1-desc" class="text-slate-400 text-[11px] leading-relaxed">
+              Total Agent Runs counts operational sessions managed by the Hub. Each customer chat or payment task is 1 Run containing multiple reasoning steps.
+            </p>
+          </div>
+          <div class="bg-slate-950/80 p-3 rounded-lg border border-slate-800 space-y-1">
+            <span class="font-bold text-slate-200" id="lbl-m2-title">2. Waiting Human Approval</span>
+            <p id="lbl-m2-desc" class="text-slate-400 text-[11px] leading-relaxed">
+              Orange badge indicates frozen sensitive actions. Click on the session card on Dashboard and press Authorize or Reject to resolve.
+            </p>
+          </div>
+          <div class="bg-slate-950/80 p-3 rounded-lg border border-slate-800 space-y-1">
+            <span class="font-bold text-slate-200" id="lbl-m3-title">3. Deterministic Tools ($0.00)</span>
+            <p id="lbl-m3-desc" class="text-slate-400 text-[11px] leading-relaxed">
+              Local database queries or regex policy checks are marked "Deterministic (Free / $0.00)" so they never inflate your billable token spend.
+            </p>
+          </div>
+          <div class="bg-slate-950/80 p-3 rounded-lg border border-slate-800 space-y-1">
+            <span class="font-bold text-slate-200" id="lbl-m4-title">4. Real-time USD ⇄ VND Cost</span>
+            <p id="lbl-m4-desc" class="text-slate-400 text-[11px] leading-relaxed">
+              Computed strictly from billable LLM tokens against official model pricing. Click the currency button on Card 4 to switch between USD and VND.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: REST API Quick Reference -->
     <section class="space-y-6">
       <h2 id="sec3-title" class="text-xl font-bold text-white flex items-center space-x-2">
         <i data-lucide="server" class="w-5 h-5 text-indigo-400"></i>
-        <span>3. REST API Quick Reference</span>
+        <span>4. REST API Quick Reference</span>
       </h2>
 
       <div class="overflow-x-auto border border-slate-800 rounded-xl">
@@ -399,7 +508,7 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
     <section id="community" class="space-y-4">
       <h2 id="sec4-title" class="text-xl font-bold text-white flex items-center space-x-2">
         <i data-lucide="heart" class="w-5 h-5 text-pink-400"></i>
-        <span>4. Community, Feedback &amp; Sponsorship</span>
+        <span>5. Community, Feedback &amp; Sponsorship</span>
       </h2>
       <p id="sec4-desc" class="text-sm text-slate-400 leading-relaxed">
         Join our community, provide feedback, get support from AI agents, or sponsor the project:
@@ -457,7 +566,23 @@ await hub.finishRun(run.run_id, { status: 'COMPLETED', final_output: 'Order conf
         opt0F2: "Zero downtime (Fail-open safety)",
         opt0F3: "Deterministic tools marked $0.00",
         manualSdksTitle: "Manual SDK Integration",
-        sec3: "3. REST API Quick Reference",
+        secMockTitle: "3. Live Testing with Satellite Mock Systems (mock-systems/)",
+        secMockDesc: "AgentGuard includes 3 standalone satellite host systems running realistic business agents (FastAPI, Node.js, and Python Worker) with embedded Sentinel SDKs:",
+        mockSys1Desc: "Customer care agent handles order inquiry and issues coupon. Tests 100% compliant flow and separates billable LLM tokens from free $0.00 deterministic tools.",
+        mockSys2Desc: "Financial agent parses electric bill. Triggers sensitive bank transfer and pauses in WAITING_APPROVAL for human operator confirmation on Dashboard.",
+        mockSys3Desc: "Autonomous web crawler encounters infinite pagination trap. Intercepted by Loop Detector hash filter after 2 repetitions to protect API budget.",
+        mockRunTitle: "🚀 1-Command Automated Satellite Test Suite:",
+        mockRunNote: "Starts all 3 servers, dispatches realistic payloads, streams trajectories live into Hub (:8000), and exits cleanly. Toggle dashboard to Live Mode: ON to observe.",
+        howToReadTitle: "How to Read Dashboard Metrics & Reasoning Trajectories",
+        m1Title: "1. Total Runs vs. Traces",
+        m1Desc: "Total Agent Runs counts operational sessions managed by the Hub. Each customer chat or payment task is 1 Run containing multiple reasoning steps.",
+        m2Title: "2. Waiting Human Approval",
+        m2Desc: "Orange badge indicates frozen sensitive actions. Click on the session card on Dashboard and press Authorize or Reject to resolve.",
+        m3Title: "3. Deterministic Tools ($0.00)",
+        m3Desc: "Local database queries or regex policy checks are marked 'Deterministic (Free / $0.00)' so they never inflate your billable token spend.",
+        m4Title: "4. Real-time USD ⇄ VND Cost",
+        m4Desc: "Computed strictly from billable LLM tokens against official model pricing. Click the currency button on Card 4 to switch between USD and VND.",
+        sec3: "4. REST API Quick Reference",
         sec4: "4. Community, Feedback & Sponsorship",
         sec4Desc: "Join our community, provide feedback, get support from AI agents, or sponsor the project:",
         cStarTitle: "Star on GitHub",

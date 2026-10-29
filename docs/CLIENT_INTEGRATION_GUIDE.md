@@ -525,3 +525,20 @@ Nếu Agent của bạn chạy trên **Windows** và gửi nội dung tiếng Vi
     from agent_sdk import AgentTracker
     tracker = AgentTracker("http://localhost:8000")
     ```
+
+---
+
+### 🛰️ Lưu Ý 11: Kiểm Thử Thực Tế Bằng 3 Hệ Thống Vệ Tinh (Mock Systems) & Hướng Dẫn Đọc Chỉ Số
+
+Trước khi triển khai lên production, bạn có thể kiểm thử toàn diện khả năng giám sát và chốt chặn an toàn của AgentGuard bằng bộ 3 vệ tinh mô phỏng môi trường doanh nghiệp thực tế nằm trong thư mục \mock-systems/\:
+
+1. **E-commerce Customer Care Agent (\:8010\ - FastAPI)**: Mô phỏng bot tư vấn bán hàng, tách bạch chi phí suy luận LLM (tính tiền token API) vs công cụ nội bộ tra cứu kho/mã giảm giá (0₫ - Deterministic).
+2. **FinTech Transaction Agent (\:8020\ - Node.js/Express)**: Mô phỏng bot chuyển khoản ngân hàng, tự động kích hoạt chốt chặn **Human-in-the-Loop** đưa phiên về trạng thái \WAITING_APPROVAL\ để người vận hành duyệt/từ chối trên Dashboard.
+3. **Autonomous Web Crawler (\:8030\ - Python Worker)**: Mô phỏng worker cào dữ liệu tự hành, kích hoạt thuật toán **Loop Detector** (băm SHA-256 đối số) ngắt phiên khẩn cấp sau 2 lần lặp liên tiếp.
+
+**Lệnh kiểm thử tự động 1 chạm:**
+\\ash
+uv run python mock-systems/run_all.py --test
+\
+> 📖 **Xem hướng dẫn chi tiết toàn diện từ cài đặt, kiểm thử tới cách đọc từng chỉ số Dashboard & Langfuse tại:**  
+> 👉 [\docs/MOCK_SYSTEMS_GUIDE.md\](MOCK_SYSTEMS_GUIDE.md) và giao diện trực tiếp tại [http://localhost:8000/guide](http://localhost:8000/guide).
