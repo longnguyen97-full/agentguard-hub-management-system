@@ -268,8 +268,8 @@ Bên cạnh giao diện điều hành thời gian thực tại port `:8000`, to�
 ## 💖 8. Cộng Đồng, Phản Hồi & Tài Trợ (Support & Donate)
 
 Chúng tôi rất hoan nghênh những phản hồi, ý tưởng và đóng góp từ cộng đồng:
-- **⭐ Tặng 1 Sao Trên GitHub**: [GitHub Repository](https://github.com/longnguyen97-full/agent-management-system/)
-- **💬 Báo Cáo Lỗi & Đề Xuất Chốt Chặn**: [GitHub Issues](https://github.com/longnguyen97-full/agent-management-system/issues)
+- **⭐ Tặng 1 Sao Trên GitHub**: [GitHub Repository](https://github.com/longnguyen97-full/agentguard-hub-management-system/)
+- **💬 Báo Cáo Lỗi & Đề Xuất Chốt Chặn**: [GitHub Issues](https://github.com/longnguyen97-full/agentguard-hub-management-system/issues)
 
 ### ☕ Mời Tác Giả Ly Cà Phê (Ủng Hộ & Tài Trợ)
 Nếu bạn thấy **AgentGuard** hữu ích và muốn tiếp sức cho việc duy trì & phát triển mã nguồn mở miễn phí, hãy ủng hộ tác giả qua mã QR dưới đây:

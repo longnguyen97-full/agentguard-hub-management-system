@@ -4,7 +4,7 @@
 
 ### *Trung Tâm Điều Khiển, Chốt Chặn An Toàn & Quản Trị AI Agent*
 
-[![CI Test Suite](https://github.com/longnguyen97-full/agent-management-system/actions/workflows/ci.yml/badge.svg)](https://github.com/longnguyen97-full/agent-management-system/actions)
+[![CI Test Suite](https://github.com/longnguyen97-full/agentguard-hub-management-system/actions/workflows/ci.yml/badge.svg)](https://github.com/longnguyen97-full/agentguard-hub-management-system/actions)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Langfuse](https://img.shields.io/badge/Langfuse-v5_OTel-black.svg?logo=langfuse)](https://langfuse.com)
@@ -331,7 +331,7 @@ tests/test_external_api.py::test_external_agent_ingestion_lifecycle PASSED [100%
 ## 📂 Cấu Trúc Thư Mục Dự Án
 
 ```text
-agent-management-system/
+agentguard-hub-management-system/
 ├── assets/                  # Site logo (SVG, PNG), mã QR & ảnh chụp màn hình UI
 ├── docker-compose.yml       # Cụm hạ tầng Langfuse (Web, Worker, Postgres, Redis, ClickHouse, MinIO)
 ├── .env.example             # Mẫu biến môi trường an toàn
@@ -381,8 +381,8 @@ agent-management-system/
 ## 💬 Cộng Đồng & Đóng Góp Ý Kiến
 
 Chúng tôi rất hoan nghênh những phản hồi, ý tưởng và đóng góp từ cộng đồng:
-- **⭐ Tặng 1 Sao Trên GitHub**: Nếu bạn thấy AgentGuard hữu ích, hãy tặng dự án một ngôi sao trên [GitHub](https://github.com/longnguyen97-full/agent-management-system/) nhé!
-- **Báo Cáo Lỗi & Đề Xuất**: Mở issue hoặc thảo luận tại [GitHub Issues](https://github.com/longnguyen97-full/agent-management-system/issues).
+- **⭐ Tặng 1 Sao Trên GitHub**: Nếu bạn thấy AgentGuard hữu ích, hãy tặng dự án một ngôi sao trên [GitHub](https://github.com/longnguyen97-full/agentguard-hub-management-system/) nhé!
+- **Báo Cáo Lỗi & Đề Xuất**: Mở issue hoặc thảo luận tại [GitHub Issues](https://github.com/longnguyen97-full/agentguard-hub-management-system/issues).
 
 ---
 

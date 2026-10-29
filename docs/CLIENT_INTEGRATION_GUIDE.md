@@ -386,8 +386,8 @@ uv run python mock-systems/run_all.py --test
 ## 💖 8. Community, Feedback & Sponsorship (Donate)
 
 We welcome your feedback, questions, and contributions:
-- **⭐ Star on GitHub**: [GitHub Repository](https://github.com/longnguyen97-full/agent-management-system/)
-- **💬 Bug Reports & Guardrail Proposals**: [GitHub Issues](https://github.com/longnguyen97-full/agent-management-system/issues)
+- **⭐ Star on GitHub**: [GitHub Repository](https://github.com/longnguyen97-full/agentguard-hub-management-system/)
+- **💬 Bug Reports & Guardrail Proposals**: [GitHub Issues](https://github.com/longnguyen97-full/agentguard-hub-management-system/issues)
 
 ### ☕ Support the Author (Buy Me a Coffee)
 If you find **AgentGuard** valuable for securing your AI agents, consider supporting our ongoing open-source work:

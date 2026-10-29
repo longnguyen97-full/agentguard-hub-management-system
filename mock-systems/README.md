@@ -17,7 +17,7 @@ Thư mục này chứa **3 hệ thống máy chủ dịch vụ độc lập** ch
 ## 🚀 Hướng Dẫn Sử Dụng
 
 ### 1. Khởi động nhanh cả 3 hệ thống và kích hoạt test tự động:
-Từ thư mục gốc `agent-management-system`:
+Từ thư mục gốc `agentguard-hub-management-system`:
 ```bash
 uv run python mock-systems/run_all.py --test
 ```

@@ -260,8 +260,8 @@ All spans, generations, and token analytics are asynchronously synced to ClickHo
 ## 💖 7. Community, Feedback & Sponsorship (Donate)
 
 We welcome your feedback, issues, and ideas:
-- **⭐ Star on GitHub**: [GitHub Repository](https://github.com/longnguyen97-full/agent-management-system/)
-- **💬 Bug Reports & Guardrail Proposals**: [GitHub Issues](https://github.com/longnguyen97-full/agent-management-system/issues)
+- **⭐ Star on GitHub**: [GitHub Repository](https://github.com/longnguyen97-full/agentguard-hub-management-system/)
+- **💬 Bug Reports & Guardrail Proposals**: [GitHub Issues](https://github.com/longnguyen97-full/agentguard-hub-management-system/issues)
 
 ### ☕ Support the Author (Buy Me a Coffee)
 If you find **AgentGuard** valuable for securing your AI agents, consider supporting our ongoing open-source work:

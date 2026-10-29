@@ -32,7 +32,7 @@ class BackupManager:
         self.backup_dir.mkdir(parents=True, exist_ok=True)
         self.clickhouse_url = "http://127.0.0.1:8123"
         self.clickhouse_auth = ("clickhouse", "clickhouse")
-        self.postgres_container = "agent-management-system-postgres-1"
+        self.postgres_container = "agentguard-hub-management-system-postgres-1"
 
     # =========================================================================
     # Storage Analytics & Health Stats

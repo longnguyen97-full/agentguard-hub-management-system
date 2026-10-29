@@ -15,8 +15,8 @@ We use [`uv`](https://github.com/astral-sh/uv) as the fast, reliable package and
 
 ### 2. Clone and Setup
 ```bash
-git clone https://github.com/longnguyen97-full/agent-management-system.git
-cd agent-management-system
+git clone https://github.com/longnguyen97-full/agentguard-hub-management-system.git
+cd agentguard-hub-management-system
 
 # Sync dependencies and create virtual environment
 uv sync --all-groups

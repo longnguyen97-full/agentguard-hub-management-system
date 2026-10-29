@@ -4,7 +4,7 @@
 
 ### *AI Agent Control Plane, Operational Guardrails & Tracing Hub*
 
-[![CI Test Suite](https://github.com/longnguyen97-full/agent-management-system/actions/workflows/ci.yml/badge.svg)](https://github.com/longnguyen97-full/agent-management-system/actions)
+[![CI Test Suite](https://github.com/longnguyen97-full/agentguard-hub-management-system/actions/workflows/ci.yml/badge.svg)](https://github.com/longnguyen97-full/agentguard-hub-management-system/actions)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Langfuse](https://img.shields.io/badge/Langfuse-v5_OTel-black.svg?logo=langfuse)](https://langfuse.com)
@@ -344,7 +344,7 @@ tests/test_external_api.py::test_external_agent_ingestion_lifecycle PASSED [100%
 ## 📂 Repository Structure
 
 ```text
-agent-management-system/
+agentguard-hub-management-system/
 ├── assets/                  # Site logos (SVG, PNG), QR code & UI screenshots
 ├── docker-compose.yml       # Full Langfuse tracing stack (Web, Worker, ClickHouse, Postgres, Redis, MinIO)
 ├── .env.example             # Safe environment configuration template
@@ -393,8 +393,8 @@ agent-management-system/
 ## 💬 Community & Feedback
 
 We welcome your feedback, questions, and ideas:
-- **Star on GitHub**: If you like AgentGuard, please consider giving it a star on [GitHub](https://github.com/longnguyen97-full/agent-management-system/) to help others discover it!
-- **GitHub Discussions / Issues**: Report bugs or propose new guardrails via [GitHub Issues](https://github.com/longnguyen97-full/agent-management-system/issues).
+- **Star on GitHub**: If you like AgentGuard, please consider giving it a star on [GitHub](https://github.com/longnguyen97-full/agentguard-hub-management-system/) to help others discover it!
+- **GitHub Discussions / Issues**: Report bugs or propose new guardrails via [GitHub Issues](https://github.com/longnguyen97-full/agentguard-hub-management-system/issues).
 
 ---
 

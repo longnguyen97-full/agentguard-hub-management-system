@@ -42,10 +42,13 @@
           <img src="/assets/logo-icon.svg" alt="AgentGuard Logo" class="w-7 h-7 sm:w-8 h-8" />
           <div>
             <div class="flex items-center space-x-1.5">
-              <span class="text-base sm:text-lg font-extrabold text-white tracking-tight">Agent<span class="text-indigo-400">Guard</span></span>
-              <span class="text-[9px] sm:text-[10px] px-1 py-0.2 rounded bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 font-mono font-semibold">HUB</span>
+              <span class="text-base sm:text-lg font-extrabold text-white tracking-tight">Agent<span
+                  class="text-indigo-400">Guard</span></span>
+              <span
+                class="text-[9px] sm:text-[10px] px-1 py-0.2 rounded bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 font-mono font-semibold">HUB</span>
             </div>
-            <p id="nav-app-subtitle" class="text-[11px] text-slate-400 hidden lg:block">AI Agent Control Plane &amp; Safety Guardrails</p>
+            <p id="nav-app-subtitle" class="text-[11px] text-slate-400 hidden lg:block">AI Agent Control Plane &amp;
+              Safety Guardrails</p>
           </div>
         </a>
       </div>
@@ -105,7 +108,8 @@
         </div>
 
         <!-- Documentation & Tools Icon Cluster (Desktop md+) -->
-        <div class="hidden md:flex items-center space-x-1 bg-slate-800/80 p-0.5 rounded-lg border border-slate-700 shrink-0">
+        <div
+          class="hidden md:flex items-center space-x-1 bg-slate-800/80 p-0.5 rounded-lg border border-slate-700 shrink-0">
           <a href="/guide" target="_blank" class="p-1 rounded-md text-slate-400 hover:text-sky-300 transition"
             title="User Guide &amp; Integration Manual">
             <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
@@ -148,7 +152,8 @@
     </div>
 
     <!-- Responsive Drawer for Tablet & Mobile (< xl) -->
-    <div id="mobile-drawer" class="hidden xl:hidden border-t border-slate-800 bg-slate-900/95 backdrop-blur px-4 py-3 space-y-3 animate-in slide-in-from-top-2 duration-150 shadow-2xl">
+    <div id="mobile-drawer"
+      class="hidden xl:hidden border-t border-slate-800 bg-slate-900/95 backdrop-blur px-4 py-3 space-y-3 animate-in slide-in-from-top-2 duration-150 shadow-2xl">
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
         <button onclick="openEstimatorModal(); toggleMobileMenu()"
           class="flex items-center space-x-2 p-2 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition font-medium">
@@ -190,11 +195,13 @@
           <i data-lucide="code" class="w-3.5 h-3.5"></i>
           <span>Swagger API</span>
         </a>
-        <a href="http://localhost:3000" target="_blank" class="flex items-center space-x-1 hover:text-indigo-300 transition">
+        <a href="http://localhost:3000" target="_blank"
+          class="flex items-center space-x-1 hover:text-indigo-300 transition">
           <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
           <span>Langfuse (:3000)</span>
         </a>
-        <button onclick="openDonateModal(); toggleMobileMenu()" class="flex items-center space-x-1 text-pink-400 hover:text-pink-300 transition">
+        <button onclick="openDonateModal(); toggleMobileMenu()"
+          class="flex items-center space-x-1 text-pink-400 hover:text-pink-300 transition">
           <i data-lucide="heart" class="w-3.5 h-3.5"></i>
           <span>Donate</span>
         </button>
@@ -335,224 +342,235 @@
           </div>
           <div class="flex items-center gap-2 overflow-x-auto pb-1.5 pt-0.5 scrollbar-none sm:flex-wrap">
 
-          <!-- 1: Standard Research -->
-          <button id="btn-scen-1" onclick="runScenario(1)"
-            class="shrink-0 whitespace-nowrap text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-md border border-slate-700 transition flex items-center space-x-1.5 shadow-sm">
-            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i>
-            <span id="txt-scen-1">1. Standard Task</span>
-          </button>
+            <!-- 1: Standard Research -->
+            <button id="btn-scen-1" onclick="runScenario(1)"
+              class="shrink-0 whitespace-nowrap text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-md border border-slate-700 transition flex items-center space-x-1.5 shadow-sm">
+              <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span id="txt-scen-1">1. Standard Task</span>
+            </button>
 
-          <!-- 2: Sensitive HITL -->
-          <button id="btn-scen-2" onclick="runScenario(2)"
-            class="shrink-0 whitespace-nowrap text-xs bg-amber-950/40 hover:bg-amber-900/60 text-amber-300 border border-amber-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
-            <i data-lucide="user-check" class="w-3.5 h-3.5 text-amber-400"></i>
-            <span id="txt-scen-2">2. Sensitive Action (HITL)</span>
-          </button>
+            <!-- 2: Sensitive HITL -->
+            <button id="btn-scen-2" onclick="runScenario(2)"
+              class="shrink-0 whitespace-nowrap text-xs bg-amber-950/40 hover:bg-amber-900/60 text-amber-300 border border-amber-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
+              <i data-lucide="user-check" class="w-3.5 h-3.5 text-amber-400"></i>
+              <span id="txt-scen-2">2. Sensitive Action (HITL)</span>
+            </button>
 
-          <!-- 3: Infinite Loop -->
-          <button id="btn-scen-3" onclick="runScenario(3)"
-            class="shrink-0 whitespace-nowrap text-xs bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
-            <i data-lucide="repeat" class="w-3.5 h-3.5 text-rose-400"></i>
-            <span id="txt-scen-3">3. Infinite Loop Guardrail</span>
-          </button>
+            <!-- 3: Infinite Loop -->
+            <button id="btn-scen-3" onclick="runScenario(3)"
+              class="shrink-0 whitespace-nowrap text-xs bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
+              <i data-lucide="repeat" class="w-3.5 h-3.5 text-rose-400"></i>
+              <span id="txt-scen-3">3. Infinite Loop Guardrail</span>
+            </button>
 
-          <!-- 4: Budget Spike Ceiling -->
-          <button id="btn-scen-4" onclick="runScenario(4)"
-            class="shrink-0 whitespace-nowrap text-xs bg-purple-950/40 hover:bg-purple-900/60 text-purple-300 border border-purple-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
-            <i data-lucide="coins" class="w-3.5 h-3.5 text-purple-400"></i>
-            <span id="txt-scen-4">4. Budget Ceiling Spike</span>
-          </button>
+            <!-- 4: Budget Spike Ceiling -->
+            <button id="btn-scen-4" onclick="runScenario(4)"
+              class="shrink-0 whitespace-nowrap text-xs bg-purple-950/40 hover:bg-purple-900/60 text-purple-300 border border-purple-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
+              <i data-lucide="coins" class="w-3.5 h-3.5 text-purple-400"></i>
+              <span id="txt-scen-4">4. Budget Ceiling Spike</span>
+            </button>
 
-          <!-- 5: Prompt Injection Defense -->
-          <button id="btn-scen-5" onclick="runScenario(5)"
-            class="shrink-0 whitespace-nowrap text-xs bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
-            <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-red-400"></i>
-            <span id="txt-scen-5">5. Prompt Injection Defense</span>
-          </button>
+            <!-- 5: Prompt Injection Defense -->
+            <button id="btn-scen-5" onclick="runScenario(5)"
+              class="shrink-0 whitespace-nowrap text-xs bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
+              <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-red-400"></i>
+              <span id="txt-scen-5">5. Prompt Injection Defense</span>
+            </button>
 
-          <!-- 6: Tool Failover -->
-          <button id="btn-scen-6" onclick="runScenario(6)"
-            class="shrink-0 whitespace-nowrap text-xs bg-blue-950/40 hover:bg-blue-900/60 text-blue-300 border border-blue-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
-            <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-blue-400"></i>
-            <span id="txt-scen-6">6. Tool Timeout Resilience</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Panel 2: Live Agent Ingestion Hub (Visible only when Simulation Mode is OFF) -->
-      <div id="live-ingestion-panel" class="space-y-4 hidden">
-        <div class="flex items-center justify-between flex-wrap gap-2">
-          <div class="flex items-center space-x-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <h2 id="lbl-live-hub-title" class="text-sm font-semibold text-emerald-300">
-              Live Production Control Plane &amp; Telemetry Ingestion
-            </h2>
-          </div>
-          <span id="lbl-live-hub-subtitle" class="text-xs text-slate-400">
-            Preset sandbox tests are hidden in Live Mode. Ingest live agents via Python SDK or REST API:
-          </span>
-        </div>
-
-        <!-- Code Snippet Box -->
-        <div
-          class="bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs font-mono text-slate-300 relative shadow-inner">
-          <div class="flex items-center justify-between pb-2 border-b border-slate-800/80 mb-2">
-            <span class="text-indigo-400 font-semibold flex items-center space-x-1.5">
-              <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
-              <span>Python SDK Client Integration (`agent_sdk.py`)</span>
-            </span>
-            <button onclick="copySdkSnippet()"
-              class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-0.5 rounded transition flex items-center space-x-1">
-              <i data-lucide="copy" class="w-3 h-3"></i>
-              <span id="btn-copy-code">Copy Snippet</span>
+            <!-- 6: Tool Failover -->
+            <button id="btn-scen-6" onclick="runScenario(6)"
+              class="shrink-0 whitespace-nowrap text-xs bg-blue-950/40 hover:bg-blue-900/60 text-blue-300 border border-blue-800/60 px-2.5 py-1.5 rounded-md transition flex items-center space-x-1.5 shadow-sm">
+              <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-blue-400"></i>
+              <span id="txt-scen-6">6. Tool Timeout Resilience</span>
             </button>
           </div>
-          <pre id="code-snippet-box" class="overflow-x-auto text-emerald-300/90 leading-relaxed py-1"><code>from agent_sdk import AgentGuardClient
+        </div>
+
+        <!-- Panel 2: Live Agent Ingestion Hub (Visible only when Simulation Mode is OFF) -->
+        <div id="live-ingestion-panel" class="space-y-4 hidden">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <h2 id="lbl-live-hub-title" class="text-sm font-semibold text-emerald-300">
+                Live Production Control Plane &amp; Telemetry Ingestion
+              </h2>
+            </div>
+            <span id="lbl-live-hub-subtitle" class="text-xs text-slate-400">
+              Preset sandbox tests are hidden in Live Mode. Ingest live agents via Python SDK or REST API:
+            </span>
+          </div>
+
+          <!-- Code Snippet Box -->
+          <div
+            class="bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs font-mono text-slate-300 relative shadow-inner">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-800/80 mb-2">
+              <span class="text-indigo-400 font-semibold flex items-center space-x-1.5">
+                <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+                <span>Python SDK Client Integration (`agent_sdk.py`)</span>
+              </span>
+              <button onclick="copySdkSnippet()"
+                class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-0.5 rounded transition flex items-center space-x-1">
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span id="btn-copy-code">Copy Snippet</span>
+              </button>
+            </div>
+            <pre id="code-snippet-box" class="overflow-x-auto text-emerald-300/90 leading-relaxed py-1"><code>from agent_sdk import AgentGuardClient
 
 client = AgentGuardClient("http://localhost:8000")
 with client.start_run(agent_name="production-bot", task="Live user request") as run:
     run.log_step(step_number=1, action="Execute query", tool_call={"tool": "db_select", "args": {"q": "stats"}}, tokens_used=120)
     # Loop Guardrail, Hard Budget & Human Approval are automatically enforced in real-time!</code></pre>
-        </div>
-
-        <!-- Action Bar for Live Mode -->
-        <div class="flex items-center justify-between flex-wrap gap-2 pt-1 border-t border-slate-800/80">
-          <div class="flex items-center space-x-2">
-            <button onclick="sendLiveProbe()" id="btn-live-probe"
-              class="shrink-0 whitespace-nowrap text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-3.5 py-1.5 rounded-md transition shadow-sm shadow-emerald-600/30 flex items-center space-x-1.5">
-              <i data-lucide="radio" class="w-3.5 h-3.5"></i>
-              <span id="lbl-send-probe">Send Live Ingestion Probe</span>
-            </button>
-            <span class="text-[11px] text-slate-400 font-mono" id="probe-status">Ready to test connection</span>
           </div>
 
-          <div class="flex items-center space-x-2">
-            <a href="/guide#sdk-integration" target="_blank"
-              class="text-xs text-sky-400 hover:text-sky-300 flex items-center space-x-1">
-              <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
-              <span id="lbl-view-sdk-guide">Integration Guide</span>
-            </a>
-            <span class="text-slate-700">•</span>
-            <a href="http://localhost:3000" target="_blank"
-              class="text-xs text-indigo-400 hover:text-indigo-300 flex items-center space-x-1">
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-              <span>Inspect in Langfuse</span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Main 2-Column Split: Runs List & Live Trajectory Inspector -->
-    <div class="space-y-3">
-      <!-- Mobile View Switcher Tabs (Visible ONLY on phones < md, Tablet md+ shows side-by-side!) -->
-      <div id="mobile-view-tabs" class="flex md:hidden items-center bg-slate-900 border border-slate-800 rounded-xl p-1">
-        <button onclick="switchMobileColumn('runs')" id="btn-col-runs"
-          class="flex-1 py-1.5 text-xs font-bold rounded-lg bg-indigo-600 text-white transition flex items-center justify-center space-x-1.5 shadow-sm">
-          <i data-lucide="list" class="w-3.5 h-3.5"></i>
-          <span id="lbl-mobile-tab-runs">1. Danh Sách Phiên</span>
-        </button>
-        <button onclick="switchMobileColumn('inspector')" id="btn-col-inspector"
-          class="flex-1 py-1.5 text-xs font-medium rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center space-x-1.5">
-          <i data-lucide="git-branch" class="w-3.5 h-3.5"></i>
-          <span id="lbl-mobile-tab-inspector">2. Chi Tiết Bước</span>
-        </button>
-      </div>
-
-      <!-- 2 Columns: Stacked on Mobile (< md), Side-by-Side on Tablet & Desktop (md:grid-cols-12) -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-5 lg:gap-6">
-
-        <!-- Left Column: Runs List -->
-        <div id="runs-column" class="md:col-span-5 space-y-3">
-          <div class="flex items-center justify-between">
-            <h2 class="text-sm font-semibold text-slate-300 flex items-center space-x-2">
-              <i data-lucide="list" class="w-4 h-4 text-indigo-400"></i>
-              <span id="lbl-agent-sessions">Agent Sessions</span>
-            </h2>
+          <!-- Action Bar for Live Mode -->
+          <div class="flex items-center justify-between flex-wrap gap-2 pt-1 border-t border-slate-800/80">
             <div class="flex items-center space-x-2">
-              <button onclick="exportAllRuns()"
-                class="px-2 py-1 text-[11px] font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-md flex items-center space-x-1 transition"
-                title="Export All Sessions Audit (CSV)">
-                <i data-lucide="file-spreadsheet" class="w-3 h-3 text-emerald-400"></i>
-                <span>Export CSV</span>
+              <button onclick="sendLiveProbe()" id="btn-live-probe"
+                class="shrink-0 whitespace-nowrap text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-3.5 py-1.5 rounded-md transition shadow-sm shadow-emerald-600/30 flex items-center space-x-1.5">
+                <i data-lucide="radio" class="w-3.5 h-3.5"></i>
+                <span id="lbl-send-probe">Send Live Ingestion Probe</span>
               </button>
-              <span id="live-indicator" class="flex items-center space-x-1.5 text-xs text-emerald-400">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span id="lbl-live-stream">Live Stream</span>
-              </span>
-            </div>
-          </div>
-
-          <!-- Quick Search & Status Filter Chips -->
-          <div class="space-y-2 pt-0.5">
-            <div class="relative">
-              <i data-lucide="search" class="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5"></i>
-              <input id="run-search-input" type="text" placeholder="Filter by ID, task or prompt..."
-                oninput="onSearchRuns(this.value)"
-                class="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-8 pr-7 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" />
-              <button id="run-search-clear" onclick="clearRunSearch()" class="hidden absolute right-2.5 top-2 text-slate-500 hover:text-slate-300 transition">
-                <i data-lucide="x" class="w-3.5 h-3.5"></i>
-              </button>
+              <span class="text-[11px] text-slate-400 font-mono" id="probe-status">Ready to test connection</span>
             </div>
 
-            <!-- Status Filter Chips -->
-            <div class="flex items-center space-x-1.5 overflow-x-auto text-[11px] pb-1 scrollbar-none" id="run-filter-chips">
-              <button onclick="setRunStatusFilter('ALL')" id="filter-chip-ALL"
-                class="px-2 py-0.5 rounded-md font-bold border bg-indigo-600 text-white border-indigo-400 whitespace-nowrap shadow-sm transition">
-                <span id="lbl-filter-all">All</span> <span id="count-chip-ALL" class="text-[10px] opacity-80 font-mono">(0)</span>
-              </button>
-              <button onclick="setRunStatusFilter('WAITING_APPROVAL')" id="filter-chip-WAITING_APPROVAL"
-                class="px-2 py-0.5 rounded-md font-medium border bg-slate-800/80 text-amber-400 border-slate-700 hover:border-amber-600/50 whitespace-nowrap transition">
-                <span id="lbl-filter-approval">Approval</span> <span id="count-chip-WAITING_APPROVAL" class="text-[10px] opacity-80 font-mono">(0)</span>
-              </button>
-              <button onclick="setRunStatusFilter('RUNNING')" id="filter-chip-RUNNING"
-                class="px-2 py-0.5 rounded-md font-medium border bg-slate-800/80 text-blue-400 border-slate-700 hover:border-blue-600/50 whitespace-nowrap transition">
-                <span id="lbl-filter-running">Running</span> <span id="count-chip-RUNNING" class="text-[10px] opacity-80 font-mono">(0)</span>
-              </button>
-              <button onclick="setRunStatusFilter('COMPLETED')" id="filter-chip-COMPLETED"
-                class="px-2 py-0.5 rounded-md font-medium border bg-slate-800/80 text-emerald-400 border-slate-700 hover:border-emerald-600/50 whitespace-nowrap transition">
-                <span id="lbl-filter-completed">Done</span> <span id="count-chip-COMPLETED" class="text-[10px] opacity-80 font-mono">(0)</span>
-              </button>
-              <button onclick="setRunStatusFilter('KILLED')" id="filter-chip-KILLED"
-                class="px-2 py-0.5 rounded-md font-medium border bg-slate-800/80 text-rose-400 border-slate-700 hover:border-rose-600/50 whitespace-nowrap transition">
-                <span id="lbl-filter-killed">Halted</span> <span id="count-chip-KILLED" class="text-[10px] opacity-80 font-mono">(0)</span>
-              </button>
-            </div>
-          </div>
-
-          <div id="runs-container" class="space-y-3 max-h-[640px] overflow-y-auto pr-1">
-            <!-- Dynamic Run Cards go here -->
-            <div class="p-8 text-center text-slate-500 text-sm border border-dashed border-slate-800 rounded-xl">
-              Loading sessions...
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Column: Trajectory & Step Inspector -->
-        <div id="inspector-column" class="md:col-span-7 bg-slate-900/70 border border-slate-800 rounded-xl p-4 sm:p-5 flex flex-col min-h-[500px]">
-          <div id="inspector-header"
-            class="border-b border-slate-800 pb-4 flex items-center justify-between flex-wrap gap-3">
-            <div>
-              <h3 id="inspector-title" class="font-bold text-slate-200 text-base">Select a session to inspect</h3>
-              <p id="inspector-subtitle" class="text-xs text-slate-400">View real-time reasoning thoughts, tool calls, and trace trees</p>
-            </div>
-            <div id="inspector-actions" class="flex items-center space-x-2 hidden">
-              <!-- Dynamic kill/langfuse actions -->
-            </div>
-          </div>
-
-          <!-- Trajectory Steps Container -->
-          <div id="inspector-steps" class="flex-1 py-4 space-y-4 overflow-y-auto max-h-[550px]">
-            <div class="h-full flex flex-col items-center justify-center text-center text-slate-500 p-8 space-y-2">
-              <i data-lucide="git-branch" class="w-10 h-10 text-slate-700"></i>
-              <p id="lbl-empty-trajectory" class="text-sm">Click any agent run on the left to inspect its trajectory steps and controls.</p>
+            <div class="flex items-center space-x-2">
+              <a href="/guide#sdk-integration" target="_blank"
+                class="text-xs text-sky-400 hover:text-sky-300 flex items-center space-x-1">
+                <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+                <span id="lbl-view-sdk-guide">Integration Guide</span>
+              </a>
+              <span class="text-slate-700">•</span>
+              <a href="http://localhost:3000" target="_blank"
+                class="text-xs text-indigo-400 hover:text-indigo-300 flex items-center space-x-1">
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                <span>Inspect in Langfuse</span>
+              </a>
             </div>
           </div>
         </div>
 
       </div>
-    </div>
+
+      <!-- Main 2-Column Split: Runs List & Live Trajectory Inspector -->
+      <div class="space-y-3">
+        <!-- Mobile View Switcher Tabs (Visible ONLY on phones < md, Tablet md+ shows side-by-side!) -->
+        <div id="mobile-view-tabs"
+          class="flex md:hidden items-center bg-slate-900 border border-slate-800 rounded-xl p-1">
+          <button onclick="switchMobileColumn('runs')" id="btn-col-runs"
+            class="flex-1 py-1.5 text-xs font-bold rounded-lg bg-indigo-600 text-white transition flex items-center justify-center space-x-1.5 shadow-sm">
+            <i data-lucide="list" class="w-3.5 h-3.5"></i>
+            <span id="lbl-mobile-tab-runs">1. Danh Sách Phiên</span>
+          </button>
+          <button onclick="switchMobileColumn('inspector')" id="btn-col-inspector"
+            class="flex-1 py-1.5 text-xs font-medium rounded-lg text-slate-400 hover:text-slate-200 transition flex items-center justify-center space-x-1.5">
+            <i data-lucide="git-branch" class="w-3.5 h-3.5"></i>
+            <span id="lbl-mobile-tab-inspector">2. Chi Tiết Bước</span>
+          </button>
+        </div>
+
+        <!-- 2 Columns: Stacked on Mobile (< md), Side-by-Side on Tablet & Desktop (md:grid-cols-12) -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-5 lg:gap-6">
+
+          <!-- Left Column: Runs List -->
+          <div id="runs-column" class="md:col-span-5 space-y-3">
+            <div class="flex items-center justify-between">
+              <h2 class="text-sm font-semibold text-slate-300 flex items-center space-x-2">
+                <i data-lucide="list" class="w-4 h-4 text-indigo-400"></i>
+                <span id="lbl-agent-sessions">Agent Sessions</span>
+              </h2>
+              <div class="flex items-center space-x-2">
+                <button onclick="exportAllRuns()"
+                  class="px-2 py-1 text-[11px] font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-md flex items-center space-x-1 transition"
+                  title="Export All Sessions Audit (CSV)">
+                  <i data-lucide="file-spreadsheet" class="w-3 h-3 text-emerald-400"></i>
+                  <span>Export CSV</span>
+                </button>
+                <span id="live-indicator" class="flex items-center space-x-1.5 text-xs text-emerald-400">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span id="lbl-live-stream">Live Stream</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Quick Search & Status Filter Chips -->
+            <div class="space-y-2 pt-0.5">
+              <div class="relative">
+                <i data-lucide="search" class="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5"></i>
+                <input id="run-search-input" type="text" placeholder="Filter by ID, task or prompt..."
+                  oninput="onSearchRuns(this.value)"
+                  class="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-8 pr-7 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" />
+                <button id="run-search-clear" onclick="clearRunSearch()"
+                  class="hidden absolute right-2.5 top-2 text-slate-500 hover:text-slate-300 transition">
+                  <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+
+              <!-- Status Filter Chips -->
+              <div class="flex items-center space-x-1.5 overflow-x-auto text-[11px] pb-1 scrollbar-none"
+                id="run-filter-chips">
+                <button onclick="setRunStatusFilter('ALL')" id="filter-chip-ALL"
+                  class="px-2 py-0.5 rounded-md font-bold border bg-indigo-600 text-white border-indigo-400 whitespace-nowrap shadow-sm transition">
+                  <span id="lbl-filter-all">All</span> <span id="count-chip-ALL"
+                    class="text-[10px] opacity-80 font-mono">(0)</span>
+                </button>
+                <button onclick="setRunStatusFilter('WAITING_APPROVAL')" id="filter-chip-WAITING_APPROVAL"
+                  class="px-2 py-0.5 rounded-md font-medium border bg-slate-800/80 text-amber-400 border-slate-700 hover:border-amber-600/50 whitespace-nowrap transition">
+                  <span id="lbl-filter-approval">Approval</span> <span id="count-chip-WAITING_APPROVAL"
+                    class="text-[10px] opacity-80 font-mono">(0)</span>
+                </button>
+                <button onclick="setRunStatusFilter('RUNNING')" id="filter-chip-RUNNING"
+                  class="px-2 py-0.5 rounded-md font-medium border bg-slate-800/80 text-blue-400 border-slate-700 hover:border-blue-600/50 whitespace-nowrap transition">
+                  <span id="lbl-filter-running">Running</span> <span id="count-chip-RUNNING"
+                    class="text-[10px] opacity-80 font-mono">(0)</span>
+                </button>
+                <button onclick="setRunStatusFilter('COMPLETED')" id="filter-chip-COMPLETED"
+                  class="px-2 py-0.5 rounded-md font-medium border bg-slate-800/80 text-emerald-400 border-slate-700 hover:border-emerald-600/50 whitespace-nowrap transition">
+                  <span id="lbl-filter-completed">Done</span> <span id="count-chip-COMPLETED"
+                    class="text-[10px] opacity-80 font-mono">(0)</span>
+                </button>
+                <button onclick="setRunStatusFilter('KILLED')" id="filter-chip-KILLED"
+                  class="px-2 py-0.5 rounded-md font-medium border bg-slate-800/80 text-rose-400 border-slate-700 hover:border-rose-600/50 whitespace-nowrap transition">
+                  <span id="lbl-filter-killed">Halted</span> <span id="count-chip-KILLED"
+                    class="text-[10px] opacity-80 font-mono">(0)</span>
+                </button>
+              </div>
+            </div>
+
+            <div id="runs-container" class="space-y-3 max-h-[640px] overflow-y-auto pr-1">
+              <!-- Dynamic Run Cards go here -->
+              <div class="p-8 text-center text-slate-500 text-sm border border-dashed border-slate-800 rounded-xl">
+                Loading sessions...
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Trajectory & Step Inspector -->
+          <div id="inspector-column"
+            class="md:col-span-7 bg-slate-900/70 border border-slate-800 rounded-xl p-4 sm:p-5 flex flex-col min-h-[500px]">
+            <div id="inspector-header"
+              class="border-b border-slate-800 pb-4 flex items-center justify-between flex-wrap gap-3">
+              <div>
+                <h3 id="inspector-title" class="font-bold text-slate-200 text-base">Select a session to inspect</h3>
+                <p id="inspector-subtitle" class="text-xs text-slate-400">View real-time reasoning thoughts, tool calls,
+                  and trace trees</p>
+              </div>
+              <div id="inspector-actions" class="flex items-center space-x-2 hidden">
+                <!-- Dynamic kill/langfuse actions -->
+              </div>
+            </div>
+
+            <!-- Trajectory Steps Container -->
+            <div id="inspector-steps" class="flex-1 py-4 space-y-4 overflow-y-auto max-h-[550px]">
+              <div class="h-full flex flex-col items-center justify-center text-center text-slate-500 p-8 space-y-2">
+                <i data-lucide="git-branch" class="w-10 h-10 text-slate-700"></i>
+                <p id="lbl-empty-trajectory" class="text-sm">Click any agent run on the left to inspect its trajectory
+                  steps and controls.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
   </main>
 
   <!-- Footer: Community & Support Links separated from header core features -->
@@ -570,7 +588,8 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
       <!-- Footer Actions: Telegram & Donate with Icons -->
       <div class="flex items-center space-x-3">
         <!-- Star on GitHub Link -->
-        <a id="footer-star-link" href="https://github.com/longnguyen97-full/agent-management-system/" target="_blank"
+        <a id="footer-star-link" href="https://github.com/longnguyen97-full/agentguard-hub-management-system/"
+          target="_blank"
           class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition shadow-sm font-medium"
           title="Give AgentGuard a Star on GitHub!">
           <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>
@@ -707,7 +726,7 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
     class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
     <div
       class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-4 sm:p-6 max-h-[92vh] overflow-y-auto shadow-2xl space-y-4 animate-in fade-in duration-200">
-      
+
       <!-- Modal Header -->
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
         <div class="flex items-center space-x-2 text-sky-400 font-bold text-sm">
@@ -769,7 +788,8 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label id="lbl-backup-scope" class="block text-slate-400 font-medium mb-1">Backup Target Scope:</label>
-            <select id="backup-target-select" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-sky-500 font-sans text-xs">
+            <select id="backup-target-select"
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-sky-500 font-sans text-xs">
               <option value="all">Full System (Dashboard SQLite + Langfuse Telemetry)</option>
               <option value="dashboard">Dashboard Only (SQLite sessions &amp; steps)</option>
               <option value="langfuse">Langfuse Tracing Only (ClickHouse &amp; Postgres)</option>
@@ -806,7 +826,8 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
       <div id="data-tab-restore" class="hidden space-y-3 text-xs">
         <div class="flex items-center justify-between">
           <span id="lbl-existing-backups" class="font-medium text-slate-300">Available Backup Archives:</span>
-          <button onclick="loadBackupsList()" class="text-[11px] text-sky-400 hover:text-sky-300 flex items-center space-x-1">
+          <button onclick="loadBackupsList()"
+            class="text-[11px] text-sky-400 hover:text-sky-300 flex items-center space-x-1">
             <i data-lucide="refresh-cw" class="w-3 h-3"></i>
             <span>Refresh</span>
           </button>
@@ -818,7 +839,8 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
 
         <!-- External Upload & Restore -->
         <div class="pt-2 border-t border-slate-800">
-          <label id="lbl-upload-restore" class="block text-slate-400 font-medium mb-1">Upload &amp; Restore External Archive (.zip / .db):</label>
+          <label id="lbl-upload-restore" class="block text-slate-400 font-medium mb-1">Upload &amp; Restore External
+            Archive (.zip / .db):</label>
           <div class="flex items-center space-x-2">
             <input type="file" id="backup-file-upload" accept=".zip,.db"
               class="text-[11px] text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700" />
@@ -841,12 +863,12 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
     </div>
   </div>
 
-    <!-- Dedicated Data Reset (Purge Current Data) Modal -->
+  <!-- Dedicated Data Reset (Purge Current Data) Modal -->
   <div id="reset-modal"
     class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
     <div
       class="bg-slate-900 border border-rose-900/60 rounded-2xl max-w-lg w-full p-4 sm:p-6 max-h-[92vh] overflow-y-auto shadow-2xl shadow-rose-950/50 space-y-4 animate-in fade-in duration-200">
-      
+
       <!-- Modal Header -->
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
         <div class="flex items-center space-x-2 text-rose-400 font-bold text-sm">
@@ -866,33 +888,42 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
           <span id="lbl-reset-box-title">Xác nhận xóa hết dữ liệu đang tích lũy</span>
         </div>
         <p id="lbl-reset-box-desc" class="text-[11px] leading-relaxed text-slate-300">
-          Thao tác này sẽ xóa sạch toàn bộ các phiên chạy (runs), bước suy luận (steps) và sự kiện telemetry trên ClickHouse về 0 để làm sạch hệ thống.
+          Thao tác này sẽ xóa sạch toàn bộ các phiên chạy (runs), bước suy luận (steps) và sự kiện telemetry trên
+          ClickHouse về 0 để làm sạch hệ thống.
         </p>
       </div>
 
       <!-- Target Scope Selection -->
       <div class="space-y-2 text-xs">
-        <label id="lbl-reset-target-scope" class="block text-slate-400 font-medium">Chọn phạm vi dữ liệu cần xóa:</label>
+        <label id="lbl-reset-target-scope" class="block text-slate-400 font-medium">Chọn phạm vi dữ liệu cần
+          xóa:</label>
         <div class="space-y-2 bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-xs">
           <label class="flex items-start space-x-2.5 cursor-pointer text-slate-200">
-            <input type="radio" name="dedicated-reset-scope" value="all" checked class="mt-0.5 text-rose-500 focus:ring-rose-500" />
+            <input type="radio" name="dedicated-reset-scope" value="all" checked
+              class="mt-0.5 text-rose-500 focus:ring-rose-500" />
             <div>
-              <span class="font-semibold" id="lbl-reset-opt-all">Xóa toàn bộ (Dashboard SQLite + Langfuse ClickHouse)</span>
-              <p class="text-[11px] text-slate-400" id="lbl-reset-opt-all-sub">Xóa trắng toàn bộ phiên chạy và telemetry để đo lường từ đầu.</p>
+              <span class="font-semibold" id="lbl-reset-opt-all">Xóa toàn bộ (Dashboard SQLite + Langfuse
+                ClickHouse)</span>
+              <p class="text-[11px] text-slate-400" id="lbl-reset-opt-all-sub">Xóa trắng toàn bộ phiên chạy và telemetry
+                để đo lường từ đầu.</p>
             </div>
           </label>
           <label class="flex items-start space-x-2.5 cursor-pointer text-slate-200 pt-1.5 border-t border-slate-800/80">
-            <input type="radio" name="dedicated-reset-scope" value="dashboard" class="mt-0.5 text-rose-500 focus:ring-rose-500" />
+            <input type="radio" name="dedicated-reset-scope" value="dashboard"
+              class="mt-0.5 text-rose-500 focus:ring-rose-500" />
             <div>
               <span class="font-semibold" id="lbl-reset-opt-dash">Chỉ xóa phiên chạy Dashboard</span>
-              <p class="text-[11px] text-slate-400" id="lbl-reset-opt-dash-sub">Chỉ xóa bảng runs và steps trong SQLite, giữ lại ClickHouse.</p>
+              <p class="text-[11px] text-slate-400" id="lbl-reset-opt-dash-sub">Chỉ xóa bảng runs và steps trong SQLite,
+                giữ lại ClickHouse.</p>
             </div>
           </label>
           <label class="flex items-start space-x-2.5 cursor-pointer text-slate-200 pt-1.5 border-t border-slate-800/80">
-            <input type="radio" name="dedicated-reset-scope" value="langfuse" class="mt-0.5 text-rose-500 focus:ring-rose-500" />
+            <input type="radio" name="dedicated-reset-scope" value="langfuse"
+              class="mt-0.5 text-rose-500 focus:ring-rose-500" />
             <div>
               <span class="font-semibold" id="lbl-reset-opt-lf">Chỉ xóa telemetry Langfuse &amp; ClickHouse</span>
-              <p class="text-[11px] text-slate-400" id="lbl-reset-opt-lf-sub">Chỉ làm rỗng bảng traces và events trên ClickHouse.</p>
+              <p class="text-[11px] text-slate-400" id="lbl-reset-opt-lf-sub">Chỉ làm rỗng bảng traces và events trên
+                ClickHouse.</p>
             </div>
           </label>
         </div>
@@ -902,7 +933,8 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
       <div class="pt-1">
         <label class="flex items-center space-x-2 text-xs text-rose-300 cursor-pointer select-none">
           <input type="checkbox" id="dedicated-reset-confirm-cb" class="rounded text-rose-500 focus:ring-rose-500" />
-          <span id="lbl-dedicated-reset-confirm" class="font-medium">Tôi hiểu và xác nhận muốn xóa sạch dữ liệu hiện tại về 0.</span>
+          <span id="lbl-dedicated-reset-confirm" class="font-medium">Tôi hiểu và xác nhận muốn xóa sạch dữ liệu hiện tại
+            về 0.</span>
         </label>
       </div>
 
@@ -2458,13 +2490,13 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
       }
     }
 
-    
+
     // =========================================================================
     // Backup & Restore Module
     // =========================================================================
     let currentDataTab = 'backup';
 
-    
+
     // =========================================================================
     // Mobile & Tablet Responsive Handlers
     // =========================================================================
@@ -2981,7 +3013,7 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
         .replace(/'/g, '&#039;');
     }
 
-        // Global Escape and Backdrop Modal Dismissal
+    // Global Escape and Backdrop Modal Dismissal
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeEstimatorModal();
