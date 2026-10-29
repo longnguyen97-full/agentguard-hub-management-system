@@ -218,31 +218,6 @@ session.finish(final_output="Đã hoàn thành! Mã giảm giá THANKYOU10 đã 
 
 ---
 
-## 📊 Bộ Đánh Giá & Benchmark An Toàn (AG-Eval-v1)
-
-AgentGuard tích hợp sẵn bộ dataset chuẩn (`evals/dataset/agent_safety_benchmark.json`) và runner kiểm thử định lượng độ tin cậy của các chốt chặn an toàn qua 25 kịch bản thực tế:
-
-| Chỉ Số Đánh Giá | Kết Quả Benchmark | Mục Tiêu SLA | Trạng Thái |
-| :--- | :---: | :---: | :---: |
-| **Độ Chính Xác Tổng Thể (Accuracy)** | **100.0%** (25/25) | > 98.0% | 🟢 ĐẠT CHUẨN |
-| **Tỷ Lệ Tác Vụ Bình Thường Không Bị Chặn Nhầm** | **100.0%** (10/10) | 100.0% | 🟢 0% FALSE POSITIVE |
-| **Tỷ Lệ Báo Động Sai (FPR)** | **0.0%** | < 1.0% | 🟢 TỐI ƯU |
-| **Chặn Vòng Lặp Vô Tận (Loop F1)** | **100.0%** (Recall: 100%) | 100.0% | 🟢 ĐẠT CHUẨN |
-| **Bắt Tác Vụ Nhạy Cảm (HITL Recall)** | **100.0%** (5/5) | 100.0% | 🟢 ĐẠT CHUẨN |
-| **Giới Hạn Ngân Sách (Budget F1)** | **100.0%** (3/3) | 100.0% | 🟢 ĐẠT CHUẨN |
-| **Độ Trễ Nút Dừng Khẩn Cấp (Kill Switch)** | **< 1.0 ms** | < 50 ms | 🟢 TỨC THÌ |
-
-### Chạy Benchmark qua dòng lệnh:
-```bash
-uv run python evals/run_benchmark.py
-```
-Hoặc truy vấn kết quả trực tiếp qua API:
-```bash
-curl -X GET "http://localhost:8000/api/agents/evals/benchmark"
-```
-
----
-
 ## 🧪 Chạy Kiểm Thử Tự Động (Automated Test Suite)
 
 Dự án đi kèm bộ test toàn diện kiểm tra 100% các chốt chặn an toàn:
@@ -267,17 +242,13 @@ tests/test_external_api.py::test_external_agent_ingestion_lifecycle PASSED [100%
 
 ```text
 agent-management-system/
-├── assets/                  # Site logo (SVG, PNG) & ảnh chụp màn hình UI
+├── assets/                  # Site logo (SVG, PNG), mã QR & ảnh chụp màn hình UI
 ├── docker-compose.yml       # Cụm hạ tầng Langfuse (Web, Worker, Postgres, Redis, ClickHouse, MinIO)
 ├── .env.example             # Mẫu biến môi trường an toàn
 ├── pyproject.toml           # Cấu hình dự án và dependencies
 ├── run.py                   # Script khởi chạy nhanh backend (an toàn UTF-8 trên Windows)
 ├── Dockerfile               # Đóng gói backend container
 ├── agent_sdk.py             # Client SDK siêu nhẹ để nhúng vào Agent bên ngoài
-├── evals/                   # Bộ đánh giá & benchmark an toàn (AG-Eval-v1)
-│   ├── dataset/             # 25 kịch bản hành vi chuẩn (Benign, Loops, HITL, Budget)
-│   ├── run_benchmark.py     # Script tính toán ma trận nhầm lẫn, precision, recall & FPR
-│   └── BENCHMARK_REPORT.md  # Báo cáo đánh giá chi tiết
 ├── backend/
 │   └── app/
 │       ├── main.py          # Khởi tạo FastAPI & mount router & static assets
@@ -307,6 +278,34 @@ agent-management-system/
 
 ---
 
+## 💬 Cộng Đồng & Đóng Góp Ý Kiến
+
+Chúng tôi rất hoan nghênh những phản hồi, ý tưởng và đóng góp từ cộng đồng:
+- **Cộng Đồng Nhà Phát Triển Telegram**: Tham gia [Nhóm Telegram](https://t.me/+placeholder_agentguard) với Bot AI Hỗ Trợ 24/7 để được giải đáp thắc mắc kỹ thuật tức thì.
+- **Báo Cáo Lỗi & Đề Xuất**: Mở issue hoặc thảo luận tại [GitHub Issues](https://github.com/longnguyen97-full/agent-management-system/issues).
+
+---
+
+## 💖 Ủng Hộ & Tài Trợ Dự Án (Donate)
+
+Nếu bạn thấy **AgentGuard** hữu ích và muốn tiếp sức cho việc phát triển mã nguồn mở miễn phí lâu dài, hãy mời tác giả một ly cà phê nhé! ☕
+
+<div align="center">
+  <img src="https://i.postimg.cc/Zqg3GGpG/qrcode.jpg" alt="AgentGuard Donation QR Code" width="240" style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
+  <br/>
+  <em>Quét mã QR qua ứng dụng Ngân hàng / Mobile Banking / VietQR</em>
+  <br/>
+  <strong>Chân thành cảm ơn sự đồng hành và ủng hộ của bạn! ❤️</strong>
+</div>
+
+---
+
+## 🤝 Đóng Góp Phát Triển
+
+Dự án luôn mở rộng chào đón đóng góp từ cộng đồng! Vui lòng đọc kỹ [CONTRIBUTING.md](CONTRIBUTING.md) và [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
+---
+
 ## 📄 Giấy Phép (License)
 
-Dự án phát hành dưới giấy phép [MIT License](LICENSE). Tự do sử dụng, chỉnh sửa và ứng dụng vào các hệ thống thương mại.
+Dự án được phát hành theo giấy phép mã nguồn mở [MIT License](LICENSE) — hoàn toàn miễn phí cho mục đích học tập, nghiên cứu và thương mại.

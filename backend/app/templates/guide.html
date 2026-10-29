@@ -195,52 +195,51 @@ session.finish(final_output="Invoice processed successfully!")</code></pre>
               <td class="p-3">/api/agents/stream</td>
               <td class="p-3 font-sans text-slate-400">Server-Sent Events (SSE) realtime broadcast</td>
             </tr>
-            <tr>
-              <td class="p-3 text-emerald-400 font-bold">GET</td>
-              <td class="p-3">/api/agents/evals/benchmark</td>
-              <td class="p-3 font-sans text-slate-400">Run or fetch safety guardrail benchmark evaluation (AG-Eval-v1)</td>
-            </tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- Section 4: Safety Benchmark & Evaluation Suite -->
-    <section id="benchmark" class="space-y-4">
+    <!-- Section 4: Community, Feedback & Sponsorship -->
+    <section id="community" class="space-y-4">
       <h2 id="sec4-title" class="text-xl font-bold text-white flex items-center space-x-2">
-        <i data-lucide="shield-check" class="w-5 h-5 text-emerald-400"></i>
-        <span>4. Safety Benchmark &amp; Evaluation Suite (AG-Eval-v1)</span>
+        <i data-lucide="heart" class="w-5 h-5 text-pink-400"></i>
+        <span>4. Community, Feedback &amp; Sponsorship</span>
       </h2>
       <p id="sec4-desc" class="text-sm text-slate-400 leading-relaxed">
-        AgentGuard includes a built-in evaluation suite and benchmark dataset (<strong>AG-Eval-v1</strong>) containing 25 annotated test trajectories to mathematically verify guardrail reliability, latency, and false positive rates.
+        Join our community, provide feedback, get support from AI agents, or sponsor the project:
       </p>
 
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-        <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl">
-          <p class="text-[11px] text-slate-400">Overall Accuracy</p>
-          <p class="text-xl font-bold text-emerald-400 mt-1">100.0%</p>
-          <p class="text-[10px] text-slate-500">25 / 25 Scenarios</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Community Telegram Card -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+          <div class="flex items-center space-x-2.5 text-sky-400">
+            <i data-lucide="message-circle" class="w-5 h-5"></i>
+            <h3 class="font-bold text-white text-sm" id="c-tg-title">Telegram Developer Community</h3>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed" id="c-tg-desc">
+            Join our Telegram group with real-time AI Support Agent to ask questions, report bugs, and exchange ideas with other agent engineers.
+          </p>
+          <a href="https://t.me/+placeholder_agentguard" target="_blank" class="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 transition">
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+            <span>Join Telegram Group</span>
+          </a>
         </div>
-        <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl">
-          <p class="text-[11px] text-slate-400">False Positive Rate</p>
-          <p class="text-xl font-bold text-emerald-400 mt-1">0.0%</p>
-          <p class="text-[10px] text-slate-500">Zero false alarms on benign tasks</p>
-        </div>
-        <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl">
-          <p class="text-[11px] text-slate-400">Loop Prevention F1</p>
-          <p class="text-xl font-bold text-indigo-400 mt-1">100.0%</p>
-          <p class="text-[10px] text-slate-500">Detection Latency: 3 steps</p>
-        </div>
-        <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl">
-          <p class="text-[11px] text-slate-400">HITL Gate Recall</p>
-          <p class="text-xl font-bold text-amber-400 mt-1">100.0%</p>
-          <p class="text-[10px] text-slate-500">5 / 5 Sensitive tools caught</p>
-        </div>
-      </div>
 
-      <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300">
-        <p class="text-slate-400 font-sans text-xs mb-2 font-medium">Run the benchmark suite via CLI:</p>
-        <code class="text-emerald-400">uv run python evals/run_benchmark.py</code>
+        <!-- Donation QR Card -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3 text-center">
+          <div class="flex items-center justify-center space-x-2 text-pink-400">
+            <i data-lucide="coffee" class="w-5 h-5"></i>
+            <h3 class="font-bold text-white text-sm" id="c-donate-title">Support &amp; Donate</h3>
+          </div>
+          <p class="text-xs text-slate-400" id="c-donate-desc">
+            Buy the author a coffee to support open-source AI development!
+          </p>
+          <div class="p-2 bg-white rounded-xl inline-block border border-slate-700">
+            <img src="/assets/donate-qr.jpg" alt="Donation QR" class="w-36 h-auto rounded-lg mx-auto" />
+          </div>
+          <p class="text-[11px] text-slate-500 font-mono">Scan via Mobile Banking / VietQR</p>
+        </div>
       </div>
     </section>
 
@@ -269,8 +268,12 @@ session.finish(final_output="Invoice processed successfully!")</code></pre>
         sec2: "2. Client SDK Quick Integration (3 Steps)",
         sec2Desc: "Copy agent_sdk.py into your project and stream steps into AgentGuard in real time:",
         sec3: "3. REST API Quick Reference",
-        sec4: "4. Safety Benchmark & Evaluation Suite (AG-Eval-v1)",
-        sec4Desc: "AgentGuard includes a built-in evaluation suite and benchmark dataset (AG-Eval-v1) containing 25 annotated test trajectories to mathematically verify guardrail reliability, latency, and false positive rates."
+        sec4: "4. Community, Feedback & Sponsorship",
+        sec4Desc: "Join our community, provide feedback, get support from AI agents, or sponsor the project:",
+        cTgTitle: "Telegram Developer Community",
+        cTgDesc: "Join our Telegram group with real-time AI Support Agent to ask questions, report bugs, and exchange ideas with other agent engineers.",
+        cDonateTitle: "Support & Donate",
+        cDonateDesc: "Buy the author a coffee to support open-source development!"
       },
       vi: {
         back: "Bảng Điều Khiển",
@@ -289,8 +292,12 @@ session.finish(final_output="Invoice processed successfully!")</code></pre>
         sec2: "2. Tích Hợp Bằng Client SDK (3 Bước Đơn Giản)",
         sec2Desc: "Chỉ cần copy file agent_sdk.py vào dự án Agent của bạn và gửi dữ liệu về AgentGuard theo thời gian thực:",
         sec3: "3. Tra Cứu Nhanh Các Điểm Cuối REST API",
-        sec4: "4. Bộ Benchmark & Đánh Giá An Toàn (AG-Eval-v1)",
-        sec4Desc: "AgentGuard tích hợp sẵn bộ dataset chuẩn và script đánh giá (AG-Eval-v1) gồm 25 kịch bản hành vi để kiểm chứng toán học độ tin cậy của chốt chặn, độ trễ và tỷ lệ báo động nhầm (FPR = 0%)."
+        sec4: "4. Cộng Đồng, Phản Hồi & Tài Trợ",
+        sec4Desc: "Tham gia cộng đồng nhà phát triển, đóng góp ý kiến hoặc mời tác giả một ly cà phê:",
+        cTgTitle: "Cộng Đồng Nhà Phát Triển Telegram",
+        cTgDesc: "Tham gia nhóm Telegram có sẵn Bot AI Support trả lời thắc mắc kỹ thuật, báo cáo lỗi và trao đổi cùng cộng đồng xây dựng Agent.",
+        cDonateTitle: "Ủng Hộ & Tài Trợ",
+        cDonateDesc: "Mời tác giả một ly cà phê để tiếp tục duy trì và phát triển mã nguồn mở AgentGuard!"
       }
     };
 
@@ -325,6 +332,10 @@ session.finish(final_output="Invoice processed successfully!")</code></pre>
       if (data.sec4 && document.getElementById('sec4-title')) {
         document.getElementById('sec4-title').querySelector('span').innerText = data.sec4;
         document.getElementById('sec4-desc').innerText = data.sec4Desc;
+        if (document.getElementById('c-tg-title')) document.getElementById('c-tg-title').innerText = data.cTgTitle;
+        if (document.getElementById('c-tg-desc')) document.getElementById('c-tg-desc').innerText = data.cTgDesc;
+        if (document.getElementById('c-donate-title')) document.getElementById('c-donate-title').innerText = data.cDonateTitle;
+        if (document.getElementById('c-donate-desc')) document.getElementById('c-donate-desc').innerText = data.cDonateDesc;
       }
 
       const btnEn = document.getElementById('guide-lang-en');

@@ -191,22 +191,3 @@ async def event_stream():
     )
 
 
-@router.get("/evals/benchmark")
-async def get_benchmark_results(rerun: bool = False):
-    """Returns the AgentGuard Safety & Control Plane benchmark metrics, optionally re-running the suite."""
-    from pathlib import Path
-    results_path = Path(__file__).resolve().parent.parent.parent.parent / "evals" / "benchmark_results.json"
-    if rerun or not results_path.exists():
-        import sys
-        evals_dir = str(Path(__file__).resolve().parent.parent.parent.parent)
-        if evals_dir not in sys.path:
-            sys.path.insert(0, evals_dir)
-        from evals.run_benchmark import run_benchmark
-        return run_benchmark()
-    try:
-        with open(results_path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception:
-        from evals.run_benchmark import run_benchmark
-        return run_benchmark()
-

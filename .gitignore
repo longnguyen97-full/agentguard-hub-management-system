@@ -48,6 +48,10 @@ venv.bak/
 *.swp
 *.swo
 *~
+
+# Internal evaluations and benchmark datasets
+evals/
+
 .DS_Store
 Thumbs.db
 desktop.ini

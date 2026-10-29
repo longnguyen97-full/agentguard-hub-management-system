@@ -58,11 +58,17 @@
           </button>
         </div>
 
-        <!-- Safety Benchmark Scorecard Button -->
-        <button onclick="openBenchmarkModal()" class="hidden md:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition shadow-sm" title="View Safety Benchmark & Evaluation Results">
-          <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
-          <span id="nav-benchmark-btn">Benchmark (100%)</span>
+        <!-- Donate / Sponsor Button -->
+        <button onclick="openDonateModal()" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-pink-500/10 hover:bg-pink-500/20 text-pink-300 border border-pink-500/30 transition shadow-sm" title="Donate & Support AgentGuard">
+          <i data-lucide="heart" class="w-3.5 h-3.5 text-pink-400"></i>
+          <span id="nav-donate-btn">Donate</span>
         </button>
+
+        <!-- Community / Telegram Group Link -->
+        <a id="nav-telegram-link" href="https://t.me/+placeholder_agentguard" target="_blank" class="hidden md:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 transition" title="Join Telegram Community & Support Agent">
+          <i data-lucide="message-circle" class="w-3.5 h-3.5 text-sky-400"></i>
+          <span id="nav-telegram-text">Telegram</span>
+        </a>
 
         <!-- User Guide Button -->
         <a href="/guide" target="_blank" class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 transition" title="User Guide & Integration Manual">
@@ -341,89 +347,36 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
 
   </main>
 
-  <!-- Safety Benchmark Modal (AG-Eval-v1) -->
-  <div id="benchmark-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm hidden p-4">
-    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-5 animate-in fade-in duration-200">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-        <div class="flex items-center space-x-3">
-          <div class="p-2.5 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/20">
-            <i data-lucide="shield-check" class="w-6 h-6"></i>
-          </div>
-          <div>
-            <h3 class="text-base font-bold text-white flex items-center space-x-2">
-              <span id="lbl-bench-modal-title">AgentGuard Safety &amp; Control Plane Benchmark</span>
-              <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono font-semibold">AG-Eval-v1</span>
-            </h3>
-            <p id="lbl-bench-modal-sub" class="text-xs text-slate-400 mt-0.5">Automated 25-scenario evaluation of Loop Detection, HITL Gate, Budget Caps &amp; Zero False Positives</p>
-          </div>
+  <!-- Donate & Support Modal -->
+  <div id="donate-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4 text-center animate-in fade-in duration-200">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+        <div class="flex items-center space-x-2 text-pink-400 font-bold text-sm">
+          <i data-lucide="heart" class="w-4 h-4 fill-pink-400"></i>
+          <span id="lbl-donate-title">Support AgentGuard Project</span>
         </div>
-        <button onclick="closeBenchmarkModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
-          <i data-lucide="x" class="w-5 h-5"></i>
+        <button onclick="closeDonateModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
 
-      <!-- Key Metrics 4-card Grid -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-xl text-center">
-          <p class="text-[11px] text-slate-400" id="lbl-bench-acc">Accuracy</p>
-          <p id="bench-accuracy" class="text-xl font-bold text-emerald-400 mt-1">100.0%</p>
-          <p class="text-[10px] text-slate-500">25 / 25 Scenarios</p>
-        </div>
-        <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-xl text-center">
-          <p class="text-[11px] text-slate-400" id="lbl-bench-fpr">False Positive Rate</p>
-          <p id="bench-fpr" class="text-xl font-bold text-emerald-400 mt-1">0.0%</p>
-          <p class="text-[10px] text-slate-500">Zero false alarms</p>
-        </div>
-        <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-xl text-center">
-          <p class="text-[11px] text-slate-400" id="lbl-bench-loop">Loop Prevention F1</p>
-          <p id="bench-loop-f1" class="text-xl font-bold text-indigo-400 mt-1">100.0%</p>
-          <p class="text-[10px] text-slate-500">Recall: 100%</p>
-        </div>
-        <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-xl text-center">
-          <p class="text-[11px] text-slate-400" id="lbl-bench-hitl">HITL Gate Recall</p>
-          <p id="bench-hitl-recall" class="text-xl font-bold text-amber-400 mt-1">100.0%</p>
-          <p class="text-[10px] text-slate-500">5 / 5 Sensitive tools</p>
-        </div>
+      <p id="lbl-donate-desc" class="text-xs text-slate-300 leading-relaxed">
+        If you find AgentGuard useful, please consider buying the author a coffee to support open-source development!
+      </p>
+
+      <!-- QR Code Image -->
+      <div class="p-2 bg-white rounded-xl shadow-md inline-block mx-auto border border-slate-700">
+        <img src="/assets/donate-qr.jpg" alt="AgentGuard Donation QR Code" class="w-56 h-auto rounded-lg mx-auto object-contain" />
       </div>
 
-      <!-- Categories Breakdown -->
-      <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3.5 space-y-2 text-xs">
-        <p class="font-semibold text-slate-300" id="lbl-bench-dataset-title">Dataset Coverage Breakdown (25 Scenarios):</p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-400">
-          <div class="flex items-center justify-between p-2 bg-slate-900 rounded-lg">
-            <span>🕊️ Benign Tasks (Normal execution)</span>
-            <span class="text-emerald-400 font-bold">10 / 10 Passed (100%)</span>
-          </div>
-          <div class="flex items-center justify-between p-2 bg-slate-900 rounded-lg">
-            <span>🔄 Infinite Loop Trajectories</span>
-            <span class="text-indigo-400 font-bold">5 / 5 Intercepted</span>
-          </div>
-          <div class="flex items-center justify-between p-2 bg-slate-900 rounded-lg">
-            <span>🛡️ Sensitive Action Interception</span>
-            <span class="text-amber-400 font-bold">5 / 5 Paused for HITL</span>
-          </div>
-          <div class="flex items-center justify-between p-2 bg-slate-900 rounded-lg">
-            <span>💰 Budget &amp; Token Overruns</span>
-            <span class="text-rose-400 font-bold">3 / 3 Enforced</span>
-          </div>
-        </div>
+      <div class="text-[11px] text-slate-400 space-y-1">
+        <p class="font-medium text-slate-300" id="lbl-donate-scan">Scan via Mobile Banking / VietQR</p>
+        <p class="text-slate-500 font-mono" id="lbl-donate-thanks">Thank you for supporting open-source AI safety! ❤️</p>
       </div>
 
-      <div class="flex items-center justify-between pt-2 border-t border-slate-800">
-        <a href="/guide#benchmark" target="_blank" class="text-xs text-sky-400 hover:text-sky-300 flex items-center space-x-1">
-          <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
-          <span id="lbl-bench-guide-link">View Detailed Benchmark Methodology</span>
-        </a>
-        <div class="flex items-center space-x-2">
-          <button onclick="rerunBenchmarkSuite()" id="btn-rerun-bench" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition flex items-center space-x-1.5">
-            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-            <span id="lbl-bench-rerun-btn">Re-run Benchmark Suite</span>
-          </button>
-          <button onclick="closeBenchmarkModal()" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
-            Close
-          </button>
-        </div>
-      </div>
+      <button onclick="closeDonateModal()" class="w-full py-2 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+        Close
+      </button>
     </div>
   </div>
 
@@ -434,7 +387,12 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
         guideLink: "User Guide",
         langfuseLink: "Langfuse (:3000)",
         swaggerLink: "Swagger API",
-        navBenchmark: "Benchmark (100%)",
+        navDonate: "Donate",
+        donateTitle: "Support AgentGuard Project",
+        donateDesc: "If you find AgentGuard useful, please consider buying the author a coffee to support open-source AI safety development!",
+        donateScan: "Scan QR code via Mobile Banking / VietQR",
+        donateThanks: "Thank you for supporting open-source AI safety! ❤️",
+        navTelegram: "Telegram",
         simOn: "Simulation: ON",
         simOff: "Live Mode: ON",
         badgeSim: "🟡 Simulation Mode Active (Sandbox Metrics)",
@@ -503,7 +461,12 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
         guideLink: "Hướng Dẫn Sử Dụng",
         langfuseLink: "Langfuse UI (:3000)",
         swaggerLink: "Tài liệu API",
-        navBenchmark: "Đánh Giá (100%)",
+        navDonate: "Ủng Hộ",
+        donateTitle: "Ủng Hộ Dự Án AgentGuard",
+        donateDesc: "Nếu bạn thấy AgentGuard hữu ích, hãy mời tác giả một ly cà phê để tiếp tục duy trì và phát triển mã nguồn mở!",
+        donateScan: "Quét mã QR qua ứng dụng Ngân hàng / Banking App",
+        donateThanks: "Cảm ơn sự đồng hành và ủng hộ của bạn! ❤️",
+        navTelegram: "Telegram",
         simOn: "Mô phỏng: BẬT",
         simOff: "Chế độ thực tế: BẬT",
         badgeSim: "🟡 Chế độ Mô phỏng (Dữ liệu Sandbox)",
@@ -722,7 +685,12 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
       setElText('nav-guide-link', t('guideLink'));
       setElText('nav-langfuse-link', t('langfuseLink'));
       setElText('nav-swagger-link', t('swaggerLink'));
-      setElText('nav-benchmark-btn', t('navBenchmark'));
+      setElText('nav-donate-btn', t('navDonate'));
+      setElText('nav-telegram-text', t('navTelegram'));
+      setElText('lbl-donate-title', t('donateTitle'));
+      setElText('lbl-donate-desc', t('donateDesc'));
+      setElText('lbl-donate-scan', t('donateScan'));
+      setElText('lbl-donate-thanks', t('donateThanks'));
 
       setElText('lbl-total-runs', t('totalRuns'));
       setElText('lbl-waiting-approval', t('waitingApproval'));
@@ -1332,52 +1300,14 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
       });
     }
 
-    function openBenchmarkModal() {
-      const modal = document.getElementById('benchmark-modal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        loadBenchmarkData();
-      }
+    function openDonateModal() {
+      const modal = document.getElementById('donate-modal');
+      if (modal) modal.classList.remove('hidden');
     }
 
-    function closeBenchmarkModal() {
-      const modal = document.getElementById('benchmark-modal');
+    function closeDonateModal() {
+      const modal = document.getElementById('donate-modal');
       if (modal) modal.classList.add('hidden');
-    }
-
-    async function loadBenchmarkData() {
-      try {
-        const res = await fetch('/api/agents/evals/benchmark');
-        if (res.ok) {
-          const data = await res.json();
-          const accEl = document.getElementById('bench-accuracy');
-          const fprEl = document.getElementById('bench-fpr');
-          const loopEl = document.getElementById('bench-loop-f1');
-          const hitlEl = document.getElementById('bench-hitl-recall');
-          if (accEl) accEl.innerText = `${data.accuracy_pct}%`;
-          if (fprEl) fprEl.innerText = `${data.false_positive_rate_pct}%`;
-          if (loopEl) loopEl.innerText = `${data.guardrails.loop_detector.f1_score_pct}%`;
-          if (hitlEl) hitlEl.innerText = `${data.guardrails.hitl_approval.recall_pct}%`;
-        }
-      } catch (e) {
-        console.warn('Failed to load benchmark data:', e);
-      }
-    }
-
-    async function rerunBenchmarkSuite() {
-      const btn = document.getElementById('btn-rerun-bench');
-      if (btn) btn.innerHTML = `<i data-lucide="refresh-cw" class="w-3.5 h-3.5 animate-spin"></i><span>Running...</span>`;
-      try {
-        const res = await fetch('/api/agents/evals/benchmark?rerun=true');
-        if (res.ok) {
-          await loadBenchmarkData();
-        }
-      } catch (e) {
-        alert('Benchmark run failed: ' + e.message);
-      } finally {
-        if (btn) btn.innerHTML = `<i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i><span id="lbl-bench-rerun-btn">${t('benchRerun') || 'Re-run Benchmark Suite'}</span>`;
-        if (window.lucide) lucide.createIcons();
-      }
     }
 
     function escapeHtml(str) {
