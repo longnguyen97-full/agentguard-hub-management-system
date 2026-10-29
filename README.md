@@ -212,7 +212,7 @@ session.finish(final_output="Order delivered! Coupon SAVE10 generated.")
 
 ### 🌐 Option B: TypeScript / Next.js / Node.js Agent
 
-For web backends and Next.js applications (such as ToiDaiDot), send lifecycle HTTP calls directly:
+For web backends and Next.js applications, send lifecycle HTTP calls directly:
 
 ```typescript
 // 1. Register new session
@@ -307,6 +307,23 @@ uv run python dataset/run_eval.py
 ```
 
 ---
+
+---
+
+## 🏢 Live Satellite Mock Systems (`mock-systems/`)
+
+Instead of just running mock scripts, AgentGuard includes **3 fully functioning standalone host systems** with embedded Sentinel SDKs:
+
+| System | Port & Stack | Agent Role | Tested Guardrails |
+| :--- | :--- | :--- | :--- |
+| **1. E-Commerce Service** | `:8010` (FastAPI) | Customer care bot, order status & voucher generator | 🟢 **100% Compliant Flow** (Billable vs $0.00) |
+| **2. Fintech & E-Wallet** | `:8020` (Node.js) | Autonomous bill payment & money transfer | ⏸️ **Human-in-the-Loop Approval** (Paused) |
+| **3. Autonomous Crawler** | `:8030` (Python Worker) | Bulk forum & finance report crawler | 🛡️ **Loop Detector** & 💰 **Budget Limiter** |
+
+Launch all 3 systems and trigger live end-to-end telemetry into Hub (:8000) with 1 command:
+```bash
+uv run python mock-systems/run_all.py --test
+```
 
 ## 🧪 Automated Test Suite
 
