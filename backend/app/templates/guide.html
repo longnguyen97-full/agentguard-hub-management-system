@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,31 +11,41 @@
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+
+<body
+  class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
 
   <!-- Header -->
   <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <img src="/assets/logo-icon.svg" alt="AgentGuard Logo" class="w-8 h-8"/>
+        <img src="/assets/logo-icon.svg" alt="AgentGuard Logo" class="w-8 h-8" />
         <div>
-          <span class="text-lg font-bold text-white tracking-tight">Agent<span class="text-indigo-400">Guard</span></span>
-          <span class="text-xs px-2 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 font-mono ml-2">DOCS</span>
+          <span class="text-lg font-bold text-white tracking-tight">Agent<span
+              class="text-indigo-400">Guard</span></span>
+          <span
+            class="text-xs px-2 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 font-mono ml-2">DOCS</span>
         </div>
       </div>
-      
+
       <div class="flex items-center space-x-3">
         <!-- Language Switcher (Compact Flags) -->
         <div class="flex items-center bg-slate-800/90 p-0.5 rounded-lg border border-slate-700" title="Switch Language">
-          <button id="guide-lang-en" onclick="setGuideLang('en')" class="px-2 py-1 text-sm rounded-md transition bg-indigo-600 text-white shadow-sm" title="English">🇬🇧</button>
-          <button id="guide-lang-vi" onclick="setGuideLang('vi')" class="px-2 py-1 text-sm rounded-md transition text-slate-400 hover:text-white" title="Tiếng Việt">🇻🇳</button>
+          <button id="guide-lang-en" onclick="setGuideLang('en')"
+            class="px-2 py-1 text-sm rounded-md transition bg-indigo-600 text-white shadow-sm"
+            title="English">🇬🇧</button>
+          <button id="guide-lang-vi" onclick="setGuideLang('vi')"
+            class="px-2 py-1 text-sm rounded-md transition text-slate-400 hover:text-white"
+            title="Tiếng Việt">🇻🇳</button>
         </div>
 
-        <a href="/dashboard" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition shadow-sm shadow-indigo-600/30">
+        <a href="/dashboard"
+          class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition shadow-sm shadow-indigo-600/30">
           <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
           <span id="txt-back-dashboard">Dashboard</span>
         </a>
-        <a href="/docs" target="_blank" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition">
+        <a href="/docs" target="_blank"
+          class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition">
           <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
           <span>Swagger API</span>
         </a>
@@ -47,7 +58,8 @@
 
     <!-- Hero / Title -->
     <div class="border-b border-slate-800 pb-8 space-y-3">
-      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium">
+      <div
+        class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium">
         <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
         <span id="hero-badge">Official User Guide & Developer Manual</span>
       </div>
@@ -55,7 +67,8 @@
         AgentGuard Control Plane Documentation
       </h1>
       <p id="hero-subtitle" class="text-base text-slate-400 max-w-3xl leading-relaxed">
-        Comprehensive guide to configuring, operating, and integrating your AI agents with real-time operational safety guardrails, emergency controls, and deep tracing telemetry.
+        Comprehensive guide to configuring, operating, and integrating your AI agents with real-time operational safety
+        guardrails, emergency controls, and deep tracing telemetry.
       </p>
     </div>
 
@@ -74,7 +87,9 @@
             <span id="c1-title">Emergency Kill Switch</span>
           </div>
           <p id="c1-desc" class="text-xs text-slate-300 leading-relaxed">
-            Immediately aborts active background execution threads when an agent behaves unexpectedly. Can be triggered via the red button on the Dashboard or calling <code class="text-indigo-300 bg-slate-950 px-1 py-0.5 rounded">POST /api/agents/runs/{id}/kill</code>.
+            Immediately aborts active background execution threads when an agent behaves unexpectedly. Can be triggered
+            via the red button on the Dashboard or calling <code
+              class="text-indigo-300 bg-slate-950 px-1 py-0.5 rounded">POST /api/agents/runs/{id}/kill</code>.
           </p>
         </div>
 
@@ -85,7 +100,8 @@
             <span id="c2-title">Infinite Loop Guardrail</span>
           </div>
           <p id="c2-desc" class="text-xs text-slate-300 leading-relaxed">
-            Continuously hashes and checks tool call signatures. If an agent repeats identical tool calls with the same arguments consecutively, execution is halted to prevent token burn.
+            Continuously hashes and checks tool call signatures. If an agent repeats identical tool calls with the same
+            arguments consecutively, execution is halted to prevent token burn.
           </p>
         </div>
 
@@ -96,7 +112,9 @@
             <span id="c3-title">Human-in-the-Loop (HITL)</span>
           </div>
           <p id="c3-desc" class="text-xs text-slate-300 leading-relaxed">
-            Sensitive actions (database mutations, transactions, emails) trigger an automatic pause in state <code class="text-amber-300 bg-slate-950 px-1 py-0.5 rounded">WAITING_APPROVAL</code> until approved via the UI or API.
+            Sensitive actions (database mutations, transactions, emails) trigger an automatic pause in state <code
+              class="text-amber-300 bg-slate-950 px-1 py-0.5 rounded">WAITING_APPROVAL</code> until approved via the UI
+            or API.
           </p>
         </div>
 
@@ -107,7 +125,8 @@
             <span id="c4-title">Hard Budget Guardrail</span>
           </div>
           <p id="c4-desc" class="text-xs text-slate-300 leading-relaxed">
-            Enforces strict step limits, token thresholds, and financial limits in both USD and VND to keep AI deployment costs predictable and bounded.
+            Enforces strict step limits, token thresholds, and financial limits in both USD and VND to keep AI
+            deployment costs predictable and bounded.
           </p>
         </div>
       </div>
@@ -121,7 +140,8 @@
       </h2>
 
       <p id="sec2-desc" class="text-xs text-slate-300">
-        Copy <code class="text-indigo-300 bg-slate-900 px-1 py-0.5 rounded">agent_sdk.py</code> into your project and stream steps into AgentGuard in real time:
+        Copy <code class="text-indigo-300 bg-slate-900 px-1 py-0.5 rounded">agent_sdk.py</code> into your project and
+        stream steps into AgentGuard in real time:
       </p>
 
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 overflow-x-auto">
@@ -218,9 +238,11 @@ session.finish(final_output="Invoice processed successfully!")</code></pre>
             <h3 class="font-bold text-white text-sm" id="c-tg-title">Telegram Developer Community</h3>
           </div>
           <p class="text-xs text-slate-400 leading-relaxed" id="c-tg-desc">
-            Join our Telegram group with real-time AI Support Agent to ask questions, report bugs, and exchange ideas with other agent engineers.
+            Join our Telegram group with real-time AI Support Agent to ask questions, report bugs, and exchange ideas
+            with other agent engineers.
           </p>
-          <a href="https://t.me/+placeholder_agentguard" target="_blank" class="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 transition">
+          <a href="https://t.me/+zHJ-OV4OzZ9hZjE1" target="_blank"
+            class="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 transition">
             <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
             <span>Join Telegram Group</span>
           </a>
@@ -353,5 +375,5 @@ session.finish(final_output="Invoice processed successfully!")</code></pre>
     lucide.createIcons();
   </script>
 </body>
-</html>
 
+</html>

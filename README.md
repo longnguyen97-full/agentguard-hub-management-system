@@ -282,7 +282,7 @@ agent-management-system/
 ## 💬 Community & Feedback
 
 We welcome your feedback, questions, and ideas:
-- **Telegram Developer Community**: Join our [Telegram Group](https://t.me/+placeholder_agentguard) with live AI Support Agent for quick technical assistance.
+- **Telegram Developer Community**: Join our [Telegram Group](https://t.me/+zHJ-OV4OzZ9hZjE1) with live AI Support Agent for quick technical assistance.
 - **GitHub Discussions / Issues**: Report bugs or propose new guardrails via [GitHub Issues](https://github.com/longnguyen97-full/agent-management-system/issues).
 
 ---

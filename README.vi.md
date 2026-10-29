@@ -281,7 +281,7 @@ agent-management-system/
 ## 💬 Cộng Đồng & Đóng Góp Ý Kiến
 
 Chúng tôi rất hoan nghênh những phản hồi, ý tưởng và đóng góp từ cộng đồng:
-- **Cộng Đồng Nhà Phát Triển Telegram**: Tham gia [Nhóm Telegram](https://t.me/+placeholder_agentguard) với Bot AI Hỗ Trợ 24/7 để được giải đáp thắc mắc kỹ thuật tức thì.
+- **Cộng Đồng Nhà Phát Triển Telegram**: Tham gia [Nhóm Telegram](https://t.me/+zHJ-OV4OzZ9hZjE1) với Bot AI Hỗ Trợ 24/7 để được giải đáp thắc mắc kỹ thuật tức thì.
 - **Báo Cáo Lỗi & Đề Xuất**: Mở issue hoặc thảo luận tại [GitHub Issues](https://github.com/longnguyen97-full/agent-management-system/issues).
 
 ---

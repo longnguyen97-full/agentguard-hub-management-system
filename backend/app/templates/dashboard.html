@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,79 +12,89 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     @keyframes pulse-slow {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
     }
+
     .animate-pulse-slow {
       animation: pulse-slow 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+
+<body
+  class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
 
   <!-- Navigation Bar -->
   <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      
+
       <!-- Brand & Unified Name -->
       <div class="flex items-center space-x-3">
         <a href="/dashboard" class="flex items-center space-x-3">
-          <img src="/assets/logo-icon.svg" alt="AgentGuard Logo" class="w-8 h-8"/>
+          <img src="/assets/logo-icon.svg" alt="AgentGuard Logo" class="w-8 h-8" />
           <div>
             <div class="flex items-center space-x-2">
-              <span class="text-lg font-extrabold text-white tracking-tight">Agent<span class="text-indigo-400">Guard</span></span>
-              <span class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 font-mono font-semibold">HUB</span>
+              <span class="text-lg font-extrabold text-white tracking-tight">Agent<span
+                  class="text-indigo-400">Guard</span></span>
+              <span
+                class="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 font-mono font-semibold">HUB</span>
             </div>
-            <p id="nav-app-subtitle" class="text-xs text-slate-400">AI Agent Control Plane, Safety Guardrails &amp; Tracing</p>
+            <p id="nav-app-subtitle" class="text-xs text-slate-400">AI Agent Control Plane, Safety Guardrails &amp;
+              Tracing</p>
           </div>
         </a>
       </div>
-      
+
       <!-- Actions Bar -->
       <div class="flex items-center space-x-2.5">
-        
+
         <!-- Simulation Mode Toggle Button -->
-        <button id="sim-mode-btn" onclick="toggleSimulationMode()" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition shadow-sm" title="Toggle between Simulation Sandbox and Live Langfuse Mode">
+        <button id="sim-mode-btn" onclick="toggleSimulationMode()"
+          class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition shadow-sm"
+          title="Toggle between Simulation Sandbox and Live Langfuse Mode">
           <span id="sim-mode-dot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
           <span id="sim-mode-text">Simulation: ON</span>
         </button>
 
         <!-- Language Switcher (Compact Flags) -->
-        <div class="flex items-center bg-slate-800/90 p-0.5 rounded-lg border border-slate-700" title="Switch Language & Currency">
-          <button id="lang-btn-en" onclick="setLanguage('en')" class="px-2 py-1 text-sm rounded-md transition bg-indigo-600 text-white shadow-sm" title="English (USD $)">
+        <div class="flex items-center bg-slate-800/90 p-0.5 rounded-lg border border-slate-700"
+          title="Switch Language & Currency">
+          <button id="lang-btn-en" onclick="setLanguage('en')"
+            class="px-2 py-1 text-sm rounded-md transition bg-indigo-600 text-white shadow-sm" title="English (USD $)">
             <span>🇬🇧</span>
           </button>
-          <button id="lang-btn-vi" onclick="setLanguage('vi')" class="px-2 py-1 text-sm rounded-md transition text-slate-400 hover:text-white" title="Tiếng Việt (VND ₫)">
+          <button id="lang-btn-vi" onclick="setLanguage('vi')"
+            class="px-2 py-1 text-sm rounded-md transition text-slate-400 hover:text-white" title="Tiếng Việt (VND ₫)">
             <span>🇻🇳</span>
           </button>
         </div>
 
-        <!-- Donate / Sponsor Button -->
-        <button onclick="openDonateModal()" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-pink-500/10 hover:bg-pink-500/20 text-pink-300 border border-pink-500/30 transition shadow-sm" title="Donate & Support AgentGuard">
-          <i data-lucide="heart" class="w-3.5 h-3.5 text-pink-400"></i>
-          <span id="nav-donate-btn">Donate</span>
-        </button>
-
-        <!-- Community / Telegram Group Link -->
-        <a id="nav-telegram-link" href="https://t.me/+placeholder_agentguard" target="_blank" class="hidden md:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 transition" title="Join Telegram Community & Support Agent">
-          <i data-lucide="message-circle" class="w-3.5 h-3.5 text-sky-400"></i>
-          <span id="nav-telegram-text">Telegram</span>
-        </a>
-
         <!-- User Guide Button -->
-        <a href="/guide" target="_blank" class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 transition" title="User Guide & Integration Manual">
+        <a href="/guide" target="_blank"
+          class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 transition"
+          title="User Guide & Integration Manual">
           <i data-lucide="book" class="w-3.5 h-3.5"></i>
           <span id="nav-guide-link">User Guide</span>
         </a>
 
         <!-- Swagger API Docs -->
-        <a href="/docs" target="_blank" class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition">
+        <a href="/docs" target="_blank"
+          class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition">
           <i data-lucide="code" class="w-3.5 h-3.5"></i>
           <span id="nav-swagger-link">Swagger API</span>
         </a>
 
         <!-- Langfuse Tracing UI -->
-        <a href="http://localhost:3000" target="_blank" class="hidden md:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition">
+        <a href="http://localhost:3000" target="_blank"
+          class="hidden md:flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition">
           <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
           <span id="nav-langfuse-link">Langfuse (:3000)</span>
         </a>
@@ -95,7 +106,8 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-5">
 
     <!-- Langfuse Observability & Telemetry Integration Banner -->
-    <div id="langfuse-banner" class="bg-slate-900/80 border border-slate-800 rounded-xl p-3.5 flex items-center justify-between flex-wrap gap-3 shadow-sm transition">
+    <div id="langfuse-banner"
+      class="bg-slate-900/80 border border-slate-800 rounded-xl p-3.5 flex items-center justify-between flex-wrap gap-3 shadow-sm transition">
       <div class="flex items-center space-x-3">
         <div class="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg">
           <i data-lucide="database" class="w-4 h-4"></i>
@@ -103,7 +115,8 @@
         <div>
           <div class="flex items-center space-x-2">
             <span class="text-xs font-bold text-slate-200">Langfuse Tracing Core:</span>
-            <span id="langfuse-status-pill" class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center space-x-1">
+            <span id="langfuse-status-pill"
+              class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center space-x-1">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
               <span id="langfuse-status-text">CONNECTED (ClickHouse / OTel)</span>
             </span>
@@ -115,10 +128,12 @@
       </div>
 
       <div class="flex items-center space-x-2">
-        <span id="active-mode-badge" class="px-2.5 py-1 text-xs rounded-md font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/30">
+        <span id="active-mode-badge"
+          class="px-2.5 py-1 text-xs rounded-md font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/30">
           🟡 Simulation Mode Active (Sandbox Metrics)
         </span>
-        <a href="http://localhost:3000" target="_blank" class="px-3 py-1 text-xs rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-medium flex items-center space-x-1 transition shadow-sm shadow-indigo-600/30">
+        <a href="http://localhost:3000" target="_blank"
+          class="px-3 py-1 text-xs rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-medium flex items-center space-x-1 transition shadow-sm shadow-indigo-600/30">
           <span>Open Langfuse (:3000)</span>
           <i data-lucide="external-link" class="w-3 h-3"></i>
         </a>
@@ -127,9 +142,10 @@
 
     <!-- Metrics Header Overview (4 Cards) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      
+
       <!-- Card 1: Total Runs / Traces -->
-      <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm relative overflow-hidden">
+      <div
+        class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm relative overflow-hidden">
         <div>
           <p id="lbl-total-runs" class="text-xs font-medium text-slate-400">Total Agent Runs</p>
           <h3 id="stat-total-runs" class="text-2xl font-bold text-white mt-1">0</h3>
@@ -141,7 +157,8 @@
       </div>
 
       <!-- Card 2: Approvals -->
-      <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm relative overflow-hidden">
+      <div
+        class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm relative overflow-hidden">
         <div>
           <p id="lbl-waiting-approval" class="text-xs font-medium text-slate-400">Waiting Human Approval</p>
           <h3 id="stat-pending-approvals" class="text-2xl font-bold text-amber-400 mt-1">0</h3>
@@ -153,7 +170,8 @@
       </div>
 
       <!-- Card 3: Tokens -->
-      <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm relative overflow-hidden">
+      <div
+        class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm relative overflow-hidden">
         <div>
           <p id="lbl-total-tokens" class="text-xs font-medium text-slate-400">Total Tokens Tracked</p>
           <h3 id="stat-total-tokens" class="text-2xl font-bold text-white mt-1">0</h3>
@@ -165,11 +183,13 @@
       </div>
 
       <!-- Card 4: Cost (USD / VND) -->
-      <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm relative overflow-hidden">
+      <div
+        class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm relative overflow-hidden">
         <div>
           <div class="flex items-center space-x-2">
             <p id="lbl-estimated-cost" class="text-xs font-medium text-slate-400">Estimated Cost</p>
-            <button onclick="toggleCurrency()" id="currency-toggle-btn" class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition">
+            <button onclick="toggleCurrency()" id="currency-toggle-btn"
+              class="px-1.5 py-0.5 text-[10px] font-bold rounded bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 transition">
               USD ⇄ VND
             </button>
           </div>
@@ -185,7 +205,7 @@
 
     <!-- Quick Run Launcher Bar / Live Ingestion Hub -->
     <div id="launcher-card" class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 shadow-sm space-y-4">
-      
+
       <!-- Panel 1: Simulation Sandbox Launcher (Visible only when Simulation Mode is ON) -->
       <div id="sandbox-launcher-panel" class="space-y-4">
         <div class="flex items-center justify-between flex-wrap gap-2">
@@ -193,19 +213,15 @@
             <i data-lucide="play" class="w-4 h-4 text-amber-400"></i>
             <span id="lbl-launcher-title">Sandbox Simulation &amp; Guardrail Testing</span>
           </h2>
-          <span id="lbl-launcher-subtitle" class="text-xs text-slate-400">Pick a preset test case to trigger guardrails or enter custom prompt</span>
+          <span id="lbl-launcher-subtitle" class="text-xs text-slate-400">Pick a preset test case to trigger guardrails
+            or enter custom prompt</span>
         </div>
 
         <div class="flex flex-col sm:flex-row gap-3">
-          <input 
-            id="prompt-input" 
-            type="text" 
-            placeholder="E.g., Analyze dataset and generate quarterly report..."
+          <input id="prompt-input" type="text" placeholder="E.g., Analyze dataset and generate quarterly report..."
             value="Search knowledge base and calculate system latency metrics"
-            class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-          />
-          <button 
-            onclick="launchRun()"
+            class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" />
+          <button onclick="launchRun()"
             class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-2 rounded-lg text-sm transition shadow-sm shadow-indigo-600/30 flex items-center justify-center space-x-2">
             <i data-lucide="play" class="w-4 h-4"></i>
             <span id="btn-run-custom">Run Sandbox</span>
@@ -214,20 +230,17 @@
 
         <div class="flex items-center flex-wrap gap-2 pt-1 border-t border-slate-800/80">
           <span id="lbl-quick-scenarios" class="text-xs text-slate-400 mr-2">Quick Scenarios:</span>
-          <button 
-            onclick="launchPreset('Search knowledge base and calculate metrics')"
+          <button onclick="launchPreset('Search knowledge base and calculate metrics')"
             class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-md border border-slate-700 transition flex items-center space-x-1.5">
             <i data-lucide="check" class="w-3 h-3 text-emerald-400"></i>
             <span id="btn-scenario-standard">Normal 3-Step Task</span>
           </button>
-          <button 
-            onclick="launchPreset('Update user quota in production database with sensitive record')"
+          <button onclick="launchPreset('Update user quota in production database with sensitive record')"
             class="text-xs bg-amber-950/40 hover:bg-amber-900/60 text-amber-300 border border-amber-800/60 px-3 py-1.5 rounded-md transition flex items-center space-x-1.5">
             <i data-lucide="alert-triangle" class="w-3 h-3 text-amber-400"></i>
             <span id="btn-scenario-approval">Sensitive Action (Human-in-the-Loop Approval)</span>
           </button>
-          <button 
-            onclick="launchPreset('Simulate infinite loop by calling check_health repetitively')"
+          <button onclick="launchPreset('Simulate infinite loop by calling check_health repetitively')"
             class="text-xs bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 px-3 py-1.5 rounded-md transition flex items-center space-x-1.5">
             <i data-lucide="repeat" class="w-3 h-3 text-rose-400"></i>
             <span id="btn-scenario-loop">Infinite Loop (Loop Guardrail Trigger)</span>
@@ -250,13 +263,15 @@
         </div>
 
         <!-- Code Snippet Box -->
-        <div class="bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs font-mono text-slate-300 relative shadow-inner">
+        <div
+          class="bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs font-mono text-slate-300 relative shadow-inner">
           <div class="flex items-center justify-between pb-2 border-b border-slate-800/80 mb-2">
             <span class="text-indigo-400 font-semibold flex items-center space-x-1.5">
               <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
               <span>Python SDK Client Integration (`agent_sdk.py`)</span>
             </span>
-            <button onclick="copySdkSnippet()" class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-0.5 rounded transition flex items-center space-x-1">
+            <button onclick="copySdkSnippet()"
+              class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-0.5 rounded transition flex items-center space-x-1">
               <i data-lucide="copy" class="w-3 h-3"></i>
               <span id="btn-copy-code">Copy Snippet</span>
             </button>
@@ -272,9 +287,7 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
         <!-- Action Bar for Live Mode -->
         <div class="flex items-center justify-between flex-wrap gap-2 pt-1 border-t border-slate-800/80">
           <div class="flex items-center space-x-2">
-            <button 
-              onclick="sendLiveProbe()"
-              id="btn-live-probe"
+            <button onclick="sendLiveProbe()" id="btn-live-probe"
               class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-3.5 py-1.5 rounded-md transition shadow-sm shadow-emerald-600/30 flex items-center space-x-1.5">
               <i data-lucide="radio" class="w-3.5 h-3.5"></i>
               <span id="lbl-send-probe">Send Live Ingestion Probe</span>
@@ -283,12 +296,14 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
           </div>
 
           <div class="flex items-center space-x-2">
-            <a href="/guide#sdk-integration" target="_blank" class="text-xs text-sky-400 hover:text-sky-300 flex items-center space-x-1">
+            <a href="/guide#sdk-integration" target="_blank"
+              class="text-xs text-sky-400 hover:text-sky-300 flex items-center space-x-1">
               <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
               <span id="lbl-view-sdk-guide">Integration Guide</span>
             </a>
             <span class="text-slate-700">•</span>
-            <a href="http://localhost:3000" target="_blank" class="text-xs text-indigo-400 hover:text-indigo-300 flex items-center space-x-1">
+            <a href="http://localhost:3000" target="_blank"
+              class="text-xs text-indigo-400 hover:text-indigo-300 flex items-center space-x-1">
               <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
               <span>Inspect in Langfuse</span>
             </a>
@@ -324,10 +339,12 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
 
       <!-- Right Column: Trajectory & Step Inspector -->
       <div class="lg:col-span-7 bg-slate-900/70 border border-slate-800 rounded-xl p-5 flex flex-col min-h-[500px]">
-        <div id="inspector-header" class="border-b border-slate-800 pb-4 flex items-center justify-between flex-wrap gap-3">
+        <div id="inspector-header"
+          class="border-b border-slate-800 pb-4 flex items-center justify-between flex-wrap gap-3">
           <div>
             <h3 id="inspector-title" class="font-bold text-slate-200 text-base">Select a session to inspect</h3>
-            <p id="inspector-subtitle" class="text-xs text-slate-400">View real-time reasoning thoughts, tool calls, and trace trees</p>
+            <p id="inspector-subtitle" class="text-xs text-slate-400">View real-time reasoning thoughts, tool calls, and
+              trace trees</p>
           </div>
           <div id="inspector-actions" class="flex items-center space-x-2 hidden">
             <!-- Dynamic kill/langfuse actions -->
@@ -338,7 +355,8 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
         <div id="inspector-steps" class="flex-1 py-4 space-y-4 overflow-y-auto max-h-[550px]">
           <div class="h-full flex flex-col items-center justify-center text-center text-slate-500 p-8 space-y-2">
             <i data-lucide="git-branch" class="w-10 h-10 text-slate-700"></i>
-            <p id="lbl-empty-trajectory" class="text-sm">Click any agent run on the left to inspect its trajectory steps and controls.</p>
+            <p id="lbl-empty-trajectory" class="text-sm">Click any agent run on the left to inspect its trajectory steps
+              and controls.</p>
           </div>
         </div>
       </div>
@@ -347,15 +365,52 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
 
   </main>
 
+  <!-- Footer: Community & Support Links separated from header core features -->
+  <footer class="border-t border-slate-800/80 bg-slate-900/60 backdrop-blur py-4 mt-auto">
+    <div
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+
+      <!-- Brand & Tagline -->
+      <div class="flex items-center space-x-2">
+        <span class="font-bold text-slate-300">AgentGuard</span>
+        <span class="text-slate-600">•</span>
+        <span id="footer-tagline">Open-Source AI Agent Control Plane, Safety Guardrails &amp; Tracing Hub</span>
+      </div>
+
+      <!-- Footer Actions: Telegram & Donate with Icons -->
+      <div class="flex items-center space-x-3">
+        <!-- Community Telegram Link (with icon) -->
+        <a id="footer-telegram-link" href="https://t.me/+zHJ-OV4OzZ9hZjE1" target="_blank"
+          class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 transition shadow-sm font-medium"
+          title="Join Telegram Community & AI Support Agent">
+          <i data-lucide="send" class="w-3.5 h-3.5 text-sky-400"></i>
+          <span id="footer-telegram-text">Telegram</span>
+        </a>
+
+        <!-- Donate / Support Button (with icon) -->
+        <button id="footer-donate-btn" onclick="openDonateModal()"
+          class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-pink-500/10 hover:bg-pink-500/20 text-pink-300 border border-pink-500/30 transition shadow-sm font-medium"
+          title="Support & Donate AgentGuard">
+          <i data-lucide="heart" class="w-3.5 h-3.5 text-pink-400 fill-pink-400/20"></i>
+          <span id="footer-donate-text">Donate</span>
+        </button>
+      </div>
+
+    </div>
+  </footer>
+
   <!-- Donate & Support Modal -->
-  <div id="donate-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
-    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4 text-center animate-in fade-in duration-200">
+  <div id="donate-modal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
+    <div
+      class="bg-slate-900 border border-slate-700 rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4 text-center animate-in fade-in duration-200">
       <div class="flex items-center justify-between pb-2 border-b border-slate-800">
         <div class="flex items-center space-x-2 text-pink-400 font-bold text-sm">
           <i data-lucide="heart" class="w-4 h-4 fill-pink-400"></i>
           <span id="lbl-donate-title">Support AgentGuard Project</span>
         </div>
-        <button onclick="closeDonateModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+        <button onclick="closeDonateModal()"
+          class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
@@ -366,15 +421,18 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
 
       <!-- QR Code Image -->
       <div class="p-2 bg-white rounded-xl shadow-md inline-block mx-auto border border-slate-700">
-        <img src="/assets/donate-qr.jpg" alt="AgentGuard Donation QR Code" class="w-56 h-auto rounded-lg mx-auto object-contain" />
+        <img src="/assets/donate-qr.jpg" alt="AgentGuard Donation QR Code"
+          class="w-56 h-auto rounded-lg mx-auto object-contain" />
       </div>
 
       <div class="text-[11px] text-slate-400 space-y-1">
         <p class="font-medium text-slate-300" id="lbl-donate-scan">Scan via Mobile Banking / VietQR</p>
-        <p class="text-slate-500 font-mono" id="lbl-donate-thanks">Thank you for supporting open-source AI safety! ❤️</p>
+        <p class="text-slate-500 font-mono" id="lbl-donate-thanks">Thank you for supporting open-source AI safety! ❤️
+        </p>
       </div>
 
-      <button onclick="closeDonateModal()" class="w-full py-2 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+      <button onclick="closeDonateModal()"
+        class="w-full py-2 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
         Close
       </button>
     </div>
@@ -388,6 +446,9 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
         langfuseLink: "Langfuse (:3000)",
         swaggerLink: "Swagger API",
         navDonate: "Donate",
+        footerDonate: "Donate",
+        footerTelegram: "Telegram",
+        footerTagline: "Open-Source AI Agent Control Plane, Safety Guardrails & Tracing Hub",
         donateTitle: "Support AgentGuard Project",
         donateDesc: "If you find AgentGuard useful, please consider buying the author a coffee to support open-source AI safety development!",
         donateScan: "Scan QR code via Mobile Banking / VietQR",
@@ -462,6 +523,9 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
         langfuseLink: "Langfuse UI (:3000)",
         swaggerLink: "Tài liệu API",
         navDonate: "Ủng Hộ",
+        footerDonate: "Ủng Hộ",
+        footerTelegram: "Telegram",
+        footerTagline: "Trung tâm Điều khiển, Chốt chặn An toàn & Quản trị AI Agent Mã nguồn mở",
         donateTitle: "Ủng Hộ Dự Án AgentGuard",
         donateDesc: "Nếu bạn thấy AgentGuard hữu ích, hãy mời tác giả một ly cà phê để tiếp tục duy trì và phát triển mã nguồn mở!",
         donateScan: "Quét mã QR qua ứng dụng Ngân hàng / Banking App",
@@ -614,7 +678,7 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
       } else {
         pill.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/30 flex items-center space-x-1";
         text.innerText = "OFFLINE (Port :3000)";
-        summary.innerText = currentLang === 'vi' 
+        summary.innerText = currentLang === 'vi'
           ? "Hạ tầng Langfuse đang ngoại tuyến. Hãy khởi động bằng 'docker compose up -d'."
           : "Langfuse tracing cluster is unreachable. Start via 'docker compose up -d'.";
       }
@@ -646,7 +710,7 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
       } catch (e) {
         console.error('Error toggling simulation mode', e);
       }
-      
+
       updateSimulationButton();
       await fetchLangfuseTelemetry();
       updateGlobalStats();
@@ -660,7 +724,7 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
       const modeBadge = document.getElementById('active-mode-badge');
       const sandboxPanel = document.getElementById('sandbox-launcher-panel');
       const livePanel = document.getElementById('live-ingestion-panel');
-      
+
       if (simulationMode) {
         btn.className = "flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition shadow-sm";
         dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
@@ -685,8 +749,11 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
       setElText('nav-guide-link', t('guideLink'));
       setElText('nav-langfuse-link', t('langfuseLink'));
       setElText('nav-swagger-link', t('swaggerLink'));
-      setElText('nav-donate-btn', t('navDonate'));
-      setElText('nav-telegram-text', t('navTelegram'));
+      setElText('footer-donate-text', t('footerDonate'));
+      setElText('footer-telegram-text', t('footerTelegram'));
+      setElText('footer-tagline', t('footerTagline'));
+      setElText('nav-donate-btn', t('footerDonate'));
+      setElText('nav-telegram-text', t('footerTelegram'));
       setElText('lbl-donate-title', t('donateTitle'));
       setElText('lbl-donate-desc', t('donateDesc'));
       setElText('lbl-donate-scan', t('donateScan'));
@@ -763,7 +830,7 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
     // Connect to SSE stream
     function initSSE() {
       const evtSource = new EventSource('/api/agents/stream');
-      
+
       evtSource.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data);
@@ -830,7 +897,7 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
           if (res.ok) {
             allRuns[event.run_id] = await res.json();
           }
-        } catch (e) {}
+        } catch (e) { }
       }
 
       renderRunsList();
@@ -878,8 +945,7 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
         const hasApproval = run.status === 'WAITING_APPROVAL';
 
         return `
-          <div onclick="selectRun('${run.run_id}')" class="p-4 rounded-xl border cursor-pointer transition ${
-            isSelected ? 'bg-slate-900 border-indigo-500 shadow-lg shadow-indigo-500/10' : 'bg-slate-900/50 border-slate-800 hover:border-slate-700'
+          <div onclick="selectRun('${run.run_id}')" class="p-4 rounded-xl border cursor-pointer transition ${isSelected ? 'bg-slate-900 border-indigo-500 shadow-lg shadow-indigo-500/10' : 'bg-slate-900/50 border-slate-800 hover:border-slate-700'
           }">
             <div class="flex items-center justify-between mb-2">
               <span class="text-xs font-mono text-slate-400 font-medium">${run.run_id}</span>
@@ -1129,7 +1195,7 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
       } else {
         // --- REAL LIVE TELEMETRY (LANGFUSE & PRODUCTION) ---
         const liveExternalRuns = allList.filter(r => r.is_simulation === false);
-        
+
         // Use real ClickHouse Langfuse traces or live external runs
         totalRuns = Math.max(langfuseTelemetry.total_traces, liveExternalRuns.length);
         pendingCount = liveExternalRuns.filter(r => r.status === 'WAITING_APPROVAL').length;
@@ -1190,8 +1256,8 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
     }
 
     async function killRun(runId) {
-      const confirmMsg = currentLang === 'vi' 
-        ? `Kích hoạt nút dừng khẩn cấp cho phiên ${runId}?` 
+      const confirmMsg = currentLang === 'vi'
+        ? `Kích hoạt nút dừng khẩn cấp cho phiên ${runId}?`
         : `Activate Emergency Kill Switch immediately for session ${runId}?`;
       if (!confirm(confirmMsg)) return;
       try {
@@ -1246,8 +1312,8 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
             step_number: 1,
             action_type: "TOOL_CALL",
             tool_name: "verify_cluster_health",
-            tool_input: {"target": "clickhouse_events_core"},
-            tool_output: {"status": "healthy", "synced": true},
+            tool_input: { "target": "clickhouse_events_core" },
+            tool_output: { "status": "healthy", "synced": true },
             thought: "Querying production tracing core to verify telemetry ingestion SLA.",
             tokens_used: 185,
             cost_usd: 0.00035,
@@ -1329,4 +1395,5 @@ with client.start_run(agent_name="production-bot", task="Live user request") as 
     initSSE();
   </script>
 </body>
+
 </html>
