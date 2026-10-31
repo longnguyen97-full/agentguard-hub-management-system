@@ -304,6 +304,16 @@ async def external_agent_start(
 ):
     """Endpoint for external systems to register an agent run."""
     run_id = f"ext_{uuid.uuid4().hex[:10]}"
+
+    # Initialize Langfuse trace
+    trace_id = tracer.create_trace(
+        run_id=run_id,
+        name=f"Agent:{request.agent_name}",
+        user_id=request.user_id,
+        input_data={"prompt": request.prompt, "model": request.model},
+        metadata={"max_steps": request.max_steps, "budget_usd": request.budget_usd, "is_external": True}
+    )
+
     state = AgentRunState(
         run_id=run_id,
         agent_name=request.agent_name,
@@ -311,7 +321,7 @@ async def external_agent_start(
         status=AgentRunStatus.RUNNING,
         max_steps=request.max_steps,
         is_simulation=False,  # External agent run is a real production run
-        langfuse_trace_id=run_id,
+        langfuse_trace_id=trace_id or run_id,
         langfuse_trace_url=tracer.get_trace_url(run_id)
     )
     registry.register_run(state)
@@ -329,6 +339,23 @@ async def external_agent_step(
     if not handle:
         raise HTTPException(status_code=404, detail="Agent run not found")
 
+    # 1. Detect if this step is invoking an LLM model or consuming tokens
+    is_model_step = False
+    if step.tool_name and any(m in step.tool_name.lower() for m in ["gemini", "gpt", "claude", "deepseek", "llama", "mistral", "qwen", "openai"]):
+        is_model_step = True
+        step.is_billable = True
+        step.execution_type = "llm_reasoning"
+    elif step.tokens_used > 0:
+        step.is_billable = True
+
+    # 2. Automatically compute USD/VND cost if tokens > 0 and cost was not provided
+    if step.tokens_used > 0 and (step.cost_usd is None or step.cost_usd <= 0.0):
+        model_name = step.tool_name if is_model_step else "gemini-2.5-flash"
+        p_tok = max(1, int(step.tokens_used * 0.6))
+        c_tok = max(1, step.tokens_used - p_tok)
+        step.cost_usd = pricing_registry.calculate_cost(model_name, p_tok, c_tok)
+        step.cost_vnd = round(step.cost_usd * settings.USD_TO_VND_RATE, 2)
+
     handle.state.steps.append(step)
     handle.state.current_step = step.step_number
     handle.state.total_tokens += step.tokens_used
@@ -337,6 +364,26 @@ async def external_agent_step(
     handle.state.updated_at = get_utc_now()
     db.save_run(handle.state)
     db.save_step(run_id, step)
+
+    # 3. Stream step observation to Langfuse Tracer
+    if is_model_step or step.tokens_used > 0:
+        tracer.log_generation(
+            run_id=run_id,
+            name=f"Step-{step.step_number}:{step.tool_name or 'LLM'}",
+            model=step.tool_name or "gemini-2.5-flash",
+            prompt=step.thought or handle.state.prompt,
+            completion=step.tool_output or handle.state.final_output or "",
+            usage={"total": step.tokens_used},
+            metadata={"cost_usd": step.cost_usd, "is_billable": step.is_billable}
+        )
+    elif step.tool_name:
+        tracer.log_tool_span(
+            run_id=run_id,
+            tool_name=step.tool_name,
+            tool_input=step.tool_input,
+            tool_output=step.tool_output,
+            metadata={"is_billable": step.is_billable}
+        )
 
     registry.broadcast_event({
         "type": "step_completed",
@@ -369,6 +416,13 @@ async def external_agent_finish(
     handle.state.error_message = error
     handle.state.updated_at = get_utc_now()
     db.save_run(handle.state)
+
+    # Finalize observation in Langfuse
+    tracer.update_trace(
+        run_id=run_id,
+        output=final_output or error,
+        metadata={"status": status.value, "error": error}
+    )
 
     registry.broadcast_event({
         "type": "run_finished",

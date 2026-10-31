@@ -29,6 +29,24 @@ DEFAULT_MODEL_REGISTRY: Dict[str, Dict[str, Any]] = {
         "description": "Ultra-fast multimodal model with 1M context window and rock-bottom cost.",
         "verified_source": "https://ai.google.dev/pricing"
     },
+    "gemini-2.5-flash": {
+        "model_id": "gemini-2.5-flash",
+        "provider": "Google DeepMind",
+        "input_cost_per_m": 0.075,
+        "output_cost_per_m": 0.30,
+        "context_window": 1000000,
+        "description": "Next-gen ultra-fast multimodal model with adaptive reasoning.",
+        "verified_source": "https://ai.google.dev/pricing"
+    },
+    "gemini-2.0-flash": {
+        "model_id": "gemini-2.0-flash",
+        "provider": "Google DeepMind",
+        "input_cost_per_m": 0.075,
+        "output_cost_per_m": 0.30,
+        "context_window": 1000000,
+        "description": "Gemini 2.0 Flash production model.",
+        "verified_source": "https://ai.google.dev/pricing"
+    },
     "claude-3-5-sonnet": {
         "model_id": "claude-3-5-sonnet",
         "provider": "Anthropic",
@@ -104,7 +122,23 @@ class ModelPricingRegistry:
         return res
 
     def get_model(self, model_id: str) -> Optional[Dict[str, Any]]:
-        return self._cache.get(model_id)
+        if not model_id:
+            return None
+        m_id = model_id.strip().lower()
+        if m_id in self._cache:
+            return self._cache[m_id]
+        for key, val in self._cache.items():
+            if key in m_id or m_id in key:
+                return val
+        if "gemini" in m_id:
+            return self._cache.get("gemini-2.5-flash") or self._cache.get("gemini-1.5-flash")
+        if "claude" in m_id:
+            return self._cache.get("claude-3-5-sonnet")
+        if "deepseek" in m_id:
+            return self._cache.get("deepseek-chat")
+        if "gpt" in m_id:
+            return self._cache.get("gpt-4o-mini")
+        return None
 
     def calculate_cost(self, model_id: str, prompt_tokens: int, completion_tokens: int) -> float:
         """Calculates exact USD spend for given token counts."""

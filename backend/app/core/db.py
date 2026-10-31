@@ -183,6 +183,27 @@ class DatabaseManager:
                         except Exception:
                             pass
 
+                    total_cost_usd = row["total_cost_usd"]
+                    total_cost_vnd = row["total_cost_vnd"]
+
+                    # Automatically recalculate cost if run has tokens but cost was 0.0
+                    if row["total_tokens"] > 0 and (total_cost_usd is None or total_cost_usd <= 0.0):
+                        try:
+                            from app.core.pricing import pricing_registry
+                            p_tok = max(1, int(row["total_tokens"] * 0.6))
+                            c_tok = max(1, row["total_tokens"] - p_tok)
+                            total_cost_usd = pricing_registry.calculate_cost(row["agent_name"] or "gemini-2.5-flash", p_tok, c_tok)
+                            total_cost_vnd = round(total_cost_usd * settings.USD_TO_VND_RATE, 2)
+                            for s in steps:
+                                if s.tokens_used > 0 and (s.cost_usd is None or s.cost_usd <= 0.0):
+                                    s_ptok = max(1, int(s.tokens_used * 0.6))
+                                    s_ctok = max(1, s.tokens_used - s_ptok)
+                                    s.cost_usd = pricing_registry.calculate_cost(s.tool_name or "gemini-2.5-flash", s_ptok, s_ctok)
+                                    s.cost_vnd = round(s.cost_usd * settings.USD_TO_VND_RATE, 2)
+                                    s.is_billable = True
+                        except Exception as ex:
+                            logger.warning(f"Could not auto-compute cost for run {run_id}: {ex}")
+
                     run = AgentRunState(
                         run_id=run_id,
                         agent_name=row["agent_name"],
@@ -191,8 +212,8 @@ class DatabaseManager:
                         current_step=row["current_step"],
                         max_steps=row["max_steps"],
                         total_tokens=row["total_tokens"],
-                        total_cost_usd=row["total_cost_usd"],
-                        total_cost_vnd=row["total_cost_vnd"],
+                        total_cost_usd=total_cost_usd,
+                        total_cost_vnd=total_cost_vnd,
                         is_simulation=bool(row["is_simulation"]),
                         pending_approval=pending_approval,
                         steps=steps,
